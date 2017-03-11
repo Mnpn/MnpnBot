@@ -4,6 +4,7 @@
 
 ::RBNACL_LIBSODIUM_GEM_LIB_PATH = "C:/Users/mnpn0/Desktop/Programmering/Ruby/libsodium-win32/lib/libsodium.dll.a"
 require "discordrb"
+require 'urban_dict'
 
 CLIENT_ID = 289471282720800768
 token = "";
@@ -14,7 +15,7 @@ File.open("token.txt") do |f|
 end
 bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 
-version = "0.0.12.3 Beta"
+version = "0.0.13.1 Beta"
 started = 0
 
 bot.ready do
@@ -75,13 +76,17 @@ bot.message(with_text: /_help.?/i) do |event|
 	embed.add_field(name: "_ping", value: "Pings the bot.", inline: true)
 	embed.add_field(name: "_invite", value: "Shows an invite link for the bot.", inline: true)
 	embed.add_field(name: "_uptime", value: "Shows bot uptime.", inline: true)
+	embed.add_field(name: "_si", value: "Shows server information.", inline: true)
+	embed.add_field(name: "_bi", value: "Shows bot information.", inline: true)
+	embed.add_field(name: "_define", value: "Usage: '_define kek'. Not specifying what to define will result in a random definition.", inline: true)
+
 	embed.add_field(name: "Tea, Coffee and Java", value: "Shows Emojis.")
 	embed.add_field(name: "Lenny", value: "( ͡° ͜ʖ ͡°)", inline: true)
 	embed.add_field(name: "IKEA", value: "IKEA.", inline: true)
 
 	#embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
-	embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=67439616', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+	embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 	
 	embed.color = 1108583
 end
@@ -137,7 +142,7 @@ rescue ArgumentError
     event.respond "Not a number!"
     next
 end
-limit = 20
+limit = 15
 if start > limit then
 event.respond "The limit is currently set at %d." % [limit]
 next
@@ -236,23 +241,19 @@ end
 bot.message(start_with: "_invite") do |event|
     event.channel.send_embed do |embed|
   embed.title = 'Invite link. Click the invite text above to open a web browser to authorize MnpnBot.'
-embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=67439616', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
   embed.color = 1108583
   end
 end
 
-module Join
-  extend Discordrb::EventContainer
-
-  server_create do |event|
-    event.channel.send_embed do |embed|
+  bot.server_create do |event|
+    event.server.default_channel.send_embed do |embed|
 	embed.title = "MnpnBot"
 	embed.description = "You have authorized **MnpnBot**. Hello World! To get started, say '_help'"
-embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=67439616', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
   embed.color = 1108583
   end
   end
-end
 
 bot.message(start_with: "_si") do |event|
   if event.channel.private? then
@@ -269,6 +270,8 @@ bot.message(start_with: "_si") do |event|
 	embed.add_field(name: "Icon:", value: "#{event.server.icon_url}", inline: true)
     embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
 	embed.color = 1108583
+		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "#{event.server.icon_url}")
+
 	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}", icon_url: "#{event.server.icon_url}")
 	
 
@@ -291,6 +294,34 @@ bot.message(start_with: "_bi") do |event, *args|
 	embed.color = 1108583
 	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 end
+end
+
+bot.message(start_with: "_define") do |event, *args|
+begin
+	event.channel.send_embed do |embed|
+  defin = nil
+  msg = event.content[7..-1]
+  if msg != ''
+  defin = UrbanDict.define(msg)
+  else
+  defin = UrbanDict.random
+  end
+  embed.title = "Urban Dictionary"
+  embed.description = "Urban Dictionary; Define a word."
+  embed.add_field(name: "***#{defin['word']}***", value: "by #{defin['author']}", inline: true)
+  embed.add_field(name: "**Definition**", value: "#{defin['definition']}", inline: true)
+  embed.add_field(name: "**Example**", value: "#{defin['example']}", inline: true)
+  embed.add_field(name: "#{defin['thumbs_up']} Likes | #{defin['thumbs_down']} Dislikes", value: "Urban Dictionary", inline: true)
+embed.add_field(name: "***<#{defin['permalink']}>***", value: "Direct link", inline: true)
+embed.color = 4359924
+end
+rescue
+event.channel.send_embed do |embed|
+embed.title = "Urban Dictionary"
+  embed.description = "That's not in the dictionary!"
+  embed.color = 16722454 #red
+  end
+  end
 end
 
 trap("INT") do
