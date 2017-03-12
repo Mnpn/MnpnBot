@@ -21,8 +21,10 @@ bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 ver = "R1.0.5"
 
 limit = 15
-devmode = false
+devmode = true
+debug = true
 started = 0
+typeloops = 20
 #End of config.
 
 if devmode == true then
@@ -30,6 +32,7 @@ if devmode == true then
 	puts("Development Mode is Enabled.")
 else
 version = ver
+end
 
 bot.ready do
 loop do
@@ -51,7 +54,6 @@ bot.ready do
     puts("Started, any errors? Version " + version)
 	bot.send_message(289641868856262656, "MnpnBot started without any major issues. You should check the console, anyways. Running on version " + version)
 end
-
 
 bot.message(with_text: ":>") do |event|
     event.respond ":>"
@@ -148,9 +150,12 @@ bot.message(start_with: "boi") do |event|
 	event << "BOIII!"
 end
 
+i=0
 bot.message(start_with: "type") do |event|
-loop until bot.message(start_with: "type")
+while i < typeloops  do
 	event.channel.start_typing()
+	sleep(1)
+   i +=1
 	end
 end
 
@@ -426,6 +431,14 @@ enterchar = "
 rescue => e
 puts("#{e}")
 end
+
+#f = File.open("C:/Users/mnpn0/Desktop/Programmering/Ruby/MnpnBot/log", "w");
+#at_exit do
+#    f.close();
+#end
+#log = Logger.new(streams = [$stdout, f]);
+
+
 
 trap("INT") do
     exit
