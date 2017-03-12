@@ -18,15 +18,16 @@ bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 
 #I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = "R1.0.1"
+ver = "R1.0.2"
 
 limit = 15
-devmode = false
+devmode = true
 started = 0
 #End of config.
 
 if devmode == true then
 	version = ver + " Dev"
+	puts("Development Mode is Enabled.")
 else
 version = ver
 end
@@ -234,18 +235,18 @@ bot.message(start_with: "_uptime") do |event|
 uptime_sec = Time.now - started
 uptime = Time.at(uptime_sec).strftime("%M:%S")
     event.channel.send_embed do |embed|
-  embed.title = 'Uptime:'
-  embed.description = 'Bot uptime is %s' % [uptime]# + " minutes."
-  if uptime_sec < 5*60 then
-  embed.color = 16773910 #yellow
-  #16722454 red
-  else
-  embed.color = 1108583 #green
+		embed.title = 'Uptime:'
+		embed.description = 'Bot uptime is %s' % [uptime]# + " minutes."
+	if uptime_sec < 5*60 then
+		embed.color = 16773910 #yellow
+		#16722454 red
+	else
+		embed.color = 1108583 #green
   end
-  if uptime_sec > 120*60 then
-  embed.color = 16722454 #red
-  puts("Bot should restart!")
-  end
+	if uptime_sec > 120*60 then
+		embed.color = 16722454 #red
+		puts("Bot should restart!")
+	end
   end
 end
 
