@@ -2,7 +2,7 @@
 #This is the main file of MnpnBot, programmed in Ruby.
 #Shout out to LEGOlord208#1033 for helping me.
 
-::RBNACL_LIBSODIUM_GEM_LIB_PATH = "C:/Users/mnpn0/Desktop/Programmering/Ruby/libsodium-win32/lib/libsodium.dll.a"
+::RBNACL_LIBSODIUM_GEM_LIB_PATH = "C:/Users/mnpn0/Desktop/Programmering/Ruby/libsodium.dll"
 require "discordrb"
 require 'urban_dict'
 
@@ -18,10 +18,10 @@ bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 
 #I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = "R1.0.2"
+ver = "R1.0.5"
 
 limit = 15
-devmode = true
+devmode = false
 started = 0
 #End of config.
 
@@ -30,7 +30,6 @@ if devmode == true then
 	puts("Development Mode is Enabled.")
 else
 version = ver
-end
 
 bot.ready do
 loop do
@@ -71,6 +70,12 @@ bot.message(with_text: /planes.?/i) do |event|
 end
 bot.message(with_text: /cyka blyat.?/i) do |event|
     event.respond "Kurwa."
+end
+bot.message(start_with:"amirite") do |event|
+event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
+end
+bot.message(contains: "why") do |event|
+event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
 end
 bot.message(with_text: /ikea.?/i) do |event|
     event.respond "IKEA was founded in 1943 in Älmtaryd, Sweden. The name comes from Ingvar Kamprad, Elmtaryd and Agunnaryd, the name of the founder and where he grew up."
@@ -141,6 +146,12 @@ end
 bot.message(start_with: "boi") do |event|
     event << "( ͡° ͜ʖ ͡°)"
 	event << "BOIII!"
+end
+
+bot.message(start_with: "type") do |event|
+loop until bot.message(start_with: "type")
+	event.channel.start_typing()
+	end
 end
 
 										#Count
@@ -298,7 +309,7 @@ begin
 end
 end
 
-bot.message(start_with: "_bi") do |event, *args|
+bot.message(start_with: "_bi") do |event|
     event.channel.send_embed do |embed|
   lsc = 0
   ls = bot.servers.values.each {|s| if s.large; lsc+=1; end }
@@ -372,6 +383,48 @@ bot.message(start_with: "_mnpn") do |event|
             embed.color = 1108583 #green
 end
     end
+end
+
+class Fixnum
+  ROMAN_NUMBERS = {
+    1000 => "M",  
+     900 => "CM",  
+     500 => "D",  
+     400 => "CD",
+     100 => "C",  
+      90 => "XC",  
+      50 => "L",  
+      40 => "XL",  
+      10 => "X",  
+        9 => "IX",  
+        5 => "V",  
+        4 => "IV",  
+        1 => "I",  
+        0 => "",  
+  }
+  def roman
+    return '' if self == 0
+    ROMAN_NUMBERS.each do |value, letter|
+      return ( letter * (self / value)) << (self % value).roman if value <= self
+    end
+    return (self % value).roman
+  end
+  
+  def format
+	return self.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse
+  end
+end
+
+class Float
+  def format
+	return self.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse
+  end
+
+
+enterchar = "
+"
+rescue => e
+puts("#{e}")
 end
 
 trap("INT") do
