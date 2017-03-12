@@ -13,6 +13,7 @@ File.open("token.txt") do |f|
         token += line;
     end
 end
+
 bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 
 version = "0.0.13.1 Beta"
