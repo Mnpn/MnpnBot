@@ -16,8 +16,20 @@ end
 
 bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
 
-version = "0.0.13.1 Beta"
+#I'm too lazy to bother with anything really, here is the config. Heh.
+
+ver = "R1.0.1"
+
+limit = 15
+devmode = false
 started = 0
+#End of config.
+
+if devmode == true then
+	version = ver + " Dev"
+else
+version = ver
+end
 
 bot.ready do
 loop do
@@ -82,8 +94,7 @@ bot.message(with_text: /_help.?/i) do |event|
 	embed.add_field(name: "_define", value: "Usage: '_define kek'. Not specifying what to define will result in a random definition.", inline: true)
 
 	embed.add_field(name: "Tea, Coffee and Java", value: "Shows Emojis.")
-	embed.add_field(name: "Lenny", value: "( ͡° ͜ʖ ͡°)", inline: true)
-	embed.add_field(name: "IKEA", value: "IKEA.", inline: true)
+	embed.add_field(name: "Lenny", value: "( ͡° ͜ʖ ͡°)", inline: true	)
 
 	#embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
@@ -102,7 +113,7 @@ end
 bot.message(start_with: "coffee") do |event|
     event.respond ":coffee:"
 end
-bot.message(start_with: "Java") do |event|
+bot.message(start_with: "java") do |event|
     event.respond "( ͡° ͜ʖ ͡°) :coffee:"
 end
 
@@ -143,7 +154,6 @@ rescue ArgumentError
     event.respond "Not a number!"
     next
 end
-limit = 15
 if start > limit then
 event.respond "The limit is currently set at %d." % [limit]
 next
@@ -257,6 +267,7 @@ embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https
   end
 
 bot.message(start_with: "_si") do |event|
+begin
   if event.channel.private? then
   event.channel.send_embed do |embed|
   embed.title = ":no_entry:"
@@ -274,10 +285,16 @@ bot.message(start_with: "_si") do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "#{event.server.icon_url}")
 
 	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}", icon_url: "#{event.server.icon_url}")
-	
-
     end
+	end
+	rescue => e
+	event.channel.send_embed do |embed|
+  embed.title = "Missing Permission."
+    embed.color = 16722454
+  embed.description = "Not enough permission for that..? Or atleast that's what we think the error is. Check it out for yourself."
+  event << "#{e}"
  end
+end
 end
 
 bot.message(start_with: "_bi") do |event, *args|
@@ -323,6 +340,37 @@ embed.title = "Urban Dictionary"
   embed.color = 16722454 #red
   end
   end
+end
+
+bot.message(start_with: "_psi") do |event|
+    if event.user.id != event.server.owner.id then
+        event.channel.send_embed do |embed|
+            embed.title = ":no_entry:"
+            embed.description = "You're not the owner of this server."
+            embed.color = 16722454 #red
+        end
+    else
+        event << "It looks like you, <@%d" % event.server.owner.id + "> is the server owner. This feature is pretty stupid right now."
+    end
+end
+
+bot.message(start_with: "_mnpn") do |event|
+    if event.user.id != 172030506970382337 then
+        event.channel.send_embed do |embed|
+            embed.title = ":no_entry:"
+            embed.description = "You're not Mnpn, kek."
+            embed.color = 16722454 #red
+        end
+    else
+	event.channel.send_embed do |embed|
+            embed.title = "MnpnBot Settings"
+            embed.description = "Here are the current settings."
+			embed.add_field(name: "Development mode", value: devmode, inline: true)
+			embed.add_field(name: "Count Limit", value: limit, inline: true)
+			embed.add_field(name: "Version", value: version, inline: true)
+            embed.color = 1108583 #green
+end
+    end
 end
 
 trap("INT") do
