@@ -2,6 +2,38 @@
 #This is the main file of MnpnBot, programmed in Ruby.
 #Shout out to LEGOlord208#1033 for helping me.
 
+
+# Error catching and logging functions
+log_debug = true
+log_errors = true
+
+# Copy paste from stack overflow.
+# http://stackoverflow.com/questions/9433924/how-can-i-copy-stdout-to-a-file-without-stopping-it-showing-onscreen-using-ruby
+# too lazy.
+class TeeIO < IO
+	def initialize orig, file
+		@orig = orig
+		@file = file
+	end
+
+	def write string
+		@file.write string
+		@orig.write string
+	end
+end
+
+if log_debug then
+	tee = TeeIO.new $stdout, File.new('log.txt', 'w')
+	$stdout = tee
+end
+if log_errors then
+	tee = TeeIO.new $stderr, File.new('log.txt', 'w')
+	$stderr = tee
+end
+
+# Done
+
+
 ::RBNACL_LIBSODIUM_GEM_LIB_PATH = "C:/Users/mnpn0/Desktop/Programmering/Ruby/libsodium.dll"
 require "discordrb"
 require 'urban_dict'
@@ -10,11 +42,11 @@ CLIENT_ID = 289471282720800768
 token = "";
 File.open("token.txt") do |f|
 	f.each_line do |line|
-		token += line;
+		token += line
 	end
 end
 
-bot = Discordrb::Bot.new token: token, client_id: CLIENT_ID
+bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: '_'
 
 #I'm too lazy to bother with anything really, here is the config. Heh.
 
@@ -85,7 +117,7 @@ end
 
 #HELP
 
-bot.message(with_text: /_help.?/i) do |event|
+bot.command :help do |event|
 	event << "Version: " + version
 	event.channel.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
@@ -161,28 +193,25 @@ end
 
 #Count
 
-bot.message(start_with: "count ") do |event|
-	i_str = event.content[6..-1]
-	start = 0
+bot.command(:count, min_args: 1, max_args: 1, usage: "count [to]") do |event, to|
 	i = 0
 	begin
-		start = Integer(i_str)
+		i = Integer(to)
 	rescue ArgumentError
 		event.respond "Not a number!"
 		next
 	end
-	if start > limit then
+	if i > limit then
 		event.respond "The limit is currently set at %d." % [limit]
 		next
 	end
-	while start > i do
+	for j in 1..i do
 		event << "Counting! Currently on %d." % [i+1]
-		i +=1
 	end
 end
 #Ping
 
-bot.message(with_text: /_ping.?/i) do |event|
+bot.command :ping do |event|
 	#event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
 	event.channel.send_embed do |embed|
 		embed.title = 'Ping result'
@@ -193,37 +222,23 @@ end
 
 #Randomize
 
-bot.message(start_with: "_randomize ") do |event|
-	msg = event.content[11..-1]
-	parts = msg.split " "
-	if parts.length != 2 then
+bot.command(:randomize, min_args: 2, max_args: 2, usage: "randomize <min> <max>") do |event, min, max|
+	min_i = 0
+	max_i = 0
+
+	begin
+		min_i = Integer(min);
+		max_i = Integer(max);
+	rescue ArgumentError
 		event.channel.send_embed do |embed|
-			embed.title = 'Error'
-			embed.description = "That's the wrong format. Noob."
-			next
+			embed.title = "Randomize:"
+			embed.description = "That's not numbers!"
 		end
 	end
-	arr = Array.new
-	failed = false
-	parts.each do |num_str|
-		num = 0
-		begin
-			num = Integer(num_str)
-		rescue ArgumentError
-			failed = true
-			next
-		end
-		arr.push(num)
-	end
-	if failed then
-		next
-	end
-	min = arr.min
-	max = arr.max
-	num = rand(max - (min - 1)) + min
+
 	event.channel.send_embed do |embed|
 		embed.title = 'Randomize:'
-		embed.description = 'The result was %d.' % [num]
+		embed.description = 'The result was %d.' % [rand(min_i..max_i)]
 	end
 end
 #End of Randomize
@@ -247,7 +262,7 @@ bot.message(with_text: /joke.?/i) do |event|
 end
 #End of Jokes
 
-bot.message(start_with: "_uptime") do |event|
+bot.command :uptime do |event|
 	uptime_sec = Time.now - started
 	uptime = Time.at(uptime_sec).strftime("%M:%S")
 	event.channel.send_embed do |embed|
@@ -266,7 +281,7 @@ bot.message(start_with: "_uptime") do |event|
 	end
 end
 
-bot.message(start_with: "_invite") do |event|
+bot.command :invite do |event|
 	event.channel.send_embed do |embed|
 		embed.title = 'Invite link. Click the invite text above to open a web browser to authorize MnpnBot.'
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
@@ -283,7 +298,7 @@ bot.server_create do |event|
 	end
 end
 
-bot.message(start_with: "_si") do |event|
+bot.command :si do |event|
 	begin
 		if event.channel.private? then
 			event.channel.send_embed do |embed|
@@ -314,7 +329,7 @@ bot.message(start_with: "_si") do |event|
 	end
 end
 
-bot.message(start_with: "_bi") do |event|
+bot.command :bi do |event|
 	event.channel.send_embed do |embed|
 		lsc = 0
 		ls = bot.servers.values.each {|s| if s.large; lsc+=1; end }
@@ -331,11 +346,11 @@ bot.message(start_with: "_bi") do |event|
 	end
 end
 
-bot.message(start_with: "_define") do |event, *args|
+bot.command(:define, min_args: 1, usage: "define <word>") do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
 			defin = nil
-			msg = event.content[7..-1]
+			msg = args.join(" ")
 			if msg != ''
 				defin = UrbanDict.define(msg)
 			else
@@ -359,7 +374,7 @@ bot.message(start_with: "_define") do |event, *args|
 	end
 end
 
-bot.message(start_with: "_psi") do |event|
+bot.command :psi do |event|
 	if event.user.id != event.server.owner.id then
 		event.channel.send_embed do |embed|
 			embed.title = ":no_entry:"
@@ -371,7 +386,7 @@ bot.message(start_with: "_psi") do |event|
 	end
 end
 
-bot.message(start_with: "_mnpn") do |event|
+bot.command :mnpn do |event|
 	if event.user.id != 172030506970382337 then
 		event.channel.send_embed do |embed|
 			embed.title = ":no_entry:"
@@ -389,56 +404,6 @@ bot.message(start_with: "_mnpn") do |event|
 		end
 	end
 end
-
-class Fixnum
-	ROMAN_NUMBERS = {
-		1000 => "M",  
-		900 => "CM",  
-		500 => "D",  
-		400 => "CD",
-		100 => "C",  
-		90 => "XC",  
-		50 => "L",  
-		40 => "XL",  
-		10 => "X",  
-		9 => "IX",  
-		5 => "V",  
-		4 => "IV",  
-		1 => "I",  
-		0 => "",  
-	}
-	def roman
-		return '' if self == 0
-		ROMAN_NUMBERS.each do |value, letter|
-			return ( letter * (self / value)) << (self % value).roman if value <= self
-		end
-		return (self % value).roman
-	end
-
-	def format
-		return self.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse
-	end
-end
-
-class Float
-	def format
-		return self.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse
-	end
-
-
-	enterchar = "
-	"
-rescue => e
-	puts("#{e}")
-end
-
-#f = File.open("C:/Users/mnpn0/Desktop/Programmering/Ruby/MnpnBot/log", "w");
-#at_exit do
-#    f.close();
-#end
-#log = Logger.new(streams = [$stdout, f]);
-
-
 
 trap("INT") do
 	exit
