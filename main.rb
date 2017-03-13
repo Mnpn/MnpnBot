@@ -231,8 +231,8 @@ bot.command(:randomize, min_args: 2, max_args: 2, usage: "randomize <min> <max>"
 		max_i = Integer(max);
 	rescue ArgumentError
 		event.channel.send_embed do |embed|
-			embed.title = "Redomize:"
-			embed.description = "That's... not numbers? Weirdo"
+			embed.title = "Randomize:"
+			embed.description = "That's not numbers!"
 		end
 	end
 
