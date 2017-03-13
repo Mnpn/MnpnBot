@@ -42,7 +42,7 @@ CLIENT_ID = 289471282720800768
 token = "";
 File.open("token.txt") do |f|
 	f.each_line do |line|
-		token += line
+		token += line.strip
 	end
 end
 
@@ -402,6 +402,78 @@ bot.command :mnpn do |event|
 			embed.add_field(name: "Version", value: version, inline: true)
 			embed.color = 1108583 #green
 		end
+	end
+end
+
+bot.command(:roman, min_args: 1, max_args: 1, usage: "roman [num]") do |event, num|
+	# Coded by LEGOlord208
+	i = 0;
+	begin
+		i = Integer(num)
+	rescue ArgumentError
+		event.respond "That's not a number."
+		next
+	end
+
+	if i > 1999 then
+		event.respond "That's too big, sorry"
+		next
+	end
+
+	nums = {
+		1 => "I",
+		4 => "IV",
+		5 => "V",
+		9 => "IX",
+		10 => "X",
+		40 => "XL",
+		50 => "L",
+		90 => "XC",
+		100 => "C",
+		400 => "CD",
+		500 => "D",
+		900 => "CM",
+		1000 => "M"
+	}
+
+	len = 1000
+	out = ""
+
+	while i > 0 do
+		d = i;
+		if len != 1 then
+			d = (i / len).floor
+			if d <= 0 then
+				len /= 10
+				next
+			end
+
+			d *= len
+		end
+
+		rest = 0;
+		while !nums.key?(d) do
+			d -= len
+			rest += 1
+		end
+
+		found = nums[d]
+		one = nums[len]
+
+		out += found.to_s
+
+		while rest > 0 do
+			out += one
+			rest -= 1
+		end
+
+		i = i % len;
+		len /= 10;
+	end
+
+	event.channel.send_embed do |embed|
+		embed.title = "Roman:"
+		embed.description = "The converted number is " + out + "."
 	end
 end
 
