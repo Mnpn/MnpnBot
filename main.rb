@@ -107,17 +107,17 @@ bot.message(with_text: /cyka blyat.?/i) do |event|
 	event.respond "Kurwa."
 end
 if annoy == true then
-bot.message(start_with:"amirite") do |event|
-	event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
-end
-bot.message(contains: "why") do |event|
-	event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
-end
+	bot.message(start_with:"amirite") do |event|
+		event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
+	end
+	bot.message(contains: "why") do |event|
+		event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
+	end
 else
-puts("Annoy is off.")
-bot.message(contains: "why") do |event|
-puts("User sent why to annoy, but annoy=false.")
-end
+	puts("Annoy is off.")
+	bot.message(contains: "why") do |event|
+		puts("User sent why to annoy, but annoy=false.")
+	end
 end
 bot.message(with_text: /ikea.?/i) do |event|
 	event.respond "IKEA was founded in 1943 in Älmtaryd, Sweden. The name comes from Ingvar Kamprad, Elmtaryd and Agunnaryd, the name of the founder and where he grew up."
@@ -142,9 +142,9 @@ _define: Usage: '_define kek'. Not specifying what to define will result in a ra
 _uptime: Shows bot uptime.
 _si: Shows server information.
 _bi: Shows bot information.")
-				
+
 		embed.add_field(name: "Entertaining commands:", value: "Joke: Tells you a terrible joke.")
-		
+
 
 		#embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
@@ -224,8 +224,8 @@ end
 bot.command :ping do |event|
 	#event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
 	now = Time.now.nsec
-timestamp = event.timestamp.nsec
-diff = (now - timestamp) / 1000000
+	timestamp = event.timestamp.nsec
+	diff = (now - timestamp) / 1000000
 	event.channel.send_embed do |embed|
 		embed.title = 'Ping result'
 		embed.description = "I'm here. Pinged in #{diff} ms."
@@ -278,17 +278,17 @@ end
 #End of Jokes
 
 bot.command :uptime do |event|
-	    full_sec = Time.now - started
-    sec = full_sec % 60;
-    min = full_sec / 60;
+	full_sec = Time.now - started
+	sec = full_sec % 60;
+	min = full_sec / 60;
 	sec = sec.floor
 	min = min.floor
-    event.channel.send_embed do |embed|
-        embed.title = 'Uptime:'
-        embed.description = 'Bot uptime is %s:%s' % [min, sec]# + " minutes."
-        if min < 5 then
-            embed.color = 16773910 #yellow
-            #16722454 red
+	event.channel.send_embed do |embed|
+		embed.title = 'Uptime:'
+		embed.description = 'Bot uptime is %s:%s' % [min, sec]# + " minutes."
+		if min < 5 then
+			embed.color = 16773910 #yellow
+			#16722454 red
 		else
 			embed.color = 1108583 #green
 		end
@@ -340,14 +340,14 @@ bot.command :si do |event|
 	rescue => e
 		event.channel.send_embed do |embed|
 			embed.title = "Server Information"
-				embed.description = "Advanced server information."
-				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
-				
-				embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-				embed.color = 1108583
-				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "#{event.server.icon_url}")
+			embed.description = "Advanced server information."
+			embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
 
-				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}")
+			embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
+			embed.color = 1108583
+			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "#{event.server.icon_url}")
+
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}")
 		end
 	end
 end
@@ -503,23 +503,23 @@ bot.command(:roman, min_args: 1, max_args: 1, usage: "roman [num]") do |event, n
 end
 
 bot.command :reload do |event|
-    if event.user.id != 172030506970382337 then
-        event.channel.send_embed do |embed|
-            embed.title = ":no_entry:"
-            embed.description = "You're not allowed to run this command."
-            embed.color = 16722454 #red
-        end
-    else
-        event.channel.send_embed do |embed|
-            embed.title = "Reload"
-            embed.description = "Reloading Mnpnbot!"
+	if event.user.id != 172030506970382337 then
+		event.channel.send_embed do |embed|
+			embed.title = ":no_entry:"
+			embed.description = "You're not allowed to run this command."
+			embed.color = 16722454 #red
+		end
+	else
+		event.channel.send_embed do |embed|
+			embed.title = "Reload"
+			embed.description = "Reloading Mnpnbot!"
 			embed.add_field(name: "Version", value: version, inline: true)
-            embed.add_field(name: "Development mode", value: devmode, inline: true)
-            embed.add_field(name: "Debug mode", value: debug, inline: true)
-            embed.color = 1108583 #green
-        end
-#REALLY GOOD RELOADING CODES GOES HERE M9
-    end
+			embed.add_field(name: "Development mode", value: devmode, inline: true)
+			embed.add_field(name: "Debug mode", value: debug, inline: true)
+			embed.color = 1108583 #green
+		end
+		#REALLY GOOD RELOADING CODES GOES HERE M9
+	end
 end
 
 trap("INT") do
