@@ -42,7 +42,7 @@ That song from Frozen is really getting old. Why don't people just Let It Go?
 Yesterday I swallowed food coloring. I'm okay. But I feel like I dyed inside!
 How does the NASA organize a party? They planet!
 What do you call a frozen dog? A pupsicle!
-I don't trust stairs. I think they're up to something.
+I don't ever trust stairs. I think they're up to something.
 Why don't Go developers have patience?  They haven't needed it in a `while`!
 Why do Go developers use loops for everything? They love them, and couldn't `contain` themselves!
 How do you comfort a JavaScript bug? -- you console it.

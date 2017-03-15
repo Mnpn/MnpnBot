@@ -50,11 +50,12 @@ bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, pr
 
 #I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = "R1.0.5"
+ver = "Release 1.2"
 
 limit = 15
-devmode = true
+devmode = false
 debug = true
+annoy = false
 started = 0
 typeloops = 20
 #End of config.
@@ -105,11 +106,18 @@ end
 bot.message(with_text: /cyka blyat.?/i) do |event|
 	event.respond "Kurwa."
 end
+if annoy == true then
 bot.message(start_with:"amirite") do |event|
 	event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
 end
 bot.message(contains: "why") do |event|
 	event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
+end
+else
+puts("Annoy is off.")
+bot.message(contains: "why") do |event|
+puts("User sent why to annoy, but annoy=false.")
+end
 end
 bot.message(with_text: /ikea.?/i) do |event|
 	event.respond "IKEA was founded in 1943 in Älmtaryd, Sweden. The name comes from Ingvar Kamprad, Elmtaryd and Agunnaryd, the name of the founder and where he grew up."
@@ -121,20 +129,22 @@ bot.command :help do |event|
 	event << "Version: " + version
 	event.channel.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
-		embed.title = 'Help'
+		#embed.title = 'Help'
 		embed.description = 'Command Information'
-		embed.add_field(name: "_help", value: "Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!", inline: true)
-		embed.add_field(name: "_randomize", value: "Usage: '_randomize 1 10'. Number randomizer.")
-		embed.add_field(name: "Joke", value: "Tells you a terrible joke.")
-		embed.add_field(name: "_ping", value: "Pings the bot.", inline: true)
-		embed.add_field(name: "_invite", value: "Shows an invite link for the bot.", inline: true)
-		embed.add_field(name: "_uptime", value: "Shows bot uptime.", inline: true)
-		embed.add_field(name: "_si", value: "Shows server information.", inline: true)
-		embed.add_field(name: "_bi", value: "Shows bot information.", inline: true)
-		embed.add_field(name: "_define", value: "Usage: '_define kek'. Not specifying what to define will result in a random definition.", inline: true)
+		embed.add_field(name: "General commands:", value: "_help: Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!
+_randomize: Usage: '_randomize 1 10'. Number randomizer.
+_define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
+_invite: Shows an invite link for the bot.
+_roman: Usage: '_roman 50'. Change numerals to romans.
+_define: Usage: '_define kek'. Not specifying what to define will result in a random definition.")
 
-		embed.add_field(name: "Tea, Coffee and Java", value: "Shows Emojis.")
-		embed.add_field(name: "Lenny", value: "( ͡° ͜ʖ ͡°)", inline: true	)
+		embed.add_field(name: "Status commands:", value: "_ping: Pings the bot.
+_uptime: Shows bot uptime.
+_si: Shows server information.
+_bi: Shows bot information.")
+				
+		embed.add_field(name: "Entertaining commands:", value: "Joke: Tells you a terrible joke.")
+		
 
 		#embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
@@ -213,10 +223,15 @@ end
 
 bot.command :ping do |event|
 	#event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
+	now = Time.now.nsec
+timestamp = event.timestamp.nsec
+diff = (now - timestamp) / 1000000
 	event.channel.send_embed do |embed|
 		embed.title = 'Ping result'
-		embed.description = "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
+		embed.description = "I'm here. Pinged in #{diff} ms."
 		embed.color = 1108583
+		event << "If you recieved a negative number, it's a bug. The system thinks you sent the message before 'now'."
+		event << "We're working on it. Run _ping again."
 	end
 end
 
@@ -247,7 +262,7 @@ end
 bot.message(with_text: /joke.?/i) do |event|
 	lines = Array.new
 
-	File.open("C:/Users/mnpn0/Desktop/Programmering/Ruby/MnpnBot/jokes.txt", "r") do |f|
+	File.open("jokes.txt", "r") do |f|
 		f.each_line do |line|
 			lines.push(line)
 		end
@@ -263,18 +278,21 @@ end
 #End of Jokes
 
 bot.command :uptime do |event|
-	uptime_sec = Time.now - started
-	uptime = Time.at(uptime_sec).strftime("%M:%S")
-	event.channel.send_embed do |embed|
-		embed.title = 'Uptime:'
-		embed.description = 'Bot uptime is %s' % [uptime]# + " minutes."
-		if uptime_sec < 5*60 then
-			embed.color = 16773910 #yellow
-			#16722454 red
+	    full_sec = Time.now - started
+    sec = full_sec % 60;
+    min = full_sec / 60;
+	sec = sec.floor
+	min = min.floor
+    event.channel.send_embed do |embed|
+        embed.title = 'Uptime:'
+        embed.description = 'Bot uptime is %s:%s' % [min, sec]# + " minutes."
+        if min < 5 then
+            embed.color = 16773910 #yellow
+            #16722454 red
 		else
 			embed.color = 1108583 #green
 		end
-		if uptime_sec > 120*60 then
+		if min > 2880 then
 			embed.color = 16722454 #red
 			puts("Bot should restart!")
 		end
@@ -321,10 +339,15 @@ bot.command :si do |event|
 		end
 	rescue => e
 		event.channel.send_embed do |embed|
-			embed.title = "Missing Permission."
-			embed.color = 16722454
-			embed.description = "Not enough permission for that..? Or atleast that's what we think the error is. Check it out for yourself."
-			event << "#{e}"
+			embed.title = "Server Information"
+				embed.description = "Advanced server information."
+				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
+				
+				embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
+				embed.color = 1108583
+				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "#{event.server.icon_url}")
+
+				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}")
 		end
 	end
 end
@@ -342,7 +365,7 @@ bot.command :bi do |event|
 		embed.add_field(name: "#{bot.users.count}", value: "Unique users.", inline: true)
 		embed.add_field(name: "Connected to", value: "#{bot.servers.count} servers.", inline: true)
 		embed.color = 1108583
-		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 	end
 end
 
@@ -400,6 +423,8 @@ bot.command :mnpn do |event|
 			embed.add_field(name: "Development mode", value: devmode, inline: true)
 			embed.add_field(name: "Count Limit", value: limit, inline: true)
 			embed.add_field(name: "Version", value: version, inline: true)
+			embed.add_field(name: "Debug mode", value: debug, inline: true)
+			embed.add_field(name: "Annoy", value: annoy, inline: true)
 			embed.color = 1108583 #green
 		end
 	end
@@ -415,8 +440,8 @@ bot.command(:roman, min_args: 1, max_args: 1, usage: "roman [num]") do |event, n
 		next
 	end
 
-	if i > 1999 then
-		event.respond "That's too big, sorry"
+	if i > 10000 then
+		event.respond "The value is too big."
 		next
 	end
 
@@ -475,6 +500,26 @@ bot.command(:roman, min_args: 1, max_args: 1, usage: "roman [num]") do |event, n
 		embed.title = "Roman:"
 		embed.description = "The converted number is " + out + "."
 	end
+end
+
+bot.command :reload do |event|
+    if event.user.id != 172030506970382337 then
+        event.channel.send_embed do |embed|
+            embed.title = ":no_entry:"
+            embed.description = "You're not allowed to run this command."
+            embed.color = 16722454 #red
+        end
+    else
+        event.channel.send_embed do |embed|
+            embed.title = "Reload"
+            embed.description = "Reloading Mnpnbot!"
+			embed.add_field(name: "Version", value: version, inline: true)
+            embed.add_field(name: "Development mode", value: devmode, inline: true)
+            embed.add_field(name: "Debug mode", value: debug, inline: true)
+            embed.color = 1108583 #green
+        end
+#REALLY GOOD RELOADING CODES GOES HERE M9
+    end
 end
 
 trap("INT") do
