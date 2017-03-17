@@ -1,6 +1,6 @@
 # I never do comments, but when I do, they suck.
 # This is the main file of MnpnBot, programmed in Ruby.
-# Shout out to LEGOlord208#1033 for helping me.
+# Shout out to LEGOlord208#1033 and tbodt#7244 for helping me.
 
 # Error catching and logging functions
 log_debug = true
