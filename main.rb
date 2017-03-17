@@ -34,9 +34,11 @@ end
 # Done
 
 
-::RBNACL_LIBSODIUM_GEM_LIB_PATH = "C:/Users/mnpn0/Desktop/Programmering/Ruby/libsodium.dll"
+::RBNACL_LIBSODIUM_GEM_LIB_PATH = "Assets/libsodium.dll"
 require "discordrb"
 require 'urban_dict'
+
+#require_relative 'lottery.rb'
 
 CLIENT_ID = 289471282720800768
 token = "";
@@ -50,7 +52,7 @@ bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, pr
 
 #I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = "Release 1.2"
+ver = "Release 1.3"
 
 limit = 15
 devmode = false
@@ -68,6 +70,7 @@ else
 end
 
 bot.ready do
+begin
 	loop do
 		#bot.game = "Ruby"
 		#sleep(15)
@@ -80,12 +83,53 @@ bot.ready do
 		bot.stream("Ruby", "https://www.twitch.tv/mnpn04")
 		sleep(5)
 	end
-end
+	rescue => e
+	event.channel.send_embed do |embed|
+		embed.title = "Error"
+		embed.description = "An error occured, and Albin caused it.\n#{e}"
+		end
+		end
+	end
 
 bot.ready do
 	started = Time.now
 	puts("Started, any errors? Version " + version)
 	bot.send_message(289641868856262656, "MnpnBot started without any major issues. You should check the console, anyways. Running on version " + version)
+end
+
+bot.command(:annoy, min_args: 1, max_args: 1, usage: "annoy true/false") do |event, answ|
+    if event.user.id != 172030506970382337 then
+        event.channel.send_embed do |embed|
+            embed.title = ":no_entry:"
+            embed.description = "You're not allowed to change this."
+            embed.color = 16722454 #red
+        end
+    else if answ == "true" then
+        annoy = true
+        event.channel.send_embed do |embed|
+            embed.title = "MnpnBot Settings - Annoy"
+            embed.description = "I changed it."
+            embed.add_field(name: "Annoy", value: annoy, inline: true)
+            embed.color = 1108583 #green
+        end
+    else if answ == "false" then
+        annoy = false
+        event.channel.send_embed do |embed|
+            embed.title = "MnpnBot Settings - Annoy"
+            embed.description = "I changed it."
+            embed.add_field(name: "Annoy", value: annoy, inline: true)
+            embed.color = 1108583 #green
+        end
+    else
+        event.channel.send_embed do |embed|
+            embed.title = "What the fuck?"
+            embed.description = "What's your problem? It's either true or false you fucking moron."
+            embed.add_field(name: "Annoy", value: annoy, inline: true)
+            embed.color = 16722454 #green
+        end
+    end
+end
+end
 end
 
 bot.message(with_text: ":>") do |event|
@@ -106,19 +150,20 @@ end
 bot.message(with_text: /cyka blyat.?/i) do |event|
 	event.respond "Kurwa."
 end
-if annoy == true then
-	bot.message(start_with:"amirite") do |event|
-		event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
-	end
-	bot.message(contains: "why") do |event|
-		event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
-	end
-else
-	puts("Annoy is off.")
-	bot.message(contains: "why") do |event|
-		puts("User sent why to annoy, but annoy=false.")
-	end
+
+bot.message(start_with:"amirite") do |event|
+    if !annoy
+        next
+    end
+    event.respond ":regional_indicator_a::regional_indicator_m::regional_indicator_i::regional_indicator_r::regional_indicator_i::regional_indicator_t::regional_indicator_e:,    :regional_indicator_y::regional_indicator_e::regional_indicator_s:    :regional_indicator_u:    :regional_indicator_r:"
 end
+bot.message(contains: "why") do |event|
+    if !annoy
+        next
+    end
+    event.respond ":regional_indicator_b::regional_indicator_e::regional_indicator_c::regional_indicator_a::regional_indicator_u::regional_indicator_s::regional_indicator_e:    :regional_indicator_y::regional_indicator_o::regional_indicator_u:':regional_indicator_r::regional_indicator_e:    :regional_indicator_a::regional_indicator_n:    :regional_indicator_i::regional_indicator_d::regional_indicator_i::regional_indicator_o::regional_indicator_t:"
+end
+
 bot.message(with_text: /ikea.?/i) do |event|
 	event.respond "IKEA was founded in 1943 in Älmtaryd, Sweden. The name comes from Ingvar Kamprad, Elmtaryd and Agunnaryd, the name of the founder and where he grew up."
 end
@@ -193,7 +238,7 @@ bot.message(start_with: "boi") do |event|
 end
 
 i=0
-bot.message(start_with: "type") do |event|
+bot.command(:type) do |event|
 	while i < typeloops  do
 		event.channel.start_typing()
 		sleep(1)
@@ -236,7 +281,6 @@ bot.command :ping do |event|
 end
 
 #Randomize
-
 bot.command(:randomize, min_args: 2, max_args: 2, usage: "randomize <min> <max>") do |event, min, max|
 	min_i = 0
 	max_i = 0
@@ -337,7 +381,7 @@ bot.command :si do |event|
 				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.server.name}", icon_url: "#{event.server.icon_url}")
 			end
 		end
-	rescue => e
+	rescue
 		event.channel.send_embed do |embed|
 			embed.title = "Server Information"
 			embed.description = "Advanced server information."
@@ -364,8 +408,26 @@ bot.command :bi do |event|
 		embed.add_field(name: "#{ss}", value: "Small servers.", inline: true)
 		embed.add_field(name: "#{bot.users.count}", value: "Unique users.", inline: true)
 		embed.add_field(name: "Connected to", value: "#{bot.servers.count} servers.", inline: true)
+		embed.add_field(name: "Messages sent since last restart:", value: " #{msg}", inline: true)
 		embed.color = 1108583
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+	end
+end
+
+
+bot.command([:ui, :uinfo, :userinfo]) do |event|
+playing = event.user.game
+if playing == nil then
+   playing = "None"
+end
+puts(playing)
+event.channel.send_embed do |embed|
+  embed.title = "User Information"
+	embed.description = "Name and Tag: #{event.user.name}##{event.user.discrim}"
+	embed.add_field(name: "Status:", value: "#{event.user.status}")
+	embed.add_field(name: "Currently Playing:", value: playing)
+	embed.color = 1108583
+	embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot %s." % [version], icon_url: 'http://i.imgur.com/VpeUzUB.png')
 	end
 end
 
@@ -410,24 +472,24 @@ bot.command :psi do |event|
 end
 
 bot.command :mnpn do |event|
-	if event.user.id != 172030506970382337 then
-		event.channel.send_embed do |embed|
-			embed.title = ":no_entry:"
-			embed.description = "You're not Mnpn, kek."
-			embed.color = 16722454 #red
-		end
-	else
-		event.channel.send_embed do |embed|
-			embed.title = "MnpnBot Settings"
-			embed.description = "Here are the current settings."
-			embed.add_field(name: "Development mode", value: devmode, inline: true)
-			embed.add_field(name: "Count Limit", value: limit, inline: true)
-			embed.add_field(name: "Version", value: version, inline: true)
-			embed.add_field(name: "Debug mode", value: debug, inline: true)
-			embed.add_field(name: "Annoy", value: annoy, inline: true)
-			embed.color = 1108583 #green
-		end
-	end
+    if event.user.id != 172030506970382337 and event.user.id != 292020442422706177 then
+        event.channel.send_embed do |embed|
+            embed.title = ":no_entry:"
+            embed.description = "You're not Mnpn or Xeon, kek."
+            embed.color = 16722454 #red
+        end
+    else
+        event.channel.send_embed do |embed|
+            embed.title = "MnpnBot Settings"
+            embed.description = "Here are the current settings."
+            embed.add_field(name: "Development mode", value: devmode, inline: true)
+            embed.add_field(name: "Count Limit", value: limit, inline: true)
+            embed.add_field(name: "Version", value: version, inline: true)
+            embed.add_field(name: "Debug mode", value: debug, inline: true)
+            embed.add_field(name: "Annoy", value: annoy, inline: true)
+            embed.color = 1108583 #green
+        end
+    end
 end
 
 bot.command(:roman, min_args: 1, max_args: 1, usage: "roman [num]") do |event, num|
@@ -521,6 +583,88 @@ bot.command :reload do |event|
 		#REALLY GOOD RELOADING CODES GOES HERE M9
 	end
 end
+
+bot.command :mcstat do |event, *args|
+	begin
+		serv = JSON.parse(RestClient.get("https://mcapi.ca/query/"+args[0]+"/info"))
+	rescue => e
+		event << ("Something went wrong!")
+		event << e
+	end
+	if serv['status']
+		event.channel.send_embed do |embed|
+			embed.title = "Minecraft Server Statistics"
+			embed.description = "Minecraft Statistics for %d." % args[0]
+			embed.add_field(name: "MOTD:", value: serv['motd'], inline: true)
+			embed.add_field(name: "Version:", value: serv['version'], inline: true)
+			embed.add_field(name: "Players:", value: serv['players']['online']+"/"+serv['players']['max'], inline: true)
+			embed.add_field(name: "Ping:", value: debug, inline: true)
+			embed.color = 1108583 #green
+		end
+	else
+				event.channel.send_embed do |embed|
+			embed.title = ":octagonal_sign:"
+			embed.description = "Invalid server."
+			embed.color = 16722454 #red
+		end
+	end
+end
+
+isplaying = 0
+bot.command(:devplay) do |event, songlink|
+  if isplaying == 1
+    event.message.delete
+    event.channel.send_embed do |embed|
+			embed.title = ":arrow_forward:"
+			embed.description = "Already playing!"
+			embed.color = 16722454 #red
+		end
+    break
+  end
+  channel = event.user.voice_channel
+  unless channel.nil?
+    voice_bot = bot.voice_connect(channel)
+    system("youtube-dl --no-playlist --max-filesize 100m -o 'music/s.%(ext)s' -x --audio-format mp3 #{songlink}")
+    event.channel.send_embed do |embed|
+			embed.title = ":arrow_forward:"
+			embed.description = "Alright, I'll play it!"
+			embed.color = 1108583 #red
+		end
+    isplaying = 1
+    voice_bot.play_file('./music/s.mp3')
+    voice_bot.destroy
+    isplaying = 0
+    break
+  end
+    event.channel.send_embed do |embed|
+			embed.title = ":grey_question:"
+			embed.description = "You're not in a voice channel! It's not that hard."
+			embed.color = 16722454 #red
+		end
+		    event.channel.send_embed do |embed|
+			embed.title = ":grey_question:"
+			embed.description = "Are you stupid? You can't stop something that's already stopped. (No song is playing)."
+			embed.color = 16722454 #red
+		end
+	end
+
+bot.command(:devstop) do |event|
+  isplaying = 0
+  event.voice.stop_playing
+  bot.voices[event.server.id].destroy
+  nil
+end
+
+bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
+  _, *rating = event.message.content.split
+  event.respond "Sure, here is the 3D version of the skin: #{rating.join(' ')}. https://visage.surgeplay.com/full/512/#{rating.join(' ')}.png"
+end
+
+      bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
+        event.respond "I give #{text.join(' ')} a "\
+                      "#{rand(0.0..10.0).round(1)}/10.0!"
+end
+
 
 trap("INT") do
 	exit
