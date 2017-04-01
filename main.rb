@@ -49,7 +49,7 @@ bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, pr
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = 'Release 1.3'
+ver = 'Release 1.3.2'
 
 limit = 15
 devmode = false
@@ -172,8 +172,7 @@ _randomize: Usage: '_randomize 1 10'. Number randomizer.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
 _roman: Usage: '_roman 50'. Change numerals to romans.
-_define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
-_rate: Usage: '_define the laptop'. Rate something.")
+_rate: Usage: '_rate the laptop'. Rate something.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
@@ -239,7 +238,7 @@ end
 
 # Count
 
-bot.command(:count, min_args: 1, max_args: 1, usage: 'count [to]') do |event, to|
+bot.command(:count, min_args: 1, max_args: 1, usage: '_count [to]') do |event, to|
 	i = 0
 	begin
 		i = Integer(to)
@@ -398,7 +397,7 @@ bot.command :bi do |event|
 		embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
 		embed.add_field(name: bot.users.count.to_s, value: 'Unique users.', inline: true)
 		embed.add_field(name: 'Connected to', value: "#{bot.servers.count} servers.", inline: true)
-		embed.add_field(name: 'Messages sent since last restart:', value: " #{msg}", inline: true)
+		#embed.add_field(name: 'Messages sent since last restart:', value: " #{msg}", inline: true)
 		embed.color = 1_108_583
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 	end
@@ -407,7 +406,6 @@ end
 bot.command([:ui, :uinfo, :userinfo]) do |event|
 	playing = event.user.game
 	playing = 'None' if playing.nil?
-	puts(playing)
 	event.channel.send_embed do |embed|
 		embed.title = 'User Information'
 		embed.description = "Name and Tag: #{event.user.name}##{event.user.discrim}"
@@ -648,8 +646,11 @@ bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 end
 
 bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
-	event.respond "I give #{text.join(' ')} a "\
-		"#{rand(0.0..10.0).round(1)}/10.0!"
+	event.respond "I give #{text.join(' ')} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+end
+
+bot.mention do |event|
+	event.respond('( •_•)')
 end
 
 trap('INT') do
