@@ -49,7 +49,7 @@ bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, pr
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-ver = 'Release 1.3.2'
+ver = 'Release 1.3.3'
 
 limit = 15
 devmode = false
@@ -95,13 +95,13 @@ bot.ready do
 end
 
 bot.command(:annoy, min_args: 1, max_args: 1, usage: 'annoy true/false') do |event, answ|
-	if event.user.id != 172_030_506_970_382_337
+	if event.user.id != 172030506970382337
 		event.channel.send_embed do |embed|
 			embed.title = ':no_entry:'
 			embed.description = "You're not allowed to change this."
 			embed.color = 16_722_454 # red
 		end
-	else if answ == 'true'
+	elsif answ == 'true'
 		annoy = true
 		event.channel.send_embed do |embed|
 			embed.title = 'MnpnBot Settings - Annoy'
@@ -109,7 +109,7 @@ bot.command(:annoy, min_args: 1, max_args: 1, usage: 'annoy true/false') do |eve
 			embed.add_field(name: 'Annoy', value: annoy, inline: true)
 			embed.color = 1_108_583 # green
 		end
-	else if answ == 'false'
+	elsif answ == 'false'
 		annoy = false
 		event.channel.send_embed do |embed|
 			embed.title = 'MnpnBot Settings - Annoy'
@@ -565,7 +565,7 @@ bot.command :reload do |event|
 			embed.add_field(name: 'Debug mode', value: debug, inline: true)
 			embed.color = 1_108_583 # green
 		end
-		# REALLY GOOD RELOADING CODES GOES HERE M9
+		# i should probably fix this
 	end
 end
 
