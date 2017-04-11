@@ -128,21 +128,27 @@ bot.command(:annoy, min_args: 1, max_args: 1, usage: 'annoy true/false') do |eve
 end
 
 bot.message(with_text: ':>') do |event|
+	next unless annoy
 	event.respond ':>'
 end
 bot.message(with_text: ':<') do |event|
+	next unless annoy
 	event.respond ':<'
 end
 bot.message(start_with: '9/11') do |event|
+	next unless annoy
 	event.respond "It's a tragedy."
 end
 bot.message(with_text: /kek.?/i) do |event|
+	next unless annoy
 	event.respond "iKek: Kek'd."
 end
 bot.message(with_text: /planes.?/i) do |event|
+	next unless annoy
 	event.respond "It's a tragedy."
 end
 bot.message(with_text: /cyka blyat.?/i) do |event|
+	next unless annoy
 	event.respond 'Kurwa.'
 end
 
