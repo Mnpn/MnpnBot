@@ -45,7 +45,7 @@ end
 
 # I'm too lazy to $bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.4'
+$ver = 'Release 1.4.1'
 
 $limit = 15
 $devmode = false

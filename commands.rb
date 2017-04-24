@@ -238,6 +238,10 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, 
 			event.respond "You know you won't crash me by doing that.."
 			return
 		end
+		if i = 0
+			event.respond "I can't do that!"
+			return
+		end
 	rescue ArgumentError
 		event.respond "That's not a number."
 		next
