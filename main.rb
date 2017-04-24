@@ -43,13 +43,6 @@ File.open('token.txt') do |f|
 	end
 end
 
-$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: '_'
-
-require_relative 'conversation.rb'
-require_relative 'commands.rb'
-require_relative 'info.rb'
-require_relative 'development.rb'
-
 # I'm too lazy to $bother with anything really, here is the config. Heh.
 
 $ver = 'Release 1.4'
@@ -62,7 +55,14 @@ $started = 0
 $typeloops = 20
 # End of config.
 
+$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: '_'
+
+require_relative 'conversation.rb'
+require_relative 'commands.rb'
+require_relative 'info.rb'
+
 if $devmode == true
+	require_relative 'development.rb'
 	$version = ver + ' Dev'
 	puts 'Development Mode is Enabled.'
 else

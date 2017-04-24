@@ -57,13 +57,15 @@ _randomize: Usage: '_randomize 1 10'. Number randomizer.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
 _roman: Usage: '_roman 50'. Change numerals to romans.
-_rate: Usage: '_rate the laptop'. Rate something.")
+_rate: Usage: '_rate the laptop'. Rate something.
+_website: Links my website.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
 _si: Shows server information.
 _bi: Shows bot information.
-_ui: Shows your information.")
+_ui: Shows your information.
+_psi: Personal Server Information [I]")
 
 		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.')
 
