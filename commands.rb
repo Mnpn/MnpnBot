@@ -201,7 +201,7 @@ $bot.server_create do |event|
 end
 
 
-$bot.command(:define, min_args: 1, usage: 'define <word>') do |event, *args|
+$bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
 			defin = nil
@@ -238,7 +238,7 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, 
 			event.respond "You know you won't crash me by doing that.."
 			return
 		end
-		if i = 0
+		if i == 0
 			event.respond "I can't do that!"
 			return
 		end
@@ -336,23 +336,23 @@ $bot.command :mcstat do |event, *args|
 		event << 'Something went wrong!'
 		event << e
 	end
-	if serv['status']
+	serv['status']
 		event.channel.send_embed do |embed|
 			embed.title = 'Minecraft Server Statistics'
-			embed.description = 'Minecraft Statistics for %d.' % args[0]
-			embed.add_field(name: 'MOTD:', value: serv['motd'], inline: true)
-			embed.add_field(name: 'Version:', value: serv['version'], inline: true)
-			embed.add_field(name: 'Players:', value: serv['players']['online'] + '/' + serv['players']['max'], inline: true)
-			embed.add_field(name: 'Ping:', value: debug, inline: true)
+			embed.description = 'Minecraft Statistics for %s: ' % args[0]
+			embed.add_field(name: 'MOTD: ', value: serv['motd'], inline: true)
+			embed.add_field(name: 'Version: ', value: serv['version'], inline: true)
+			embed.add_field(name: 'Players: ', value: serv['online.to_i'] + '/' + serv['max.to_i'], inline: true)
+			embed.add_field(name: 'Ping: ', value: $debug, inline: true)
 			embed.color = 1_108_583 # green
 		end
-	else
-		event.channel.send_embed do |embed|
-			embed.title = ':octagonal_sign:'
-			embed.description = 'Invalid server.'
-			embed.color = 16_722_454 # red
-		end
-	end
+	#else
+	#	event.channel.send_embed do |embed|
+	#		embed.title = ':octagonal_sign:'
+	#		embed.description = 'Invalid server.'
+	#		embed.color = 16_722_454 # red
+	#	end
+	#end
 end
 
 $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|

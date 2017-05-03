@@ -30,8 +30,8 @@ if log_debug
 end
 
 # Done
+# No longer using Windows for hosting; Libsodium like this is useless!
 
-::RBNACL_LIBSODIUM_GEM_LIB_PATH = 'Assets/libsodium.dll'.freeze
 require 'discordrb'
 require 'urban_dict'
 
@@ -45,7 +45,7 @@ end
 
 # I'm too lazy to $bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.4.1'
+$ver = 'Release 1.5'
 
 $limit = 15
 $devmode = false
@@ -63,7 +63,7 @@ require_relative 'info.rb'
 
 if $devmode == true
 	require_relative 'development.rb'
-	$version = ver + ' Dev'
+	$version = $ver + ' Dev'
 	puts 'Development Mode is Enabled.'
 else
 	$version = $ver
