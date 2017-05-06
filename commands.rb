@@ -376,3 +376,8 @@ end
 
 end
 end
+
+$bot.command(:8ball) do |event|
+	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
+	event.respond(arr.sample)
+end
