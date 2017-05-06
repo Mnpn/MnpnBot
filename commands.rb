@@ -364,7 +364,7 @@ $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuf
 	event.respond "I give #{text.join(' ')} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
 end
 
-$bot.command(:website) do |event, *text|
+$bot.command(:website) do |event|
 	event.channel.send_embed do |embed|
 			embed.title = 'Website'
 			embed.description = "So you're interested in a website?
@@ -377,7 +377,7 @@ end
 end
 end
 
-$bot.command(:8ball) do |event|
+$bot.command(:"8ball") do |event|
 	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
 	event.respond(arr.sample)
 end
