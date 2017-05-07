@@ -43,9 +43,10 @@ File.open('token.txt') do |f|
 	end
 end
 
-# I'm too lazy to $bother with anything really, here is the config. Heh.
+# I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.5.1'
+$ver = 'Release 1.5.2'
+$codename = "Swift"
 
 $limit = 15
 $devmode = false

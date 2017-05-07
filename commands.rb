@@ -381,3 +381,26 @@ $bot.command(:"8ball") do |event|
 	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
 	event.respond(arr.sample)
 end
+
+$bot.command(:seen, usage: "_seen <@user>", min_arguments: 1, max_arguments: 1) do |event, user|
+x = user[2..-2].to_i
+mess = event.user.message
+puts(mess)
+	if mess.any?{|a| a.id == x}
+		pos=mess.find_index {|item| item.id == x}
+		event << "On: #{mess[pos].time.asctime}"
+		event << "They said: '#{mess[pos].mess}'"
+	else
+		event.respond "I haven't seen anything from that user yet."
+end
+
+$bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
+mess = event.user.message
+puts(mess)
+event.channel.send_embed do |embed|
+		find = mess.find_index {|item| item.id}
+		event << "On: #{mid.id.time.asctime}"
+		event << "They said: '#{mess[pos].mess}'"
+	else
+		event.respond "Invalid message ID or unable to read message."
+end

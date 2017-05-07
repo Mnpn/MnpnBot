@@ -48,6 +48,7 @@ $bot.command :bi do |event|
 		embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
 		embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
 		embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
+		embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename #{$codename}.", inline: true)
 		#embed.add_field(name: 'Messages sent since last restart:', value: " #{msg}", inline: true)
 		embed.color = 1_108_583
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
