@@ -397,10 +397,14 @@ end
 $bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
 mess = event.user.message
 puts(mess)
-event.channel.send_embed do |embed|
+begin
+	event.channel.send_embed do |embed|
 		find = mess.find_index {|item| item.id}
 		event << "On: #{mid.id.time.asctime}"
 		event << "They said: '#{mess[pos].mess}'"
-	else
+	end
+	rescue
 		event.respond "Invalid message ID or unable to read message."
+	end
+	end
 end
