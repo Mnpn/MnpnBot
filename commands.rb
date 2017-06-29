@@ -309,26 +309,6 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, 
 	end
 end
 
-$bot.command :reload do |event|
-	if event.user.id != 172_030_506_970_382_337
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = "You're not allowed to run this command."
-			embed.color = 16_722_454 # red
-		end
-	else
-		event.channel.send_embed do |embed|
-			embed.title = 'Reload'
-			embed.description = 'Reloading MnpnBot!'
-			embed.add_field(name: 'Version', value: version, inline: true)
-			embed.add_field(name: 'Development mode', value: devmode, inline: true)
-			embed.add_field(name: 'Debug mode', value: debug, inline: true)
-			embed.color = 1_108_583 # green
-		end
-		# i should probably fix this
-	end
-end
-
 $bot.command :mcstat do |event, *args|
 	begin
 		serv = JSON.parse(RestClient.get('https://mcapi.ca/query/' + args[0] + '/info'))
@@ -384,17 +364,27 @@ end
 
 $bot.command(:seen, usage: "_seen <@user>", min_arguments: 1, max_arguments: 1) do |event, user|
 x = user[2..-2].to_i
-mess = event.user.message
-puts(mess)
+#mess = event.user.message
+#puts(mess)
 	if mess.any?{|a| a.id == x}
 		pos=mess.find_index {|item| item.id == x}
 		event << "On: #{mess[pos].time.asctime}"
-		event << "They said: '#{mess[pos].mess}'"
+		#event << "They said: '#{mess[pos].mess}'"
 	else
 		event.respond "I haven't seen anything from that user yet."
 end
 
 $bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
+begin
+	id = Integer(num)
+		if id < 0
+			event.respond "You know you won't crash me by doing that.."
+			return
+		end
+	rescue ArgumentError
+		event.respond "That's not a message ID."
+		next
+	end
 mess = event.user.message
 puts(mess)
 begin
@@ -407,4 +397,8 @@ begin
 		event.respond "Invalid message ID or unable to read message."
 	end
 	end
+end
+
+$bot.command(:version) do |event|
+	event.respond("%s, Codename '%s'." % [$version, $codename])
 end

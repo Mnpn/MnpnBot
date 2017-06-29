@@ -45,8 +45,8 @@ end
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.5.2'
-$codename = "Swift"
+$ver = 'Release 1.6'
+$codename = "Salt"
 
 $limit = 15
 $devmode = false
@@ -95,8 +95,57 @@ end
 
 $bot.ready do
 	$started = Time.now
-	puts('Started, any errors? Version ' + $version)
-	$bot.send_message(289_641_868_856_262_656, 'MnpnBot started without any major issues. You should check the console, anyways. Running on version ' + $version)
+	puts('Running on version ' + $version + ', Codename ' + $codename + '.')
+	#$bot.send_message(289_641_868_856_262_656, 'Started! Running on version ' + $version + ', Codename ' + $codename + '.')
+end
+
+$bot.command :reload do |event|
+	if event.user.id != 172_030_506_970_382_337
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command. :no_entry:'
+			embed.description = "You're not allowed to run this command.\nIf something is badly wrong; please contact Mnpn#5043."
+			embed.color = 16_722_454 # red
+		end
+	else
+		event.channel.send_embed do |embed|
+			embed.title = 'Reload'
+			embed.description = 'Reloading MnpnBot!'
+			embed.add_field(name: 'Version and Codename', value: $version + ", '%s'" % $codename, inline: true)
+			embed.add_field(name: 'Development mode', value: $devmode, inline: true)
+			embed.add_field(name: 'Debug mode', value: $debug, inline: true)
+			embed.color = 1_108_583 # green
+		end
+	print 'wrapperutil{"Restart":true}'
+	exit
+	end
+end
+
+$bot.command(:debug, min_args: 1) do |event, *args|
+if event.user.id == 172030506970382337
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command. :no_entry:'
+			embed.description = "You're not permitted to run this command."
+			embed.color = 16_722_454 # red
+		end
+	time = Time.new
+	h = time.hour.to_s
+	min = time.min.to_s
+	yee = time.year
+	m = time.month
+	d = time.day
+	nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
+begin
+	result = eval(args.join(" "))
+	event.respond "```md
+# %s: '%s' ```" % [nicelookingtime, result]
+rescue
+	event.respond "```md
+> Exception: #<NameError: undefined local variable or method '" + args.join(" ") + "' for main:Object>```
+It's not a variable or a method."
+end
+else
+	event.respond "Sorry, you're not permitted to use this command."
+end
 end
 
 $bot.mention do |event|
