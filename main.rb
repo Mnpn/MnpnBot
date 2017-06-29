@@ -2,34 +2,6 @@
 # This is the main file of MnpnBot, programmed in Ruby.
 # Shout out to LEGOlord208#1033 and tbodt#7244 for helping me.
 
-# Error catching and logging functions
-log_debug = true
-log_errors = true
-
-# Copy paste from stack overflow.
-# http://stackoverflow.com/questions/9433924/how-can-i-copy-stdout-to-a-file-without-stopping-it-showing-onscreen-using-ruby
-# too lazy.
-class TeeIO < IO
-	def initialize(orig, file)
-		@orig = orig
-		@file = file
-	end
-
-	def write(string)
-		@file.write string
-		@orig.write string
-	end
-end
-
-if log_debug
-	tee = TeeIO.new $stdout, File.new('log.txt', 'w')
-	$stdout = tee
-
-	tee = TeeIO.new $stderr, File.new('log.txt', 'w')
-	$stderr = tee
-end
-
-# Done
 # No longer using Windows for hosting; Libsodium like this is useless!
 
 require 'discordrb'
@@ -45,18 +17,20 @@ end
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.6'
+$ver = 'Release 1.6.3'
 $codename = "Salt"
 
 $limit = 15
 $devmode = false
-$debug = true
+$debug = false
 $annoy = false
 $started = 0
 $typeloops = 20
+
+prefix = "_"
 # End of config.
 
-$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: '_'
+$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: prefix
 
 require_relative 'conversation.rb'
 require_relative 'commands.rb'
@@ -120,13 +94,10 @@ $bot.command :reload do |event|
 	end
 end
 
+shyrix = "edgelord"
+
 $bot.command(:debug, min_args: 1) do |event, *args|
-if event.user.id == 172030506970382337
-		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command. :no_entry:'
-			embed.description = "You're not permitted to run this command."
-			embed.color = 16_722_454 # red
-		end
+if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
 	time = Time.new
 	h = time.hour.to_s
 	min = time.min.to_s
@@ -135,16 +106,21 @@ if event.user.id == 172030506970382337
 	d = time.day
 	nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
 begin
+puts(args)
+puts(args.join(" "))
 	result = eval(args.join(" "))
 	event.respond "```md
 # %s: '%s' ```" % [nicelookingtime, result]
-rescue
+rescue Exception => e
 	event.respond "```md
-> Exception: #<NameError: undefined local variable or method '" + args.join(" ") + "' for main:Object>```
-It's not a variable or a method."
+> Error while executing: " + "#{e.backtrace.first}: #{e.message} (#{e.class})" + e.backtrace.drop(1).map{|s| "\t#{s}"}.join("\n") + "```"
 end
 else
-	event.respond "Sorry, you're not permitted to use this command."
+	event.channel.send_embed do |embed|
+		embed.title = 'Restricted command. :no_entry:'
+		embed.description = "You're not permitted to run this command."
+		embed.color = 16_722_454 # red
+	end
 end
 end
 
