@@ -70,7 +70,7 @@ playing = 'Nothing' if playing.nil?
 	end
 	if event.channel.private?
 	else
-		nick = event.user.nick
+		nick = event.user.nickx
 		nick = 'None' if nick.nil?
 		embed.add_field(name: 'Nickname:', value: nick)
 	end

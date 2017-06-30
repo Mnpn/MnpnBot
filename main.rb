@@ -17,7 +17,7 @@ end
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.6.3'
+$ver = 'Release 1.6.4'
 $codename = "Salt"
 
 $limit = 15
@@ -94,7 +94,7 @@ $bot.command :reload do |event|
 	end
 end
 
-shyrix = "edgelord"
+shyrix = "edgelord" # testing set values
 
 $bot.command(:debug, min_args: 1) do |event, *args|
 if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
@@ -106,8 +106,6 @@ if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
 	d = time.day
 	nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
 begin
-puts(args)
-puts(args.join(" "))
 	result = eval(args.join(" "))
 	event.respond "```md
 # %s: '%s' ```" % [nicelookingtime, result]
