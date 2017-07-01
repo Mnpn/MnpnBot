@@ -2,28 +2,28 @@ module DiscordBot
 	class Conversation
 
 $bot.message(with_text: ':>') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
 	event.respond ':>'
 end
 $bot.message(with_text: ':<') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
 	event.respond ':<'
 end
 $bot.message(start_with: '9/11') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
 	event.respond "It's a tragedy."
 end
 $bot.message(with_text: /kek.?/i) do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -72,14 +72,14 @@ $bot.message(start_with: 'tea') do |event|
 end
 
 $bot.message(start_with: 'coffee') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
 	event.respond ':coffee:'
 end
 $bot.message(start_with: 'java') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -87,7 +87,7 @@ s_mode = $settings[event.server.id.to_s]["s_mode"]
 end
 
 $bot.message(start_with: 'furry') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -95,7 +95,7 @@ s_mode = $settings[event.server.id.to_s]["s_mode"]
 end
 
 $bot.message(with_text: /tanks.?/i) do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -103,7 +103,7 @@ s_mode = $settings[event.server.id.to_s]["s_mode"]
 end
 
 $bot.message(with_text: /noot.?/i) do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -111,7 +111,7 @@ s_mode = $settings[event.server.id.to_s]["s_mode"]
 end
 
 $bot.message(with_text: /mimimask.?/i) do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
@@ -119,7 +119,7 @@ s_mode = $settings[event.server.id.to_s]["s_mode"]
 end
 
 $bot.message(contains: 'covfefe') do |event|
-s_mode = $settings[event.server.id.to_s]["s_mode"]
+$settings[event.server.id.to_s]["s_mode"]
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end
