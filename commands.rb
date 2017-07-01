@@ -415,3 +415,32 @@ else
 	end
 end
 end
+
+$bot.command(:smode) do |event|
+	if event.author.id == event.server.id || event.author.id == 172030506970382337
+		$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
+			begin
+				File.write "settings.json", $settings.to_json
+			rescue IOError => e
+				puts "_smode failed to write to file."
+				puts e
+				event.respond "Failed to write to file."
+				next # Skip sending a message that it toggled if it didn't.
+			end
+			event.channel.send_embed do |embed|
+				embed.title = 'MnpnBot S'
+				embed.description = "Toggled S-Mode!"
+				embed.color = 1_108_583 # green
+			end
+	else
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command :no_entry:'
+			embed.description = "Only the server owner can toggle S-Mode."
+			embed.color = 16_722_454 # red
+		end
+	end
+end
+
+$bot.command(:sinfo) do |event|
+	event.respond "MnpnBot's S-Mode is a version of MnpnBot that is more targeted to \"serious\" servers. Enabling S-Mode will remove auto-responses (e.g. kek, :>)."
+end

@@ -1,5 +1,11 @@
 module DiscordBot
 	class Conversation
+
+s_mode = $settings[event.server.id.to_s]["s_mode"]
+
+if $settings[event.server.id.to_s]["s_mode"]
+	next
+else
 $bot.message(with_text: ':>') do |event|
 	event.respond ':>'
 end
@@ -57,6 +63,8 @@ end
 
 $bot.message(with_text: /mimimask.?/i) do |event|
 	event.respond 'määä'
+end
+
 end
 
 $bot.message(with_text: /lenny.?/i) do |event|

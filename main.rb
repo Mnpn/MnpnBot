@@ -7,12 +7,8 @@ require 'urban_dict'
 require 'json'
 
 CLIENT_ID = 289_471_282_720_800_768
-token = ''
-File.open('token.txt') do |f|
-	f.each_line do |line|
-		token += line.strip
-	end
-end
+
+token = File.read "token.txt"
 
 # MnpnBot S-mode
 
@@ -28,9 +24,7 @@ $settings.default = {}
 
 s_mode = $settings[event.server.id.to_s]["s_mode"]
 
-$settings[event.server.id.to_s]["s_mode"] = true;
-
-File.write "settings.json", JSON.parse($settings)
+$settings[event.server.id.to_s]["s_mode"] = true
 
 # End
 
