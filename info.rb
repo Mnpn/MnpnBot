@@ -70,7 +70,7 @@ playing = 'Nothing' if playing.nil?
 	end
 	if event.channel.private?
 	else
-		nick = event.user.nickx
+		nick = event.user.nick
 		nick = 'None' if nick.nil?
 		embed.add_field(name: 'Nickname:', value: nick)
 	end
@@ -104,6 +104,8 @@ owner = event.user.owner?
 		embed.color = 16_722_454
 	elsif event.user.status.to_s == "idle"
 		embed.color = 16761666
+	elsif event.user.status.to_s == "streaming"
+		embed.color = 11141306
 	else
 		next
 	end

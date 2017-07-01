@@ -405,7 +405,8 @@ end
 
 $bot.command(:play, min_args: 1) do |event, *args|
 if event.author.id == 172030506970382337
-	bot.game = args.join(" ")
+	$bot.game = args.join(" ")
+	next
 else
 	event.channel.send_embed do |embed|
 		embed.title = 'Restricted command. :no_entry:'

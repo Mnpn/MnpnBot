@@ -59,10 +59,6 @@ $bot.message(with_text: /mimimask.?/i) do |event|
 	event.respond 'määä'
 end
 
-$bot.message(start_with: /AntiSpam.?/i) do |event|
-	event.respond 'You should get AntiSpam if you want a quick Anti Spam solution! https://discordapp.com/oauth2/authorize?client_id=293462702364295168&scope=bot&permissions=8'
-end
-
 $bot.message(with_text: /lenny.?/i) do |event|
 	event << '( ͡° ͜ʖ ͡°)'
 	event << "That's a quick lenny for you!"
