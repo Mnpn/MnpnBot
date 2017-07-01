@@ -12,19 +12,14 @@ token = File.read "token.txt"
 
 # MnpnBot S-mode
 
-begin
+if File.exists?("settings.json")
     settings = File.read "settings.json"
     $settings = JSON.parse settings
-rescue IOError =>  e
-    puts e
+else
     $settings = {}
 end
 
 $settings.default = {}
-
-s_mode = $settings[event.server.id.to_s]["s_mode"]
-
-$settings[event.server.id.to_s]["s_mode"] = true
 
 # End
 
