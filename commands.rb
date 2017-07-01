@@ -444,3 +444,7 @@ end
 $bot.command(:sinfo) do |event|
 	event.respond "MnpnBot's S-Mode is a version of MnpnBot that is more targeted to \"serious\" servers. Enabling S-Mode will remove auto-responses (e.g. kek, :>)."
 end
+
+$bot.command(:cookies) do |event|
+	event.respond ":cookie:"
+end
