@@ -2,10 +2,9 @@
 # This is the main file of MnpnBot, programmed in Ruby.
 # Shout out to LEGOlord208#1033 and tbodt#7244 for helping me.
 
-# No longer using Windows for hosting; Libsodium like this is useless!
-
 require 'discordrb'
 require 'urban_dict'
+require 'json'
 
 CLIENT_ID = 289_471_282_720_800_768
 token = ''
@@ -15,10 +14,30 @@ File.open('token.txt') do |f|
 	end
 end
 
+# MnpnBot S-mode
+
+begin
+    settings = File.read "settings.json"
+    $settings = JSON.parse settings
+rescue IOError =>  e
+    puts e
+    $settings = {}
+end
+
+$settings.default = {}
+
+s_mode = $settings[event.server.id.to_s]["s_mode"]
+
+$settings[event.server.id.to_s]["s_mode"] = true;
+
+File.write "settings.json", JSON.parse($settings)
+
+# End
+
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.6.4'
-$codename = "Salt"
+$ver = 'Release 1.7'
+$codename = "Sea Salt"
 
 $limit = 15
 $devmode = false
