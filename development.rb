@@ -1,5 +1,3 @@
-module DiscordBot
-	class Development
 isplaying = 0
 $bot.command(:devplay) do |event, songlink|
 	if isplaying == 1
@@ -48,9 +46,9 @@ end
 
 
 $bot.command(:icanhasadmin?, min_args: 0, max_args: 0) do |event|
-event.respond "i see u did a command there kek"
+	event.respond "i see u did a command there kek"
 	if event.user.permission?(8, event.user.id)
-	event.respond "I HAS PERMS"
+		event.respond "I HAS PERMS"
 		event.channel.send_embed do |embed|
 			embed.title = ':thinking:'
 			embed.description = "Yes, you are indeed in a role that has the Administrator permission."
@@ -58,13 +56,11 @@ event.respond "i see u did a command there kek"
 		end
 	else
 		event.channel.send_embed do |embed|
-		event.respond "YES BOI!"
+			event.respond "YES BOI!"
 			embed.title = ':thinking:'
 			embed.description = "No! You are not in a role with Administrative priviledges. :("
 			embed.color = 16_722_454 # green
 		end
 	end
 	event.respond "im done with my crap for this command"
-end
-end
 end

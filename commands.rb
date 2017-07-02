@@ -1,5 +1,3 @@
-module DiscordBot
-	class Commands
 $bot.command(:annoy, min_args: 1, max_args: 1, usage: 'Annoy true/false') do |event, answ|
 	if event.user.id != 172030506970382337
 		event.channel.send_embed do |embed|
@@ -7,22 +5,12 @@ $bot.command(:annoy, min_args: 1, max_args: 1, usage: 'Annoy true/false') do |ev
 			embed.description = "You're not allowed to change this."
 			embed.color = 16_722_454 # red
 		end
-	elsif answ == 'true'
+		next
+	end
+	if answ == 'true'
 		$annoy = true
-		event.channel.send_embed do |embed|
-			embed.title = 'MnpnBot Settings - Annoy'
-			embed.description = 'I changed it.'
-			embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-			embed.color = 1_108_583 # green
-		end
 	elsif answ == 'false'
 		$annoy = false
-		event.channel.send_embed do |embed|
-			embed.title = 'MnpnBot Settings - Annoy'
-			embed.description = 'I changed it.'
-			embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-			embed.color = 1_108_583 # green
-		end
 	else
 		event.channel.send_embed do |embed|
 			embed.title = 'What the fuck?'
@@ -30,17 +18,19 @@ $bot.command(:annoy, min_args: 1, max_args: 1, usage: 'Annoy true/false') do |ev
 			embed.add_field(name: 'Annoy', value: $annoy, inline: true)
 			embed.color = 16_722_454 # green
 		end
+		next
+	end
+	event.channel.send_embed do |embed|
+		embed.title = 'MnpnBot Settings - Annoy'
+		embed.description = 'I changed it.'
+		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
+		embed.color = 1_108_583 # green
 	end
 end
 
-
-mnpn2 = "smart"
-mnpn = true
 $bot.command(:smart) do |event|
-if mnpn == true then
-   event.respond "im smart maybe"
-   event.respond "looking though the variable; mnpn is " + mnpn2
-end
+	event.respond "im smart maybe"
+	event.respond "looking though the variable; mnpn is smart"
 end
 
 
@@ -317,15 +307,15 @@ $bot.command :mcstat do |event, *args|
 		event << e
 	end
 	serv['status']
-		event.channel.send_embed do |embed|
-			embed.title = 'Minecraft Server Statistics'
-			embed.description = 'Minecraft Statistics for %s: ' % args[0]
-			embed.add_field(name: 'MOTD: ', value: serv['motd'], inline: true)
-			embed.add_field(name: 'Version: ', value: serv['version'], inline: true)
-			embed.add_field(name: 'Players: ', value: serv['online.to_i'] + '/' + serv['max.to_i'], inline: true)
-			embed.add_field(name: 'Ping: ', value: $debug, inline: true)
-			embed.color = 1_108_583 # green
-		end
+	event.channel.send_embed do |embed|
+		embed.title = 'Minecraft Server Statistics'
+		embed.description = 'Minecraft Statistics for %s: ' % args[0]
+		embed.add_field(name: 'MOTD: ', value: serv['motd'], inline: true)
+		embed.add_field(name: 'Version: ', value: serv['version'], inline: true)
+		embed.add_field(name: 'Players: ', value: serv['online.to_i'] + '/' + serv['max.to_i'], inline: true)
+		embed.add_field(name: 'Ping: ', value: $debug, inline: true)
+		embed.color = 1_108_583 # green
+	end
 	#else
 	#	event.channel.send_embed do |embed|
 	#		embed.title = ':octagonal_sign:'
@@ -346,15 +336,12 @@ end
 
 $bot.command(:website) do |event|
 	event.channel.send_embed do |embed|
-			embed.title = 'Website'
-			embed.description = "So you're interested in a website?
+		embed.title = 'Website'
+		embed.description = "So you're interested in a website?
 All my bots are on my website:"
-			embed.add_field(name: 'https://mnpn.me/', value: "Go there!", inline: true)
-			embed.color = 1_108_583 # green
-		end
-end
-
-end
+		embed.add_field(name: 'https://mnpn.me/', value: "Go there!", inline: true)
+		embed.color = 1_108_583 # green
+	end
 end
 
 $bot.command(:"8ball") do |event|
@@ -363,39 +350,39 @@ $bot.command(:"8ball") do |event|
 end
 
 $bot.command(:seen, usage: "_seen <@user>", min_arguments: 1, max_arguments: 1) do |event, user|
-x = user[2..-2].to_i
-#mess = event.user.message
-#puts(mess)
+	x = user[2..-2].to_i
+	#mess = event.user.message
+	#puts(mess)
 	if mess.any?{|a| a.id == x}
 		pos=mess.find_index {|item| item.id == x}
 		event << "On: #{mess[pos].time.asctime}"
 		#event << "They said: '#{mess[pos].mess}'"
 	else
 		event.respond "I haven't seen anything from that user yet."
-end
+	end
 
-$bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
-begin
-	id = Integer(num)
-		if id < 0
-			event.respond "You know you won't crash me by doing that.."
-			return
+	$bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
+		begin
+			id = Integer(num)
+			if id < 0
+				event.respond "You know you won't crash me by doing that.."
+				return
+			end
+		rescue ArgumentError
+			event.respond "That's not a message ID."
+			next
 		end
-	rescue ArgumentError
-		event.respond "That's not a message ID."
-		next
-	end
-mess = event.user.message
-puts(mess)
-begin
-	event.channel.send_embed do |embed|
-		find = mess.find_index {|item| item.id}
-		event << "On: #{mid.id.time.asctime}"
-		event << "They said: '#{mess[pos].mess}'"
-	end
-	rescue
-		event.respond "Invalid message ID or unable to read message."
-	end
+		mess = event.user.message
+		puts(mess)
+		begin
+			event.channel.send_embed do |embed|
+				find = mess.find_index {|item| item.id}
+				event << "On: #{mid.id.time.asctime}"
+				event << "They said: '#{mess[pos].mess}'"
+			end
+		rescue
+			event.respond "Invalid message ID or unable to read message."
+		end
 	end
 end
 
@@ -404,42 +391,42 @@ $bot.command(:version) do |event|
 end
 
 $bot.command(:play, min_args: 1) do |event, *args|
-if event.author.id == 172030506970382337
-	$bot.game = args.join(" ")
-	next
-else
-	event.channel.send_embed do |embed|
-		embed.title = 'Restricted command. :no_entry:'
-		embed.description = "You're not permitted to run this command."
-		embed.color = 16_722_454 # red
+	if event.author.id == 172030506970382337
+		$bot.game = args.join(" ")
+		next
+	else
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command. :no_entry:'
+			embed.description = "You're not permitted to run this command."
+			embed.color = 16_722_454 # red
+		end
 	end
-end
 end
 
 $bot.command(:smode) do |event|
-    if event.author.id == event.server.owner.id || event.author.id == 172030506970382337
-        $settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
-        $settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
-        begin
-            File.write "settings.json", $settings.to_json
-        rescue IOError => e
-            puts "_smode failed to write to file."
-            puts e
-            event.respond "Failed to write to file."
-            next # Skip sending a message that it toggled if it didn't.
-        end
-        event.channel.send_embed do |embed|
-            embed.title = 'MnpnBot S'
-            embed.description = "Toggled S-Mode!"
-            embed.color = 1_108_583 # green
-        end
-    else
-        event.channel.send_embed do |embed|
-            embed.title = 'Restricted command :no_entry:'
-            embed.description = "Only the server owner can toggle S-Mode."
-            embed.color = 16_722_454 # red
-        end
-    end
+	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command :no_entry:'
+			embed.description = "Only the server owner can toggle S-Mode."
+			embed.color = 16_722_454 # red
+		end
+		next
+	end
+	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
+	$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
+	begin
+		File.write "settings.json", $settings.to_json
+	rescue IOError => e
+		puts "_smode failed to write to file."
+		puts e
+		event.respond "Failed to write to file."
+		next # Skip sending a message that it toggled if it didn't.
+	end
+	event.channel.send_embed do |embed|
+		embed.title = 'MnpnBot S'
+		embed.description = "Toggled S-Mode!"
+		embed.color = 1_108_583 # green
+	end
 end
 
 $bot.command(:sinfo) do |event|
