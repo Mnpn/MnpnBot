@@ -3,6 +3,7 @@ module DiscordBot
 
 $bot.message(with_text: ':>') do |event|
 $settings[event.server.id.to_s]["s_mode"]
+puts $settings
 	if $settings[event.server.id.to_s]["s_mode"]
         next
     end

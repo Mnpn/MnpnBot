@@ -417,7 +417,7 @@ end
 end
 
 $bot.command(:smode) do |event|
-	if event.author.id == event.server.id || event.author.id == 172030506970382337
+	if event.author.id == event.server.owner.id || event.author.id == 172030506970382337
 		$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
 			begin
 				File.write "settings.json", $settings.to_json
