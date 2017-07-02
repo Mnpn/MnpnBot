@@ -13,6 +13,7 @@ $bot.command :si do |event|
 				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
 				embed.add_field(name: 'Icon:', value: event.server.icon_url.to_s, inline: true)
 				embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
+				embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
 				embed.color = 1_108_583
 				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url.to_s)
 
@@ -48,7 +49,7 @@ $bot.command :bi do |event|
 		embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
 		embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
 		embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
-		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
+		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: false)
 		#embed.add_field(name: 'Messages sent since last restart:', value: " #{msg}", inline: true)
 		embed.color = 1_108_583
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
