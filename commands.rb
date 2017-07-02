@@ -425,6 +425,7 @@ $bot.command(:smode) do |event|
 	event.channel.send_embed do |embed|
 		embed.title = 'MnpnBot S'
 		embed.description = "Toggled S-Mode!"
+		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
 		embed.color = 1_108_583 # green
 	end
 end
