@@ -6,7 +6,7 @@ require 'discordrb'
 require 'urban_dict'
 require 'json'
 
-CLIENT_ID = 289_471_282_720_800_768
+CLIENT_ID = 289471282720800768
 
 token = File.read "token.txt"
 
@@ -26,7 +26,7 @@ $settings.default = {}
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
 $ver = 'Release 1.7'
-$codename = "Sea Salt"
+$codename = 'Sea Salt'
 
 $limit = 15
 $devmode = false
@@ -53,26 +53,19 @@ else
 end
 
 $bot.ready do
-	begin
-		#I disabled the loop because it thows error when the internet is bad.
-		#loop do
-		# $bot.game = "Ruby"
-		# sleep(15)
-		# $bot.game = version
-		# sleep(15)
-		# $bot.game = "_help-ful!"
-		# sleep(5)
-		$bot.stream($version, 'https://www.twitch.tv/mnpn04')
-		#sleep(20)
-		#$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
-		#sleep(5)
-		#end
+	#begin
+		loop do
+			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
+			sleep(20)
+			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
+			sleep(5)
+		end
 		#rescue => e
 		#	event.channel.send_embed do |embed|
 		#		embed.title = 'Error'
 		#		embed.description = "An error occured, and Albin caused it.\n#{e}"
 		#	end
-	end
+	#end
 end
 
 $bot.ready do
