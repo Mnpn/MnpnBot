@@ -13,10 +13,10 @@ token = File.read "token.txt"
 # MnpnBot S-mode
 
 if File.exists?("settings.json")
-    settings = File.read "settings.json"
-    $settings = JSON.parse settings
+	settings = File.read "settings.json"
+	$settings = JSON.parse settings
 else
-    $settings = {}
+	$settings = {}
 end
 
 $settings.default = {}
@@ -54,24 +54,24 @@ end
 
 $bot.ready do
 	begin
-	#I disabled the loop because it thows error when the internet is bad.
+		#I disabled the loop because it thows error when the internet is bad.
 		#loop do
-			# $bot.game = "Ruby"
-			# sleep(15)
-			# $bot.game = version
-			# sleep(15)
-			# $bot.game = "_help-ful!"
-			# sleep(5)
-			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
-			#sleep(20)
-			#$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
-			#sleep(5)
+		# $bot.game = "Ruby"
+		# sleep(15)
+		# $bot.game = version
+		# sleep(15)
+		# $bot.game = "_help-ful!"
+		# sleep(5)
+		$bot.stream($version, 'https://www.twitch.tv/mnpn04')
+		#sleep(20)
+		#$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
+		#sleep(5)
 		#end
-	#rescue => e
-	#	event.channel.send_embed do |embed|
-	#		embed.title = 'Error'
-	#		embed.description = "An error occured, and Albin caused it.\n#{e}"
-	#	end
+		#rescue => e
+		#	event.channel.send_embed do |embed|
+		#		embed.title = 'Error'
+		#		embed.description = "An error occured, and Albin caused it.\n#{e}"
+		#	end
 	end
 end
 
@@ -97,37 +97,35 @@ $bot.command :reload do |event|
 			embed.add_field(name: 'Debug mode', value: $debug, inline: true)
 			embed.color = 1_108_583 # green
 		end
-	print 'wrapperutil{"Restart":true}'
-	exit
+		print 'wrapperutil{"Restart":true}'
+		exit
 	end
 end
-
-shyrix = "edgelord" # testing set values
 
 $bot.command(:debug, min_args: 1) do |event, *args|
-if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
-	time = Time.new
-	h = time.hour.to_s
-	min = time.min.to_s
-	yee = time.year
-	m = time.month
-	d = time.day
-	nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
-begin
-	result = eval(args.join(" "))
-	event.respond "```md
+	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
+		time = Time.new
+		h = time.hour.to_s
+		min = time.min.to_s
+		yee = time.year
+		m = time.month
+		d = time.day
+		nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
+		begin
+			result = eval(args.join(" "))
+			event.respond "```md
 # %s: '%s' ```" % [nicelookingtime, result]
-rescue Exception => e
-	event.respond "```md
+		rescue Exception => e
+			event.respond "```md
 > Error while executing: " + "#{e.backtrace.first}: #{e.message} (#{e.class})" + e.backtrace.drop(1).map{|s| "\t#{s}"}.join("\n") + "```"
-end
-else
-	event.channel.send_embed do |embed|
-		embed.title = 'Restricted command. :no_entry:'
-		embed.description = "You're not permitted to run this command."
-		embed.color = 16_722_454 # red
+			end
+	else
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command. :no_entry:'
+			embed.description = "You're not permitted to run this command."
+			embed.color = 16_722_454 # red
+		end
 	end
-end
 end
 
 $bot.mention do |event|
