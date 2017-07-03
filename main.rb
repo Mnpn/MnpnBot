@@ -25,7 +25,7 @@ $settings.default = {}
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.7'
+$ver = 'Release 1.7.1'
 $codename = 'Sea Salt'
 
 $limit = 15
