@@ -4,5 +4,5 @@ rvm:
 
 script:
   - for f in *.rb; do \
-      ruby -c "$f" \
+      ruby -c "$f"; \
     done
