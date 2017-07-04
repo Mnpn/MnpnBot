@@ -1,3 +1,8 @@
 language: ruby
 rvm:
- - 2.4.1
+  - 2.4.1
+
+script:
+  - for f in *.rb; do
+      ruby -c "$f";
+    done
