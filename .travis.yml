@@ -3,6 +3,9 @@ rvm:
   - 2.4.1
 
 script:
+  - echo "$file"
+  - echo "$f"
   - for f in *.rb; do \
+      echo "Trying: $f"; \
       ruby -c "$f"; \
     done
