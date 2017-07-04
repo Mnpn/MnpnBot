@@ -3,6 +3,6 @@ rvm:
   - 2.4.1
 
 script:
-  - for file in *.rb; do \
-      ruby -c "$file" \
+  - for f in *.rb; do \
+      ruby -c "$f" \
     done
