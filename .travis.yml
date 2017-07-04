@@ -3,8 +3,6 @@ rvm:
   - 2.4.1
 
 script:
-  - pwd # temporary
-  - ls  # temporary
-  - for $file in *.rb; do \
+  - for file in *.rb; do \
       ruby -c "$file" \
     done
