@@ -25,7 +25,7 @@ $settings.default = {}
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.7.1'
+$ver = 'Release 1.7.2'
 $codename = 'Sea Salt'
 
 $limit = 15
@@ -121,10 +121,6 @@ $bot.command(:debug, min_args: 1) do |event, *args|
 			embed.color = 16_722_454 # red
 		end
 	end
-end
-
-$bot.mention do |event|
-	event.respond('( •_•)')
 end
 
 trap('INT') do

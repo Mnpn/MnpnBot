@@ -331,7 +331,11 @@ $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 end
 
 $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
-	event.respond "I give #{text.join(' ')} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+if text.join(" ") == "Dusty" || text.join(" ") == "Dusty01" || text.join(" ") == "Dusty01_" || text.join(" ") == "<@151392836292444160>"
+	event.respond "I give #{text.join(" ")} a " + "-0.1/10.0!"
+else
+	event.respond "I give #{text.join(" ")} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+end
 end
 
 $bot.command(:website) do |event|

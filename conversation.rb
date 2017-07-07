@@ -80,6 +80,11 @@ $bot.message(contains: 'covfefe') do |event|
 	event.respond '@realDonaldTrump'
 end
 
+$bot.mention do |event|
+	next if $settings[event.server.id.to_s]["s_mode"]
+	event.respond('( •_•)')
+end
+
 $bot.message(with_text: /lenny.?/i) do |event|
 	next if $settings[event.server.id.to_s]["s_mode"]
 	event << '( ͡° ͜ʖ ͡°)'
