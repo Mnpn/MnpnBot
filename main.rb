@@ -54,17 +54,17 @@ end
 
 $bot.ready do
 	#begin
-		loop do
-			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
-			sleep(20)
-			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
-			sleep(5)
-		end
-		#rescue => e
-		#	event.channel.send_embed do |embed|
-		#		embed.title = 'Error'
-		#		embed.description = "An error occured, and Albin caused it.\n#{e}"
-		#	end
+	loop do
+		$bot.stream($version, 'https://www.twitch.tv/mnpn04')
+		sleep(20)
+		$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
+		sleep(5)
+	end
+	#rescue => e
+	#	event.channel.send_embed do |embed|
+	#		embed.title = 'Error'
+	#		embed.description = "An error occured, and Albin caused it.\n#{e}"
+	#	end
 	#end
 end
 
