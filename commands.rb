@@ -331,11 +331,11 @@ $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 end
 
 $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
-if text.join(" ") == "Dusty" || text.join(" ") == "Dusty01" || text.join(" ") == "Dusty01_" || text.join(" ") == "<@151392836292444160>"
-	event.respond "I give #{text.join(" ")} a " + "-0.1/10.0!"
-else
-	event.respond "I give #{text.join(" ")} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
-end
+	if text.join(" ") == "Dusty" || text.join(" ") == "Dusty01" || text.join(" ") == "Dusty01_" || text.join(" ") == "<@151392836292444160>"
+		event.respond "I give #{text.join(" ")} a " + "-0.1/10.0!"
+	else
+		event.respond "I give #{text.join(" ")} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+	end
 end
 
 $bot.command(:website) do |event|
@@ -408,38 +408,38 @@ $bot.command(:play, min_args: 1) do |event, *args|
 end
 
 $bot.command(:smode) do |event|
-if event.channel.private?
-			event.channel.send_embed do |embed|
-				embed.title = ':no_entry:'
-				embed.description = 'This command cannot be used in a PM!'
-				embed.color = 16_722_454
-			end
-		else
-	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
+	if event.channel.private?
 		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command :no_entry:'
-			embed.description = "Only the server owner can toggle S-Mode."
-			embed.color = 16_722_454 # red
+			embed.title = ':no_entry:'
+			embed.description = 'This command cannot be used in a PM!'
+			embed.color = 16_722_454
 		end
-		next
+	else
+		if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
+			event.channel.send_embed do |embed|
+				embed.title = 'Restricted command :no_entry:'
+				embed.description = "Only the server owner can toggle S-Mode."
+				embed.color = 16_722_454 # red
+			end
+			next
+		end
+		$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
+		$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
+		begin
+			File.write "settings.json", $settings.to_json
+		rescue IOError => e
+			puts "_smode failed to write to file."
+			puts e
+			event.respond "Failed to write to file."
+			next # Skip sending a message that it toggled if it didn't.
+		end
+		event.channel.send_embed do |embed|
+			embed.title = 'MnpnBot S'
+			embed.description = "Toggled S-Mode!"
+			embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
+			embed.color = 1_108_583 # green
+		end
 	end
-	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
-	$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
-	begin
-		File.write "settings.json", $settings.to_json
-	rescue IOError => e
-		puts "_smode failed to write to file."
-		puts e
-		event.respond "Failed to write to file."
-		next # Skip sending a message that it toggled if it didn't.
-	end
-	event.channel.send_embed do |embed|
-		embed.title = 'MnpnBot S'
-		embed.description = "Toggled S-Mode!"
-		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
-		embed.color = 1_108_583 # green
-	end
-end
 end
 
 $bot.command(:sinfo) do |event|
