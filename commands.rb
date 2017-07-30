@@ -331,11 +331,11 @@ $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 end
 
 $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
-if text.join(" ") == "Dusty" || text.join(" ") == "Dusty01" || text.join(" ") == "Dusty01_" || text.join(" ") == "<@151392836292444160>"
-	event.respond "I give #{text.join(" ")} a " + "-0.1/10.0!"
-else
-	event.respond "I give #{text.join(" ")} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
-end
+	if text.join(" ") == "Dusty" || text.join(" ") == "Dusty01" || text.join(" ") == "Dusty01_" || text.join(" ") == "<@151392836292444160>"
+		event.respond "I give #{text.join(" ")} a " + "-0.1/10.0!"
+	else
+		event.respond "I give #{text.join(" ")} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+	end
 end
 
 $bot.command(:website) do |event|
@@ -396,7 +396,22 @@ end
 
 $bot.command(:play, min_args: 1) do |event, *args|
 	if event.author.id == 172030506970382337
+		$custom = true
 		$bot.game = args.join(" ")
+		next
+	else
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command. :no_entry:'
+			embed.description = "You're not permitted to run this command."
+			embed.color = 16_722_454 # red
+		end
+	end
+end
+
+$bot.command(:rplay) do |event, *args|
+	if event.author.id == 172030506970382337
+		$custom = false
+		event.respond "Done."
 		next
 	else
 		event.channel.send_embed do |embed|
@@ -442,10 +457,86 @@ if event.channel.private?
 end
 end
 
+$bot.command(:ptr) do |event|
+if event.channel.private?
+			event.channel.send_embed do |embed|
+				embed.title = ':no_entry:'
+				embed.description = 'This command cannot be used in a PM!'
+				embed.color = 16_722_454
+			end
+		else
+	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
+		event.channel.send_embed do |embed|
+			embed.title = 'Restricted command :no_entry:'
+			embed.description = "Only the server owner can opt in and out of PTR."
+			embed.color = 16_722_454 # red
+		end
+		next
+	end
+	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
+	$settings[event.server.id.to_s]["ptr"] = !$settings[event.server.id.to_s]["ptr"]
+	begin
+		File.write "settings.json", $settings.to_json
+	rescue IOError => e
+		puts "PTR failed to write to file."
+		puts e
+		event.respond "Failed to write to file."
+		next # Skip sending a message that it toggled if it didn't.
+	end
+	event.channel.send_embed do |embed|
+		embed.title = 'MnpnBot Public Test Ring'
+		embed.description = "Toggled PTR!"
+		embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: true)
+		embed.color = 1_108_583 # green
+	end
+end
+end
+
 $bot.command(:sinfo) do |event|
 	event.respond "MnpnBot's S-Mode is a version of MnpnBot that is more targeted to \"serious\" servers. Enabling S-Mode will remove auto-responses (e.g. kek, :>)."
 end
 
 $bot.command(:cookies) do |event|
 	event.respond ":cookie:"
+end
+
+$bot.command(:colour, min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
+
+colour = rand(1000000..19000000)
+
+class String
+	def convert_base(from, to)
+		self.to_i(from).to_s(to)
+	end
+end
+
+unless args.length == 0
+# somone has put an argument
+	event.respond "Sorry, I only do random colours so far."
+else
+	hexc = colour.to_s.convert_base(10, 16)
+	c = Color::RGB.from_html(hexc)
+		event.channel.send_embed do |embed|
+			#embed.title = 'Hex Colour'
+			embed.description = "Hex: ##{hexc} | RGB: #{c.red}, #{c.green}, #{c.blue} | Decimal: #{colour}"
+			embed.color = colour
+		end
+	end
+end
+
+$bot.command(:egg) do |event|
+	event.respond ":egg:"
+end
+
+$bot.command(:lmgtfy) do |event, *args|
+	event.respond "#{event.user.mention}, <http://lmgtfy.com/?q=%s>" % [args.join("+")]
+end
+
+$bot.command(:feedback, min_args: 1) do |event, *args|
+	if $settings[event.server.id.to_s]["ptr"]
+		event.respond "You can only use the feedback command if you have opted in to the Public Test Ring."
+	else
+		event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
+		$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
+	end
 end

@@ -25,11 +25,11 @@ $settings.default = {}
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$ver = 'Release 1.7.2'
-$codename = 'Sea Salt'
+$version = 'Release 1.8 Beta'
+$codename = 'Amethyst'
 
 $limit = 15
-$devmode = false
+$custom = false
 $debug = false
 $annoy = false
 $started = 0
@@ -43,29 +43,17 @@ $bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, p
 require_relative 'conversation.rb'
 require_relative 'commands.rb'
 require_relative 'info.rb'
-
-if $devmode == true
-	require_relative 'development.rb'
-	$version = $ver + ' Dev'
-	puts 'Development Mode is Enabled.'
-else
-	$version = $ver
-end
+require_relative 'development.rb'
 
 $bot.ready do
-	#begin
-		loop do
+	loop do
+		if $custom == false
 			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
 			sleep(20)
 			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
-			sleep(5)
+			sleep(10)
 		end
-		#rescue => e
-		#	event.channel.send_embed do |embed|
-		#		embed.title = 'Error'
-		#		embed.description = "An error occured, and Albin caused it.\n#{e}"
-		#	end
-	#end
+	end
 end
 
 $bot.ready do
@@ -86,7 +74,6 @@ $bot.command :reload do |event|
 			embed.title = 'Reload'
 			embed.description = 'Reloading MnpnBot!'
 			embed.add_field(name: 'Version and Codename', value: $version + ", '%s'" % $codename, inline: true)
-			embed.add_field(name: 'Development mode', value: $devmode, inline: true)
 			embed.add_field(name: 'Debug mode', value: $debug, inline: true)
 			embed.color = 1_108_583 # green
 		end
