@@ -423,38 +423,38 @@ $bot.command(:rplay) do |event, *args|
 end
 
 $bot.command(:smode) do |event|
-	if event.channel.private?
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = 'This command cannot be used in a PM!'
-			embed.color = 16_722_454
-		end
-	else
-		if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
+if event.channel.private?
 			event.channel.send_embed do |embed|
-				embed.title = 'Restricted command :no_entry:'
-				embed.description = "Only the server owner can toggle S-Mode."
-				embed.color = 16_722_454 # red
+				embed.title = ':no_entry:'
+				embed.description = 'This command cannot be used in a PM!'
+				embed.color = 16_722_454
 			end
-			next
-		end
-		$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
-		$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
-		begin
-			File.write "settings.json", $settings.to_json
-		rescue IOError => e
-			puts "_smode failed to write to file."
-			puts e
-			event.respond "Failed to write to file."
-			next # Skip sending a message that it toggled if it didn't.
-		end
+		else
+	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
 		event.channel.send_embed do |embed|
-			embed.title = 'MnpnBot S'
-			embed.description = "Toggled S-Mode!"
-			embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
-			embed.color = 1_108_583 # green
+			embed.title = 'Restricted command :no_entry:'
+			embed.description = "Only the server owner can toggle S-Mode."
+			embed.color = 16_722_454 # red
 		end
+		next
 	end
+	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
+	$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
+	begin
+		File.write "settings.json", $settings.to_json
+	rescue IOError => e
+		puts "_smode failed to write to file."
+		puts e
+		event.respond "Failed to write to file."
+		next # Skip sending a message that it toggled if it didn't.
+	end
+	event.channel.send_embed do |embed|
+		embed.title = 'MnpnBot S'
+		embed.description = "Toggled S-Mode!"
+		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
+		embed.color = 1_108_583 # green
+	end
+end
 end
 
 $bot.command(:ptr) do |event|
@@ -533,9 +533,10 @@ $bot.command(:lmgtfy) do |event, *args|
 end
 
 $bot.command(:feedback, min_args: 1) do |event, *args|
-	if $settings[event.server.id.to_s]["ptr"]
+	unless $settings[event.server.id.to_s]["ptr"]
 		event.respond "You can only use the feedback command if you have opted in to the Public Test Ring."
 	else
+		event.respond "Done! Check your DMs!"
 		event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
 		$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 	end

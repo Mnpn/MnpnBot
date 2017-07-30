@@ -5,6 +5,7 @@
 require 'discordrb'
 require 'urban_dict'
 require 'json'
+require 'color'
 
 CLIENT_ID = 289471282720800768
 
@@ -27,6 +28,7 @@ $settings.default = {}
 
 $version = 'Release 1.8 Beta'
 $codename = 'Amethyst'
+$build = 1
 
 $limit = 15
 $custom = false
