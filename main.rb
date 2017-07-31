@@ -26,7 +26,7 @@ $settings.default = {}
 
 # I'm too lazy to bother with anything really, here is the config. Heh.
 
-$version = 'Release 1.8'
+$version = 'Release 1.8.1'
 $codename = 'Amethyst'
 $build = 1
 

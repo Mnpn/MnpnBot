@@ -48,7 +48,10 @@ _define: Usage: '_define kek'. Not specifying what to define will result in a ra
 _invite: Shows an invite link for the bot.
 _roman: Usage: '_roman 50'. Change numerals to romans.
 _rate: Usage: '_rate the laptop'. Rate something.
-_website: Links my website.")
+_colour: Generate a random colour and show the value in Hex, RGB and Decimal.
+_lmgtfy: Generate a LMGTFY link.
+_avatar: Shows a user's avatar.
+_feedback: Send feebback on MnpnBot.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
@@ -57,7 +60,8 @@ _bi: Shows bot information.
 _ui: Shows your information.
 _psi: Personal Server Information [I]")
 
-		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.')
+		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
+_meme: Sends a random meme.')
 
 		# embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
@@ -525,7 +529,7 @@ else
 end
 
 $bot.command(:egg) do |event|
-	event.respond ":egg:"
+	event.respond ":egg: Egg | Community can be found at https://discord.me/cooleggs"
 end
 
 $bot.command(:lmgtfy) do |event, *args|
@@ -533,16 +537,14 @@ $bot.command(:lmgtfy) do |event, *args|
 end
 
 $bot.command(:feedback, min_args: 1) do |event, *args|
-		event.respond "Done! Check your DMs! :mailbox_with_mail: "
-		event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
-		$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
-	end
+	event.respond "Done! Check your DMs! :mailbox_with_mail: "
+	event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
+	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
 $bot.command(:addmeme, min_args: 1, max_args: 1) do |event, args|
-		event.respond "Requested! It will be reviewed soon."
-		$bot.send_message(289_641_868_856_262_656, "%s has requested a meme: %s" % [(event.author.name + "#" + event.author.discrim), args])
-	end
+	event.respond "Requested! It will be reviewed soon."
+	$bot.send_message(289_641_868_856_262_656, "%s has requested a meme: %s" % [(event.author.name + "#" + event.author.discrim), args])
 end
 
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|
