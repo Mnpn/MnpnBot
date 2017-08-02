@@ -341,15 +341,16 @@ $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuf
 			text == "Dusty01_" ||
 			text == "<@151392836292444160>"
 			text == "<@!151392836292444160>"
-		event.respond "I give #{text} a " + "-0.1/10.0!"
+		rating = -0.1
 	elsif text == "tbodt" ||
 			text == "tbuddy" ||
 			text == "<@155417194530996225>"
 			text == "<@!155417194530996225>"
-		event.respond "I give #{text} a " + "INF/10.0!"
+		rating = Float::INFINITY
 	else
-		event.respond "I give #{text} a " + "#{rand(0.0..10.0).round(1)}/10.0!"
+		rating = rand(0.0..10.0).round(1)
 	end
+	event.respond "I give #{text} a #{rating}/10.0!"
 end
 
 $bot.command(:website) do |event|
