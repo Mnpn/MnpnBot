@@ -143,7 +143,6 @@ $bot.command :mnpn do |event|
 		embed.description = 'Here are the current settings.'
 		embed.add_field(name: 'Count limit', value: $limit, inline: true)
 		embed.add_field(name: 'Version', value: $version, inline: true)
-		embed.add_field(name: 'Debug mode', value: $debug, inline: true)
 		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
 		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
 		embed.color = 1_108_583 # green

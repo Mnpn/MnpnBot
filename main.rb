@@ -1,4 +1,3 @@
-# I never do comments, but when I do, they suck.
 # This is the main file of MnpnBot, programmed in Ruby.
 # Shout out to LEGOlord208#1033 and tbodt#7244 for helping me.
 
@@ -11,6 +10,21 @@ CLIENT_ID = 289471282720800768
 
 token = File.read "token.txt"
 
+# Configuration
+
+$version = 'Release 1.8.1'
+$codename = 'Amethyst'
+$build = 2 # I'm unsure if I will keep this.
+
+$limit = 15
+$custom = false
+$custom = false
+$annoy = false
+$started = 0
+
+prefixes = ["_"] # Allows multiple prefixes if needed.
+# End of config.
+
 # MnpnBot S-mode
 
 if File.exists?("settings.json")
@@ -21,27 +35,12 @@ else
 end
 
 $settings.default = {}
-
 # End
 
-# I'm too lazy to bother with anything really, here is the config. Heh.
+# Initialize the bot.
+$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: prefixes
 
-$version = 'Release 1.8.1'
-$codename = 'Amethyst'
-$build = 1
-
-$limit = 15
-$custom = false
-$debug = false
-$annoy = false
-$started = 0
-$typeloops = 20
-
-prefix = "_"
-# End of config.
-
-$bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: prefix
-
+# Require the other files.
 require_relative 'conversation.rb'
 require_relative 'commands.rb'
 require_relative 'info.rb'
@@ -61,7 +60,6 @@ end
 $bot.ready do
 	$started = Time.now
 	puts('Running on version ' + $version + ', Codename ' + $codename + '.')
-	#$bot.send_message(289_641_868_856_262_656, 'Started! Running on version ' + $version + ', Codename ' + $codename + '.')
 end
 
 $bot.command :reload do |event|
@@ -76,9 +74,9 @@ $bot.command :reload do |event|
 			embed.title = 'Reload'
 			embed.description = 'Reloading MnpnBot!'
 			embed.add_field(name: 'Version and Codename', value: $version + ", '%s'" % $codename, inline: true)
-			embed.add_field(name: 'Debug mode', value: $debug, inline: true)
 			embed.color = 1_108_583 # green
 		end
+		# WrapperUtil is an external program developed by LEGOlord208#1033. It allows me to restart the bot using _reload. Read more at https://github.com/LEGOlord208/WrapperUtil/
 		print 'wrapperutil{"Restart":true}'
 		exit
 	end
@@ -86,6 +84,7 @@ end
 
 shyrix = "edgelord" # Again, testing variable to mess around with.
 
+# Debug: A simple eval command. Quite useful, actually!
 $bot.command(:debug, min_args: 1) do |event, *args|
 	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
 		time = Time.new
@@ -111,9 +110,11 @@ $bot.command(:debug, min_args: 1) do |event, *args|
 		end
 	end
 end
+# End of debug.
 
 trap('INT') do
 	exit
 end
 
+# Run the bot.
 $bot.run

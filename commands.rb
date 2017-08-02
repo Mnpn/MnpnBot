@@ -28,14 +28,7 @@ $bot.command(:annoy, min_args: 1, max_args: 1, usage: 'Annoy true/false') do |ev
 	end
 end
 
-$bot.command(:smart) do |event|
-	event.respond "im smart maybe"
-	event.respond "looking though the variable; mnpn is smart"
-end
-
-
-# HELP
-
+# The help command.
 $bot.command :help do |event|
 	event << 'Version: ' + $version
 	event.channel.send_embed do |embed|
@@ -69,22 +62,9 @@ _meme: Sends a random meme.')
 
 		embed.color = 1_108_583
 	end
-
-	# END OF HELP
-end
-
-
-i = 0
-$bot.command(:type) do |event|
-	while i < $typeloops
-		event.channel.start_typing
-		sleep(1)
-		i += 1
-	end
 end
 
 # Count
-
 $bot.command(:count, min_args: 1, max_args: 1, usage: '_count [to]') do |event, to|
 	i = 0
 	begin
@@ -101,8 +81,8 @@ $bot.command(:count, min_args: 1, max_args: 1, usage: '_count [to]') do |event, 
 		event << 'Counting! Currently on %d.' % [i + 1]
 	end
 end
-# Ping
 
+# Ping
 $bot.command :ping do |event|
 	# event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
 	now = Time.now.utc.nsec
@@ -135,9 +115,8 @@ $bot.command(:randomize, min_args: 2, max_args: 2, usage: 'randomize <min> <max>
 		embed.description = 'The result was %d.' % [rand(min_i..max_i)]
 	end
 end
-# End of Randomize
-# Jokes
 
+# Jokes
 $bot.message(with_text: /joke.?/i) do |event|
 	lines = []
 
@@ -153,8 +132,8 @@ $bot.message(with_text: /joke.?/i) do |event|
 		embed.description = joke
 	end
 end
-# End of Jokes
 
+# Uptime
 $bot.command :uptime do |event|
 	full_sec = Time.now - $started
 	sec = full_sec % 60
@@ -177,6 +156,7 @@ $bot.command :uptime do |event|
 	end
 end
 
+# Invite
 $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
 		embed.title = 'Invite link. Click the invite text above to open a web browser to authorize MnpnBot.'
@@ -185,6 +165,7 @@ $bot.command :invite do |event|
 	end
 end
 
+# When authorized, send message.
 $bot.server_create do |event|
 	event.server.default_channel.send_embed do |embed|
 		embed.title = 'MnpnBot'
@@ -194,7 +175,7 @@ $bot.server_create do |event|
 	end
 end
 
-
+# Define
 $bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
@@ -223,6 +204,7 @@ $bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 	end
 end
 
+# Roman
 $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, num|
 	# Coded by LEGOlord208
 	i = 0
@@ -303,32 +285,6 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, 
 	end
 end
 
-$bot.command :mcstat do |event, *args|
-	begin
-		serv = JSON.parse(RestClient.get('https://mcapi.ca/query/' + args[0] + '/info'))
-	rescue => e
-		event << 'Something went wrong!'
-		event << e
-	end
-	serv['status']
-	event.channel.send_embed do |embed|
-		embed.title = 'Minecraft Server Statistics'
-		embed.description = 'Minecraft Statistics for %s: ' % args[0]
-		embed.add_field(name: 'MOTD: ', value: serv['motd'], inline: true)
-		embed.add_field(name: 'Version: ', value: serv['version'], inline: true)
-		embed.add_field(name: 'Players: ', value: serv['online.to_i'] + '/' + serv['max.to_i'], inline: true)
-		embed.add_field(name: 'Ping: ', value: $debug, inline: true)
-		embed.color = 1_108_583 # green
-	end
-	#else
-	#	event.channel.send_embed do |embed|
-	#		embed.title = ':octagonal_sign:'
-	#		embed.description = 'Invalid server.'
-	#		embed.color = 16_722_454 # red
-	#	end
-	#end
-end
-
 $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 	_, *rating = event.message.content.split
 	event.respond "Sure, here is the 3D version of the skin: #{rating.join(' ')}. https://visage.surgeplay.com/full/512/#{rating.join(' ')}.png"
@@ -355,43 +311,6 @@ end
 $bot.command(:"8ball") do |event|
 	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
 	event.respond(arr.sample)
-end
-
-$bot.command(:seen, usage: "_seen <@user>", min_arguments: 1, max_arguments: 1) do |event, user|
-	x = user[2..-2].to_i
-	#mess = event.user.message
-	#puts(mess)
-	if mess.any?{|a| a.id == x}
-		pos=mess.find_index {|item| item.id == x}
-		event << "On: #{mess[pos].time.asctime}"
-		#event << "They said: '#{mess[pos].mess}'"
-	else
-		event.respond "I haven't seen anything from that user yet."
-	end
-
-	$bot.command(:quote, usage: "_quote [message ID]", min_arguments: 1, max_arguments: 1) do |event, mid|
-		begin
-			id = Integer(num)
-			if id < 0
-				event.respond "You know you won't crash me by doing that.."
-				return
-			end
-		rescue ArgumentError
-			event.respond "That's not a message ID."
-			next
-		end
-		mess = event.user.message
-		puts(mess)
-		begin
-			event.channel.send_embed do |embed|
-				find = mess.find_index {|item| item.id}
-				event << "On: #{mid.id.time.asctime}"
-				event << "They said: '#{mess[pos].mess}'"
-			end
-		rescue
-			event.respond "Invalid message ID or unable to read message."
-		end
-	end
 end
 
 $bot.command(:version) do |event|
@@ -549,8 +468,7 @@ end
 
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|
 # Might want to look into webp and size
-user = user[2..-1]
-user = user.chomp('>')
+user = user[2..-2]
 	begin
 		tagged_user = $bot.user(user);
 		event.respond "#{tagged_user.mention}'s avatar URL is #{tagged_user.avatar_url}"
@@ -588,10 +506,18 @@ MEME_LINKS = ["https://mnpn.me/images/triggered.png",
 	"https://mnpn.me/images/kat_codes.png"]
 
 $bot.command(:meme) do |event|
-memeages = ["ill meme u!","here's a meme","oh look, a meme!","I gotchu fam!","meme","this one is dank, i promise","https://niceme.me/","ur a meme","meeeeee.me","i think im out of ideas for this string here","k","kk","ok","mhm","sure"]
+memeages = ["ill meme u!","here's a meme","oh look, a meme!","I got u fam!","meme","this one is dank, i promise","https://niceme.me/","ur a meme","meeeeee.me","i think im out of ideas for this string here","k","kk","ok","mhm","sure"]
 	event.channel.send_embed do |embed|
 		embed.description = memeages.sample
 		embed.color = rand(1000000..1900000)
 		embed.image = Discordrb::Webhooks::EmbedImage.new(url: MEME_LINKS.sample)
 	end
+end
+
+$bot.command(:support) do |event|
+    event.channel.send_embed do |embed|
+        embed.title = 'MnpnBot Support'
+        embed.description = "If you have any issues, our staff team are redy to help you at **<https://discord.gg/Ww74Xjh>**!"
+        embed.color = 1_151_202
+    end
 end
