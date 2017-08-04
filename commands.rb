@@ -514,7 +514,8 @@ MEME_LINKS = ["https://mnpn.me/images/triggered.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/338253135795716097/image.jpg",
 	"https://s-media-cache-ak0.pinimg.com/736x/13/e0/ce/13e0cef23c4323e8d32be0e6322be99a--funny-happy-birthday-meme-funny-happy-birthdays.jpg",
 	"http://www.fullredneck.com/wp-content/uploads/2016/04/Funny-Russia-Meme-20.jpg",
-	"https://mnpn.me/images/kat_codes.png"]
+	"https://mnpn.me/images/kat_codes.png",
+	"https://i.imgur.com/4v86w8y.png"]
 
 $bot.command(:meme) do |event|
 memeages = ["ill meme u!","here's a meme","oh look, a meme!","I got u fam!","meme","this one is dank, i promise","https://niceme.me/","ur a meme","meeeeee.me","i think im out of ideas for this string here","k","kk","ok","mhm","sure"]

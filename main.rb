@@ -12,9 +12,9 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 1.8.1'
-$codename = 'Amethyst'
-$build = 2 # I'm unsure if I will keep this.
+$version = 'Release 1.8.2/2.0.0'
+$codename = 'Amethyst/Erithium'
+$build = 3 # I'm unsure if I will keep this.
 
 $limit = 15
 $custom = false
