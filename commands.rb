@@ -529,7 +529,7 @@ end
 $bot.command(:support) do |event|
     event.channel.send_embed do |embed|
         embed.title = 'MnpnBot Support'
-        embed.description = "If you have any issues, our staff team are redy to help you at **<https://discord.gg/Ww74Xjh>**!"
+        embed.description = "If you have any issues, our staff team is ready to help you at **<https://discord.gg/Ww74Xjh>**!"
         embed.color = 1_151_202
     end
 end
