@@ -472,9 +472,23 @@ $bot.command(:feedback, min_args: 1) do |event, *args|
 	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
+MEME_BLACKLIST = [178333410098413568, # Focus#1149
+	200223980483772416, # Nick (Demo_Nick)#5841
+	]
+
+REQUESTABLES = [172030506970382337]
+	
 $bot.command(:addmeme, min_args: 1, max_args: 1) do |event, args|
-	event.respond "Requested! It will be reviewed soon."
-	$bot.send_message(289_641_868_856_262_656, "%s has requested a meme: %s" % [(event.author.name + "#" + event.author.discrim), args])
+	if MEME_BLACKLIST.include?(event.author.id)
+		event.respond "You're temporarily blacklisted for requesting trash."
+		next
+	end
+		event.respond "Requested! It will be reviewed soon."
+		REQUESTABLES.each do |item|
+			$user = $bot.user(item);
+			$user.pm("%s has requested a meme: %s" % [(event.author.name + "#" + event.author.discrim), args])
+		end
+	next
 end
 
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|
@@ -508,7 +522,6 @@ MEME_LINKS = ["https://mnpn.me/images/triggered.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/334426154784260096/S_T_O_P.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/309355048494694410/unknown.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/338054796399607809/THOTRIGGERED.png",
-	"https://mnpn.me/images/EverydayWeDriftFurtherAwayFromSatansProtection.png",
 	"https://mnpn.me/images/em.png",
 	"https://cdn.discordapp.com/attachments/311566841728335882/341143275299930113/unknown.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/338253135795716097/image.jpg",

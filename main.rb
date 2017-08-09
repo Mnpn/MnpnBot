@@ -14,7 +14,7 @@ token = File.read "token.txt"
 
 $version = 'Release 1.8.2/2.0.0'
 $codename = 'Amethyst/Erithium'
-$build = 3 # I'm unsure if I will keep this.
+$build = 4 # I'm unsure if I will keep this.
 
 $limit = 15
 $custom = false
