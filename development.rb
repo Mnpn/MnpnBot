@@ -56,3 +56,9 @@ end
 			event.respond "Invalid message ID or unable to read message."
 		end
 	end
+	
+$bot.command(:brick, usage: "_brick", description: "Play the Brick song.", min_arguments: 0, max_arguments: 0) do |event|
+	$voice_bot = $bot.voice_connect(event.user.voice_channel)
+	$voice_bot.play_file('./music/s.mp3');
+	$bot.voices[event.server.id].destroy
+end
