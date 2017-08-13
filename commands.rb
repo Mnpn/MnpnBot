@@ -44,7 +44,7 @@ _rate: Usage: '_rate the laptop'. Rate something.
 _colour: Generate a random colour and show the value in Hex, RGB and Decimal.
 _lmgtfy: Generate a LMGTFY link.
 _avatar: Shows a user's avatar.
-_feedback: Send feebback on MnpnBot.")
+_feedback: Send feedback on MnpnBot.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
