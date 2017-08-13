@@ -58,7 +58,7 @@ _meme: Sends a random meme.')
 
 		# embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 
 		embed.color = 1_108_583
 	end
@@ -160,7 +160,7 @@ end
 $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
 		embed.title = 'Invite link. Click the invite text above to open a web browser to authorize MnpnBot.'
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.color = 1_108_583
 	end
 end
@@ -170,7 +170,7 @@ $bot.server_create do |event|
 	event.server.default_channel.send_embed do |embed|
 		embed.title = 'MnpnBot'
 		embed.description = "You have authorized **MnpnBot**. Hello World! To get started, say '_help'"
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=16384', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0s', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.color = 1_108_583
 	end
 end
