@@ -12,7 +12,7 @@ $bot.command :si do |event|
 			if verchann == nil
 				verchann = "None"
 			end
-			afkchann = event.server.afk_channel
+			afkchann = event.server.afk_channel.name
 			if afkchann == nil
 				afkchann = "None"
 			end
