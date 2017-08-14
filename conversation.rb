@@ -96,8 +96,9 @@ $bot.message(start_with: 'boi') do |event|
 	event << 'BOIII!'
 end
 
+RESPONSES = ["F","f"]
+
 $bot.message(contains: /rip.?/i) do |event|
 	next if $settings[event.server.id.to_s]["s_mode"]
-	RESPONSES = ["F","f"]
 	event.respond RESPONSES.sample
 end
