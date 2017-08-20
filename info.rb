@@ -35,8 +35,7 @@ $bot.command :si do |event|
 				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}.")
 				embed.add_field(name: 'Icon:', value: event.server.icon_url.to_s, inline: true)
 				embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-				embed.add_field(name: 'S-Mode:', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
-				embed.add_field(name: 'PTR:', value: $settings[event.server.id.to_s]["ptr"], inline: true)
+				embed.add_field(name: 'S-Mode, PTR:', value: "#{$settings[event.server.id.to_s]["s_mode"]}, #{$settings[event.server.id.to_s]["ptr"]}", inline: true)
 				embed.add_field(name: 'Creation time:', value: event.server.creation_time, inline: true)
 				embed.add_field(name: 'Has Emoji?', value: event.server.emoji?, inline: true)
 				embed.color = 1_108_583
