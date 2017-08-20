@@ -33,7 +33,6 @@ $bot.command :help do |event|
 	event << 'Version: ' + $version
 	event.channel.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
-		# embed.title = 'Help'
 		embed.description = 'Command Information'
 		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!
 _randomize: Usage: '_randomize 1 10'. Number randomizer.
@@ -44,7 +43,8 @@ _rate: Usage: '_rate the laptop'. Rate something.
 _colour: Generate a random colour and show the value in Hex, RGB and Decimal.
 _lmgtfy: Generate a LMGTFY link.
 _avatar: Shows a user's avatar.
-_feedback: Send feedback on MnpnBot.")
+_feedback: Send feedback on MnpnBot.
+_weather: Usage: '_weather Hell'. Weather Forecast.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
@@ -55,8 +55,6 @@ _psi: Personal Server Information [I]")
 
 		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
 _meme: Sends a random meme.')
-
-		# embed.footer = "Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033."
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 
@@ -434,6 +432,7 @@ $bot.command(:cookies) do |event|
 	event.respond ":cookie:"
 end
 
+# Colour
 $bot.command(:colour, min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
 
 colour = rand(1000000..19000000)
@@ -545,4 +544,52 @@ $bot.command(:support) do |event|
         embed.description = "If you have any issues, our staff team is ready to help you at **<https://discord.gg/Ww74Xjh>**!"
         embed.color = 1_151_202
     end
+end
+
+$bot.command(:weather, usage: "_weather <Zip/Name>", description: "Weather Forecast.", min_arguments: 1) do |event, *args|
+if args[0] == nil
+	event.channel.send_embed do |embed|
+		embed.title = 'Weather'
+		embed.description = "You need to provide an argument! Usage: _weather <Zip/Name>."
+		embed.color = 16_722_454 # red
+	end
+	next
+end
+	begin
+		zip = Integer(args[0])
+		if zip < 1000 || zip > 99950
+			event.respond "The Zip-code is invalid."
+			next
+		end
+		$response = Weather.lookup(zip, Weather::Units::CELSIUS) # I'll be using Celsius for the time being because it's what I normally use.
+	rescue
+		begin
+			$response = Weather.lookup_by_location(args.join(" "), Weather::Units::CELSIUS)
+		rescue
+			event.channel.send_embed do |embed|
+				embed.title = 'Weather'
+				embed.description = "Location not found!"
+				embed.color = 16_722_454 # red
+			end
+			next
+		end
+	end
+	condition = $response.condition.text
+		event.channel.send_embed do |embed|
+			embed.title = $response.title
+				if $response.condition.text == "Sunny" || $response.condition.text == "Mostly Sunny"
+					embed.color = 15924992 # Yellow
+				elsif $response.condition.text == "Cloudy" || $response.condition.text == "Partly Cloudy" || $response.condition.text == "Mostly Cloudy"
+					embed.color = 12040119 # Grey
+				elsif $response.condition.text == "Rain"
+					embed.color = 11865 # A nice dark blue.
+					condition = "Raining" # Otherwise it will respond with "It's Rain"!
+				elsif $response.condition.text == "Thunderstorms"
+					embed.color = 11865 # A nice dark blue.
+				else
+					embed.color = 4359924 # Kinda light-blue
+				end
+			embed.description = "It's currently #{$response.condition.temp}°C outside.
+It's #{condition}."
+		end
 end

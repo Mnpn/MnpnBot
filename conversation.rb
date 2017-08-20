@@ -1,3 +1,5 @@
+# Everything in here is a part of the non-smode MnpnBot. All the auto-responses are located here. Remember! You can toggle them with _smode.
+
 $bot.message(with_text: ':>') do |event|
 	next if $settings[event.server.id.to_s]["s_mode"]
 	event.respond ':>'

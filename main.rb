@@ -58,6 +58,7 @@ $bot.ready do
 	end
 end
 
+# When ready, set the time it started and print some basic info.
 $bot.ready do
 	$started = Time.now
 	puts('Running on version ' + $version + ', Codename ' + $codename + '.')
