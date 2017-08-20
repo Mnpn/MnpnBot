@@ -12,9 +12,11 @@ $bot.command :si do |event|
 			if verchann == nil
 				verchann = "None"
 			end
-			afkchann = event.server.afk_channel.name
+			afkchann = event.server.afk_channel
 			if afkchann == nil
 				afkchann = "None"
+			else
+				afkchann = event.server.afk_channel.name
 			end
 			if $settings[event.server.id.to_s]["ptr"] == nil
 				$settings[event.server.id.to_s]["ptr"] = false
@@ -30,7 +32,7 @@ $bot.command :si do |event|
 				embed.title = 'Server Information'
 				embed.description = 'Advanced server information.'
 				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
-				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: \"#{size}\".")
+				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}.")
 				embed.add_field(name: 'Icon:', value: event.server.icon_url.to_s, inline: true)
 				embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
 				embed.add_field(name: 'S-Mode:', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
