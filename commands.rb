@@ -468,7 +468,7 @@ end
 $bot.command(:feedback, min_args: 1) do |event, *args|
 	event.respond "Done! Check your DMs! :mailbox_with_mail: "
 	event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
-	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot PTR #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
+	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
 MEME_BLACKLIST = [178333410098413568, # Focus#1149
