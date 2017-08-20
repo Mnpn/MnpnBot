@@ -5,6 +5,7 @@ require 'discordrb'
 require 'urban_dict'
 require 'json'
 require 'color'
+require 'weather-api'
 
 CLIENT_ID = 289471282720800768
 

@@ -62,3 +62,51 @@ $bot.command(:brick, usage: "_brick", description: "Play the Brick song.", min_a
 	$voice_bot.play_file('./music/s.mp3');
 	$bot.voices[event.server.id].destroy
 end
+
+$bot.command(:weather, usage: "_weather <Zip/Name>", description: "Weather Forecast.", min_arguments: 1) do |event, *args|
+if args[0] == nil
+	event.channel.send_embed do |embed|
+		embed.title = 'Weather'
+		embed.description = "You need to provide an argument! Usage: _weather <Zip/Name>."
+		embed.color = 16_722_454 # red
+	end
+	next
+end
+	begin
+		zip = Integer(args[0])
+		if zip < 1000 || zip > 99950
+			event.respond "The Zip-code is invalid."
+			next
+		end
+		$response = Weather.lookup(zip, Weather::Units::CELSIUS)
+	rescue
+		begin
+			$response = Weather.lookup_by_location(args.join(" "), Weather::Units::CELSIUS)
+		rescue
+			event.channel.send_embed do |embed|
+				embed.title = 'Weather'
+				embed.description = "Location not found!"
+				embed.color = 16_722_454 # red
+			end
+			next
+		end
+	end
+	condition = $response.condition.text
+		event.channel.send_embed do |embed|
+			embed.title = $response.title
+				if $response.condition.text == "Sunny" || $response.condition.text == "Mostly Sunny"
+					embed.color = 15924992 # Yellow
+				elsif $response.condition.text == "Cloudy" || $response.condition.text == "Partly Cloudy" || $response.condition.text == "Mostly Cloudy"
+					embed.color = 12040119 # Grey
+				elsif $response.condition.text == "Rain"
+					embed.color = 11865 # A nice dark blue.
+					condition = "Raining" # Otherwise it will respond with "It's Rain"!
+				elsif $response.condition.text == "Thunderstorms"
+					embed.color = 11865 # A nice dark blue.
+				else
+					embed.color = 4359924 # Kinda light-blue
+				end
+			embed.description = "It's currently #{$response.condition.temp}°C outside.
+It's #{condition}."
+		end
+end
