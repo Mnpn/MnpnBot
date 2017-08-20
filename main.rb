@@ -13,12 +13,11 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 1.8.2/2.0.0'
-$codename = 'Amethyst/Erithium'
+$version = 'Release 2.0.0'
+$codename = 'Erithium'
 $build = 4 # I'm unsure if I will keep this.
 
 $limit = 15
-$custom = false
 $custom = false
 $annoy = false
 $started = 0
@@ -52,8 +51,10 @@ $bot.ready do
 		if $custom == false
 			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
 			sleep(20)
+		if $custom == false
 			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
 			sleep(10)
+		end
 		end
 	end
 end

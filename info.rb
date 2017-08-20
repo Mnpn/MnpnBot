@@ -22,10 +22,15 @@ $bot.command :si do |event|
 			if $settings[event.server.id.to_s]["s_mode"] == nil
 				$settings[event.server.id.to_s]["s_mode"] = false
 			end
+			if event.server.large? == true
+				size = "Large"
+			else
+				size = "Small"
+			end
 				embed.title = 'Server Information'
 				embed.description = 'Advanced server information.'
 				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
-				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Default Message Notification: \"Not implemented\".")
+				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: \"#{size}\".")
 				embed.add_field(name: 'Icon:', value: event.server.icon_url.to_s, inline: true)
 				embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
 				embed.add_field(name: 'S-Mode:', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
@@ -55,23 +60,37 @@ $bot.command :si do |event|
 end
 
 $bot.command :bi do |event|
-	event.channel.send_embed do |embed|
-		lsc = 0
-		ls = $bot.servers.values.each { |s| lsc += 1 if s.large }
-		ss = $bot.servers.count - lsc
-		embed.title = 'Bot Information'
-		embed.description = 'Advanced bot information.'
-		embed.add_field(name: 'Currently active on', value: "**#{$bot.servers.count}** servers.")
-		embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
-		embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
-		embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
-		embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
-		embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
-		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: false)
-		embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: false)
-		#embed.add_field(name: 'Messages sent since last restart:', value: " #{msg}", inline: true)
-		embed.color = 1_108_583
-		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+lsc = 0
+ls = $bot.servers.values.each { |s| lsc += 1 if s.large }
+ss = $bot.servers.count - lsc
+	begin
+		event.channel.send_embed do |embed|
+			embed.title = 'Bot Information'
+			embed.description = 'Advanced bot information.'
+			embed.add_field(name: 'Currently active on', value: "**#{$bot.servers.count}** servers.")
+			embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
+			embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
+			embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
+			embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
+			embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
+			embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: false)
+			embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: false)
+			embed.color = 1_108_583
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		end
+	rescue
+		event.channel.send_embed do |embed|
+			embed.title = 'Bot Information'
+			embed.description = 'Advanced bot information.'
+			embed.add_field(name: 'Currently active on', value: "**#{$bot.servers.count}** servers.")
+			embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
+			embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
+			embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
+			embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
+			embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
+			embed.color = 1_108_583
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a DigitalOcean Droplet in Amsterdam, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		end
 	end
 end
 
@@ -103,6 +122,15 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 				embed.add_field(name: 'Roles:', value: "No assigned roles.")
 			end
 		end
+		if event.user.status.to_s == "online"
+			embed.color = 1_108_583
+		elsif event.user.status.to_s == "dnd"
+			embed.color = 16_722_454
+		elsif event.user.status.to_s == "idle"
+			embed.color = 16761666
+		elsif event.user.status.to_s == "streaming"
+			embed.color = 11141306
+		end
 		embed.add_field(name: 'Creation time:', value: "#{event.user.creation_time}")
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.user.avatar_url.to_s)
 		if event.channel.private?
@@ -112,22 +140,8 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 			owner = event.user.owner?
 			if owner == false
 				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot %s.' % [$version], icon_url: 'http://i.imgur.com/VpeUzUB.png')
-			elsif event.channel.private?
-				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Server Owner", icon_url: 'http://i.imgur.com/VpeUzUB.png')
 			else
 				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Server Owner", icon_url: 'http://i.imgur.com/VpeUzUB.png')
-			end
-
-			if event.user.status.to_s == "online"
-				embed.color = 1_108_583
-			elsif event.user.status.to_s == "dnd"
-				embed.color = 16_722_454
-			elsif event.user.status.to_s == "idle"
-				embed.color = 16761666
-			elsif event.user.status.to_s == "streaming"
-				embed.color = 11141306
-			else
-				next
 			end
 		end
 	end
