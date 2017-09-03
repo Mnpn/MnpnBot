@@ -62,3 +62,19 @@ $bot.command(:brick, usage: "_brick", description: "Play the Brick song.", min_a
 	$voice_bot.play_file('./music/s.mp3');
 	$bot.voices[event.server.id].destroy
 end
+
+$bot.command(:poll, usage: "_poll <yn/ud> <poll>", description: "Create a poll.", min_arguments: 2) do |event|
+content = event.message.to_s[9..-1]
+args = event.message.to_s[5..-1]
+if args.start_with? "yn"
+	event << "yn"
+	event << content
+elsif args.start_with? "ud"
+	event << "ud"
+	event << content
+else
+	event.channel.send_embed do |embed|
+		embed.description = "You need to select Yes/No (yn) or Up/Down (ud)! (Example: _poll yn Do we want cookies?)"
+		embed.color = 16722454 # red
+	end
+end

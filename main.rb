@@ -55,6 +55,7 @@ $bot.ready do
 			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
 			sleep(10)
 		end
+	sleep(4)
 		end
 	end
 end
@@ -93,10 +94,11 @@ $bot.command(:debug, min_args: 1) do |event, *args|
 		time = Time.new
 		h = time.hour.to_s
 		min = time.min.to_s
+		s = time.sec.to_s
 		yee = time.year
 		m = time.month
 		d = time.day
-		nicelookingtime = "%s/%s/%s %s:%s" % [yee, m, d, h, min]
+		nicelookingtime = "%s/%s/%s %s:%s:%s" % [yee, m, d, h, min, s]
 		begin
 			result = eval(args.join(" "))
 			event.respond "```md
