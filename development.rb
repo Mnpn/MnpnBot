@@ -63,19 +63,53 @@ $bot.command(:brick, usage: "_brick", description: "Play the Brick song.", min_a
 	$bot.voices[event.server.id].destroy
 end
 
+$POLLS = []
+
 $bot.command(:poll, usage: "_poll <yn/ud> <poll>", description: "Create a poll.", min_arguments: 2) do |event|
 content = event.message.to_s[9..-1]
-args = event.message.to_s[5..-1]
+args = event.message.to_s[6..-1]
+begin
 	if args.start_with? "yn"
-		event << "yn"
-		event << content
+		$POLLS = $POLLS + ["#{event.message.id}#{event.server.id}"]
+		event.message.react("🇾")
+		event.message.react("🇳")
+		next
 	elsif args.start_with? "ud"
-		event << "ud"
-		event << content
+		$POLLS = $POLLS + ["#{event.message.id}#{event.server.id}"]
+		event.message.react("🔼")
+		event.message.react("🔽")
+		next
 	else
 		event.channel.send_embed do |embed|
 			embed.description = "You need to select Yes/No (yn) or Up/Down (ud)! (Example: _poll yn Do we want cookies?)"
 			embed.color = 16722454 # red
 		end
+	end
+rescue
+	event.channel.send_embed do |embed|
+		embed.description = "You need to have a poll question! (Example: _poll yn Do we want cookies?)"
+		embed.color = 16722454 # red
+	end
+end
+end
+
+$bot.command(:polls, usage: "_polls", description: "View polls.") do |event|
+pid = 1
+if $POLLS == []
+	event.respond "There are no polls yet! (Polls are cleared at every restart.)"
+	next
+end
+	event.channel.send_embed do |embed|
+		embed.title = "#{event.server.name}'s Polls"
+		$POLLS.each do |item|
+			sid = item[-18..-1]
+			mid = item[0...-18]
+			if event.server.id == sid.to_i
+				message = event.channel.message(mid.to_i)
+				embed.add_field(name: "Poll ##{pid.to_s}:", value: message.to_s[9..-1])
+				pid = pid + 1
+			end
+		end
+		embed.color = 1_108_583 # green
 	end
 end
