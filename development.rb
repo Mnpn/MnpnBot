@@ -101,14 +101,18 @@ if $POLLS == []
 end
 	event.channel.send_embed do |embed|
 		embed.title = "#{event.server.name}'s Polls"
-		$POLLS.each do |item|
-			sid = item[-18..-1]
-			mid = item[0...-18]
-			if event.server.id == sid.to_i
-				message = event.channel.message(mid.to_i)
-				embed.add_field(name: "Poll ##{pid.to_s}:", value: message.to_s[9..-1])
-				pid = pid + 1
+		begin
+			$POLLS.each do |item|
+				sid = item[-18..-1]
+				mid = item[0...-18]
+				if event.server.id == sid.to_i
+					message = event.channel.message(mid.to_i)
+					embed.add_field(name: "Poll ##{pid.to_s}:", value: message.to_s[9..-1])
+					pid = pid + 1
+				end
 			end
+		rescue
+			embed.add_field(name: "Poll ##{pid.to_s}:", value: "Deleted.")
 		end
 		embed.color = 1_108_583 # green
 	end

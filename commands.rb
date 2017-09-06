@@ -30,8 +30,7 @@ end
 
 # The help command.
 $bot.command :help do |event|
-	event << 'Version: ' + $version
-	event.channel.send_embed do |embed|
+	event.user.pm.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.description = 'Command Information'
 		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!
@@ -55,7 +54,7 @@ _psi: Personal Server Information [I]")
 
 		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
 _meme: Sends a random meme.')
-		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made by Mnpn#5043 in Ruby with major help from LEGOlord208#1033.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 
 		embed.color = 1_108_583
