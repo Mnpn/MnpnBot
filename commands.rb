@@ -310,7 +310,7 @@ $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuf
 			text == "ELChris" ||
 			text == "<@125228190825316352>" ||
 			text == "<@!125228190825316352>"
-		rating = rand(0.0..3.0)
+		rating = rand(0.0..3.0).round(1)
 	elsif text == "Shyrix" ||
 			text == "Shy" ||
 			text == "<@125228190825316352>" ||
