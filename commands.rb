@@ -30,6 +30,10 @@ end
 
 # The help command.
 $bot.command :help do |event|
+	begin
+		event.message.delete
+	rescue
+	end
 	event.user.pm.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.description = 'Command Information'
@@ -59,6 +63,8 @@ _meme: Sends a random meme.')
 
 		embed.color = 1_108_583
 	end
+	responses = ["I sent all of that in DMs!", "Check your DMs!", "Sent in DMs.", "I sent that in your private messages!", "Sent!", "Help sent in DMs!"]
+	event.respond(responses.sample + " :mailbox_with_mail:")
 end
 
 # Count
@@ -292,14 +298,24 @@ $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuf
 	if text == "Dusty" ||
 			text == "Dusty01" ||
 			text == "Dusty01_" ||
-			text == "<@151392836292444160>"
+			text == "<@151392836292444160>" ||
 			text == "<@!151392836292444160>"
 		rating = -0.1
 	elsif text == "tbodt" ||
 			text == "tbuddy" ||
-			text == "<@155417194530996225>"
+			text == "<@155417194530996225>" ||
 			text == "<@!155417194530996225>"
 		rating = Float::INFINITY
+	elsif text == "ELChris414" ||
+			text == "ELChris" ||
+			text == "<@125228190825316352>" ||
+			text == "<@!125228190825316352>"
+		rating = rand(0.0..3.0)
+	elsif text == "Shyrix" ||
+			text == "Shy" ||
+			text == "<@125228190825316352>" ||
+			text == "<@!211422653246865408>"
+		rating = "Edgy"
 	else
 		rating = rand(0.0..10.0).round(1)
 	end
