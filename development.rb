@@ -107,7 +107,7 @@ end
 				mid = item[0...-18]
 				if event.server.id == sid.to_i
 					message = event.channel.message(mid.to_i)
-					embed.add_field(name: "Poll ##{pid.to_s}:", value: message.to_s[9..-1])
+					embed.add_field(name: "Poll ##{pid.to_s} (#{mid}):", value: message.to_s[9..-1])
 					pid = pid + 1
 				end
 			end
@@ -116,4 +116,31 @@ end
 		end
 		embed.color = 1_108_583 # green
 	end
+end
+
+$bot.command(:encode, min_args: 2, usage: "_encode b64/bin <text>") do |event|
+args = event.message.to_s[8..-1]
+	begin
+		if args.start_with? "bin"
+			event.respond(args.join(" ").unpack("B*")[0].gsub(/(.{8})/, '\1 '))
+			next
+		elsif args.start_with? "b64"
+			event.respond([args.join(" ")].pack("m*").chomp)
+			next
+		else
+			event.channel.send_embed do |embed|
+				embed.description = "You need to select Base64 (b64) or Binary (bin)! (Example: _encode bin I like bananas)"
+				embed.color = 16722454 # red
+			end
+		end
+	rescue
+		event.channel.send_embed do |embed|
+			embed.description = "You need to select what to encode to! (Example: _encode b64 I like bananas)"
+			embed.color = 16722454 # red
+		end
+	end
+end
+
+$bot.command(:decode, min_args: 1, usage: "_decode <text>") do |event|
+	event << "kek"
 end
