@@ -5,7 +5,7 @@ Invite the bot with [this link](https://discordapp.com/oauth2/authorize?client_i
 # Requirements
 To use MnpnBot yourself you will need 5 gems:
 - [DiscordRB](https://github.com/meew0/discordrb)
-- [Urban Disctionary](https://github.com/milesmatthias/urban_dict)
+- [Urban Dictionary](https://github.com/milesmatthias/urban_dict)
 - [JSON](https://github.com/flori/json)
 - [Color](https://github.com/halostatue/color)
 - [Weather API](https://github.com/stewart/weather-api)
