@@ -313,9 +313,15 @@ $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuf
 		rating = rand(0.0..3.0).round(1)
 	elsif text == "Shyrix" ||
 			text == "Shy" ||
-			text == "<@125228190825316352>" ||
+			text == "<@211422653246865408>" ||
 			text == "<@!211422653246865408>"
 		rating = "Edgy"
+	elsif text == "Lionnco" ||
+			text == "Lionn" ||
+			text == "Mike" ||
+			text == "<@297803183206563841>" ||
+			text == "<@!297803183206563841>"
+		rating = rand(0.0..2.5).round(1)
 	else
 		rating = rand(0.0..10.0).round(1)
 	end

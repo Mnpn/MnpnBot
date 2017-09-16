@@ -122,10 +122,10 @@ $bot.command(:encode, min_args: 2, usage: "_encode b64/bin <text>") do |event|
 args = event.message.to_s[8..-1]
 	begin
 		if args.start_with? "bin"
-			event.respond(args.join(" ").unpack("B*")[0].gsub(/(.{8})/, '\1 '))
+			event.respond(args[4..-1].unpack("B*")[0].gsub(/(.{8})/, '\1 '))
 			next
 		elsif args.start_with? "b64"
-			event.respond([args.join(" ")].pack("m*").chomp)
+			event.respond([args[4..-1]].pack("m*").chomp)
 			next
 		else
 			event.channel.send_embed do |embed|
