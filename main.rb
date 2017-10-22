@@ -13,7 +13,7 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 2.1'
+$version = 'Release 2.2'
 $codename = 'Erithium'
 $build = 4 # I'm unsure if I will keep this.
 
@@ -89,7 +89,7 @@ end
 shyrix = "edgelord" # Again, testing variable to mess around with.
 
 # Debug: A simple eval command. Quite useful, actually!
-$bot.command(:debug, min_args: 1) do |event, *args|
+$bot.command([:debug, :d], min_args: 1) do |event, *args|
 	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
 		time = Time.new
 		h = time.hour.to_s

@@ -100,8 +100,8 @@ if $POLLS == []
 	next
 end
 	event.channel.send_embed do |embed|
+	begin
 		embed.title = "#{event.server.name}'s Polls"
-		begin
 			$POLLS.each do |item|
 				sid = item[-18..-1]
 				mid = item[0...-18]
@@ -111,36 +111,61 @@ end
 					pid = pid + 1
 				end
 			end
-		rescue
-			embed.add_field(name: "Poll ##{pid.to_s}:", value: "Deleted.")
-		end
+	rescue
+		embed.add_field(name: "Poll ##{pid.to_s}:", value: "Deleted.")
+	end
 		embed.color = 1_108_583 # green
 	end
 end
 
-$bot.command(:encode, min_args: 2, usage: "_encode b64/bin <text>") do |event|
+$bot.command(:encode, min_args: 2, usage: "_encode b64/bin/hex <text>") do |event|
 args = event.message.to_s[8..-1]
 	begin
 		if args.start_with? "bin"
 			event.respond(args[4..-1].unpack("B*")[0].gsub(/(.{8})/, '\1 '))
 			next
 		elsif args.start_with? "b64"
-			event.respond([args[4..-1]].pack("m*").chomp)
+			event.respond([args[4..-1].pack("m*").chomp)
+			next
+		elsif args.start_with? "hex"
+			event.respond([args[4..-1].each_byte.map { |b| b.to_s(16) }.join)
 			next
 		else
 			event.channel.send_embed do |embed|
-				embed.description = "You need to select Base64 (b64) or Binary (bin)! (Example: _encode bin I like bananas)"
+				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
 				embed.color = 16722454 # red
 			end
 		end
 	rescue
 		event.channel.send_embed do |embed|
-			embed.description = "You need to select what to encode to! (Example: _encode b64 I like bananas)"
+			embed.description = "Error! Message too long or you need to select what to encode to! (Example: _encode b64 I like bananas)"
 			embed.color = 16722454 # red
 		end
 	end
 end
 
-$bot.command(:decode, min_args: 1, usage: "_decode <text>") do |event|
-	event << "kek"
+$bot.command(:decode, min_args: 1, usage: "_decode b64/bin/hex <text>") do |event|
+args = event.message.to_s[8..-1]
+	begin
+		if args.start_with? "bin"
+			event.respond(args[4..-1].pack("B*"))
+			next
+		elsif args.start_with? "b64"
+			event.respond([args[4..-1]].unpack('m*')[0])
+			next
+		elsif args.start_with? "hex"
+			event.respond([args[4..-1].pack('H*'))
+			next
+		else
+			event.channel.send_embed do |embed|
+				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
+				embed.color = 16722454 # red
+			end
+		end
+	rescue
+		event.channel.send_embed do |embed|
+			embed.description = " Message too long to send!"
+			embed.color = 16722454 # red
+		end
+	end
 end
