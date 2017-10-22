@@ -125,10 +125,10 @@ args = event.message.to_s[8..-1]
 			event.respond(args[4..-1].unpack("B*")[0].gsub(/(.{8})/, '\1 '))
 			next
 		elsif args.start_with? "b64"
-			event.respond([args[4..-1].pack("m*").chomp)
+			event.respond([args[4..-1]].pack("m*").chomp)
 			next
 		elsif args.start_with? "hex"
-			event.respond([args[4..-1].each_byte.map { |b| b.to_s(16) }.join)
+			event.respond(args[4..-1].each_byte.map { |b| b.to_s(16) }.join)
 			next
 		else
 			event.channel.send_embed do |embed|
@@ -154,7 +154,7 @@ args = event.message.to_s[8..-1]
 			event.respond([args[4..-1]].unpack('m*')[0])
 			next
 		elsif args.start_with? "hex"
-			event.respond([args[4..-1].pack('H*'))
+			event.respond(args[4..-1].pack('H*'))
 			next
 		else
 			event.channel.send_embed do |embed|
