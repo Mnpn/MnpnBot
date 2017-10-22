@@ -148,13 +148,13 @@ $bot.command(:decode, min_args: 1, usage: "_decode b64/bin/hex <text>") do |even
 args = event.message.to_s[8..-1]
 	begin
 		if args.start_with? "bin"
-			event.respond(args[4..-1].pack("B*"))
+			event.respond([args[4..-1]].pack("B*"))
 			next
 		elsif args.start_with? "b64"
-			event.respond([args[4..-1]].unpack('m*')[0])
+			event.respond(args[4..-1].unpack('m*')[0])
 			next
 		elsif args.start_with? "hex"
-			event.respond(args[4..-1].pack('H*'))
+			event.respond([args[4..-1]].pack('H*'))
 			next
 		else
 			event.channel.send_embed do |embed|
@@ -164,7 +164,7 @@ args = event.message.to_s[8..-1]
 		end
 	rescue
 		event.channel.send_embed do |embed|
-			embed.description = " Message too long to send!"
+			embed.description = "That message is too long to send, or I cannot decode that."
 			embed.color = 16722454 # red
 		end
 	end
