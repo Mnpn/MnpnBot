@@ -148,7 +148,8 @@ $bot.command(:decode, min_args: 1, usage: "_decode b64/bin/hex <text>") do |even
 args = event.message.to_s[8..-1]
 	begin
 		if args.start_with? "bin"
-			event.respond([args[4..-1]].pack("B*"))
+			args = args[4..-1].gsub(/\s+/, "")
+			event.respond([args].pack("B*"))
 			next
 		elsif args.start_with? "b64"
 			event.respond(args[4..-1].unpack('m*')[0])
