@@ -13,7 +13,7 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 2.3'
+$version = 'Release 2.3.1'
 $codename = 'Erithium'
 $build = 5 # I'm unsure if I will keep this.
 
