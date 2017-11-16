@@ -486,7 +486,13 @@ $bot.command(:lmgtfy) do |event, *args|
 	event.respond "#{event.user.mention}, <http://lmgtfy.com/?q=%s>" % [args.join("+")]
 end
 
+RBLACKLIST = []
+
 $bot.command(:feedback, min_args: 1) do |event, *args|
+	if RBLACKLIST.include?(event.author.id)
+		event.respond "You're temporarily blacklisted for sending trash."
+		next
+	end
 	event.respond "Done! Check your DMs! :mailbox_with_mail: "
 	event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
 	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
