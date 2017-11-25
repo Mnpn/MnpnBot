@@ -38,12 +38,12 @@ $bot.command :help do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.description = 'Command Information'
 		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!
-_randomize: Usage: '_randomize 1 10'. Number randomizer.
+_random: Usage: '_random 1 10'. Number randomiser.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
 _roman: Usage: '_roman 50'. Change numerals to romans.
 _rate: Usage: '_rate the laptop'. Rate something.
-_colour: Generate a random colour and show the value in Hex, RGB and Decimal.
+_colour/_color: Generate a random colour and show the value in Hex, RGB and Decimal.
 _lmgtfy: Generate a LMGTFY link.
 _avatar: Shows a user's avatar.
 _feedback: Send feedback on MnpnBot.
@@ -99,7 +99,7 @@ $bot.command :ping do |event|
 end
 
 # Randomize
-$bot.command(:randomize, min_args: 2, max_args: 2, usage: 'randomize <min> <max>') do |event, min, max|
+$bot.command(:random, min_args: 2, max_args: 2, usage: 'random <min> <max>') do |event, min, max|
 	min_i = 0
 	max_i = 0
 
@@ -162,7 +162,7 @@ end
 # Invite
 $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
-		embed.title = 'Invite link. Click the invite text above to open a web browser to authorize MnpnBot.'
+		embed.title = 'Invite link. Click the invite text above to open a web browser to authorise MnpnBot.'
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.color = 1_108_583
 	end
@@ -172,7 +172,7 @@ end
 $bot.server_create do |event|
 	event.server.default_channel.send_embed do |embed|
 		embed.title = 'MnpnBot'
-		embed.description = "You have authorized **MnpnBot**. Hello World! To get started, say '_help'"
+		embed.description = "You have authorised **MnpnBot**. Hello World! To get started, say '_help'"
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0s', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.color = 1_108_583
 	end
@@ -182,20 +182,20 @@ end
 $bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
-			defin = nil
+			define = nil
 			msg = args.join(' ')
-			defin = if msg != ''
+			define = if msg != ''
 			   UrbanDict.define(msg)
 					else
 						UrbanDict.random
 					end
 			embed.title = 'Urban Dictionary'
 			embed.description = 'Urban Dictionary; Define a word.'
-			embed.add_field(name: "***#{defin['word']}***", value: "by #{defin['author']}", inline: true)
-			embed.add_field(name: '**Definition**', value: (defin['definition']).to_s, inline: true)
-			embed.add_field(name: '**Example**', value: (defin['example']).to_s, inline: true)
-			embed.add_field(name: "#{defin['thumbs_up']} Likes | #{defin['thumbs_down']} Dislikes", value: 'Urban Dictionary', inline: true)
-			embed.add_field(name: "***<#{defin['permalink']}>***", value: 'Direct link', inline: true)
+			embed.add_field(name: "***#{define['word']}***", value: "by #{define['author']}", inline: true)
+			embed.add_field(name: '**Definition**', value: (define['definition']).to_s, inline: true)
+			embed.add_field(name: '**Example**', value: (define['example']).to_s, inline: true)
+			embed.add_field(name: "#{define['thumbs_up']} Likes | #{define['thumbs_down']} Dislikes", value: 'Urban Dictionary', inline: true)
+			embed.add_field(name: "***<#{define['permalink']}>***", value: 'Direct link', inline: true)
 			embed.color = 4_359_924
 		end
 	rescue
@@ -421,7 +421,7 @@ if event.channel.private?
 	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
 		event.channel.send_embed do |embed|
 			embed.title = 'Restricted command :no_entry:'
-			embed.description = "Only the server owner can opt in and out of PTR."
+			embed.description = "Only the server owner can opt in and out of the PTR."
 			embed.color = 16_722_454 # red
 		end
 		next
@@ -453,8 +453,9 @@ $bot.command(:cookies) do |event|
 	event.respond ":cookie:"
 end
 
-# Colour
-$bot.command(:colour, min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
+# Colour.
+# Hiss! It's colour! I'm just adding _color for the miserable thots (americans*) out there. Shut up, it's colour.
+$bot.command([:colour, :color], min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
 
 colour = rand(1000000..19000000)
 
@@ -476,10 +477,6 @@ else
 			embed.color = colour
 		end
 	end
-end
-
-$bot.command(:egg) do |event|
-	event.respond ":egg: Egg | Community can be found at https://discord.me/cooleggs"
 end
 
 $bot.command(:lmgtfy) do |event, *args|
