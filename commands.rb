@@ -495,8 +495,7 @@ $bot.command(:feedback, min_args: 1) do |event, *args|
 	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
-MEME_BLACKLIST = [178333410098413568, # Focus#1149
-	200223980483772416, # Nick (Demo_Nick)#5841
+MEME_BLACKLIST = [200223980483772416, # Nick (Demo_Nick)#5841
 	]
 
 REQUESTABLES = [172030506970382337]
