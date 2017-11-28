@@ -108,13 +108,13 @@ $bot.command(:random, min_args: 2, max_args: 2, usage: 'random <min> <max>') do 
 		max_i = Integer(max)
 	rescue ArgumentError
 		event.channel.send_embed do |embed|
-			embed.title = 'Randomize:'
+			embed.title = 'Random:'
 			embed.description = "That's not numbers!"
 		end
 	end
 
 	event.channel.send_embed do |embed|
-		embed.title = 'Randomize:'
+		embed.title = 'Random:'
 		embed.description = 'The result was %d.' % [rand(min_i..max_i)]
 	end
 end
