@@ -77,7 +77,7 @@ ss = $bot.servers.count - lsc
 			embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: false)
 			embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: false)
 			embed.color = 1_108_583
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 1 in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 3B in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		end
 	rescue
 		event.channel.send_embed do |embed|
@@ -90,7 +90,7 @@ ss = $bot.servers.count - lsc
 			embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
 			embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
 			embed.color = 1_108_583
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 1 in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 3B in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		end
 	end
 end
