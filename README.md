@@ -1,4 +1,6 @@
 # MnpnBot
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square)](https://paypal.me/mnpn03/)
+
 Discord bot created in Ruby using DiscordRB.
 Invite the bot with [this link](https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0).
 
@@ -17,7 +19,3 @@ If you need any help, you can find me (Mnpn#5043) and contributors on [this serv
 
 # Contributing
 Any bugs or issues can be posted in the [Support Guild](https://discord.gg/Ww74Xjh) or on [GitHub](https://github.com/Mnpn03/MnpnBot).
-
-# License
-Copyright © 2017 Mnpn. All rights reserved. :eyes:
-TL;DR all rights reserved ok. im watching you.
