@@ -98,7 +98,7 @@ $bot.command :ping do |event|
 	end
 end
 
-# Randomize
+# Random
 $bot.command(:random, min_args: 2, max_args: 2, usage: 'random <min> <max>') do |event, min, max|
 	min_i = 0
 	max_i = 0
