@@ -616,3 +616,19 @@ end
 It's #{condition}."
 		end
 end
+
+bot.command(:suggest, min_args: 1) do |event, *args|
+	event.user.pm "You've sent a suggestion to Mnpn's Support server: `%s`." % args.join(" ")
+	channel = bot.channel(422296321257635841, event.server.id)
+	msg = channel.send_embed do |embed|
+		embed.title = 'Suggestion'
+		embed.description = "#{args.join(" ")}"
+		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Suggested by #{event.user.name}.", icon_url: event.server.icon_url.to_s)
+		embed.color = 10233776
+		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.user.avatar_url)
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name:("%s#%s" % [event.user.name, event.user.discrim]), icon_url: event.user.avatar_url)
+	end
+	msg.react("🔼")
+	msg.react("🔽")
+	event.respond "Suggested! People can now up- and down-vote it in <#422296321257635841>."
+end
