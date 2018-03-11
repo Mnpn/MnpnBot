@@ -617,9 +617,9 @@ It's #{condition}."
 		end
 end
 
-bot.command(:suggest, min_args: 1) do |event, *args|
+$bot.command(:suggest, min_args: 1) do |event, *args|
 	event.user.pm "You've sent a suggestion to Mnpn's Support server: `%s`." % args.join(" ")
-	channel = bot.channel(422296321257635841, event.server.id)
+	channel = $bot.channel(422296321257635841, event.server.id)
 	msg = channel.send_embed do |embed|
 		embed.title = 'Suggestion'
 		embed.description = "#{args.join(" ")}"
