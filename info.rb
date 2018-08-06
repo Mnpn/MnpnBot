@@ -100,14 +100,12 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 	end
 end
 
-$bot.command :mnpn do |event|
-	if event.user.id != 172030506970382337 && event.user.id != 292020442422706177
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = "You're not Mnpn, kek."
-			embed.color = 16_722_454 # red
-		end
-		next
+$bot.command :bs do |event|
+	if $settings[event.server.id.to_s]["ptr"] == nil
+		$settings[event.server.id.to_s]["ptr"] = false
+	end
+	if $settings[event.server.id.to_s]["s_mode"] == nil
+		$settings[event.server.id.to_s]["s_mode"] = false
 	end
 	event.channel.send_embed do |embed|
 		embed.title = 'MnpnBot Settings'
@@ -115,7 +113,7 @@ $bot.command :mnpn do |event|
 		embed.add_field(name: 'Count limit', value: $limit, inline: true)
 		embed.add_field(name: 'Version', value: $version, inline: true)
 		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
+		embed.add_field(name: 'S-Mode, PTR', value: "#{$settings[event.server.id]["s_mode"]}, #{$settings[event.server.id]["ptr"]}", inline: true)
 		embed.color = 1_108_583 # green
 	end
 end
