@@ -43,37 +43,19 @@ Server Settings: Verification level: \"#{verchann}\", AFK Channel and timeout: \
 end
 
 $bot.command :bi do |event|
-lsc = 0
-ls = $bot.servers.values.each { |s| lsc += 1 if s.large }
-ss = $bot.servers.count - lsc
-	begin
-		event.channel.send_embed do |embed|
-			embed.title = 'Bot Information'
-			embed.description = 'Advanced bot information.'
-			embed.add_field(name: 'Currently active on', value: "**#{$bot.servers.count}** servers.")
-			embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
-			embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
-			embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
-			embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
-			embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
-			embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: false)
-			embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: false)
-			embed.color = 1_108_583
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 3B in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
-		end
-	rescue
-		event.channel.send_embed do |embed|
-			embed.title = 'Bot Information'
-			embed.description = 'Advanced bot information.'
-			embed.add_field(name: 'Currently active on', value: "**#{$bot.servers.count}** servers.")
-			embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
-			embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
-			embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
-			embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
-			embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
-			embed.color = 1_108_583
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 3B in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
-		end
+	lsc = 0
+	ls = $bot.servers.values.each { |s| lsc += 1 if s.large }
+	ss = $bot.servers.count - lsc
+	event.channel.send_embed do |embed|
+		embed.title = 'Bot Information'
+		embed.description = "Currently active on **#{$bot.servers.count}** servers."
+		embed.add_field(name: lsc.to_s, value: 'Large servers', inline: true)
+		embed.add_field(name: ss.to_s, value: 'Small servers.', inline: true)
+		embed.add_field(name: $bot.users.count.to_s, value: 'Unique users.', inline: true)
+		embed.add_field(name: 'Connected to', value: "#{$bot.servers.count} servers.", inline: true)
+		embed.add_field(name: 'Version and Codename', value: "#{$version}, Codename '#{$codename}'.", inline: true)
+		embed.color = 1108583
+		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot is hosted on a Raspberry Pi 3B in Sweden, Europe.', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 	end
 end
 
