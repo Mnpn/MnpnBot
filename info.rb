@@ -64,22 +64,14 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 	playing = 'Nothing' if playing.nil?
 	event.channel.send_embed do |embed|
 		embed.title = 'User Information'
-		embed.description = "Name, Discrim and ID: #{event.user.name}##{event.user.discrim}, #{event.user.id}"
-		embed.add_field(name: 'Status:', value: event.user.status.to_s)
-		embed.add_field(name: 'Currently Playing:', value: playing)
-		if event.channel.private?
-		else
-			joined = event.user.joined_at
-			embed.add_field(name: 'Joined at:', value: joined)
-		end
-		if event.channel.private?
-		else
+		desc = "**Name#Discrim and ID:** #{event.user.name}##{event.user.discrim}, #{event.user.id}
+**Status:** #{event.user.status}
+**Currently Playing:** #{playing}"
+		if !event.channel.private?
+			desc << "\n**Joined at:** #{event.user.joined_at}"
 			nick = event.user.nick
 			nick = 'None' if nick.nil?
-			embed.add_field(name: 'Nickname:', value: nick)
-		end
-		if event.channel.private?
-		else
+			desc << "\n**Nickname:** #{nick}"
 			roles = event.user.roles
 			if !roles.empty?
 				embed.add_field(name: 'Roles:', value: roles.map {|x| x.name}.join(", "))
@@ -87,26 +79,22 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 				embed.add_field(name: 'Roles:', value: "No assigned roles.")
 			end
 		end
-		if event.user.status.to_s == "online"
-			embed.color = 1_108_583
-		elsif event.user.status.to_s == "dnd"
-			embed.color = 16_722_454
-		elsif event.user.status.to_s == "idle"
-			embed.color = 16761666
-		elsif event.user.status.to_s == "streaming"
-			embed.color = 11141306
+		if event.user.status.to_s == "online"; embed.color = 1_108_583
+		elsif event.user.status.to_s == "dnd"; embed.color = 16_722_454
+		elsif event.user.status.to_s == "idle"; embed.color = 16761666
+		elsif event.user.status.to_s == "streaming"; embed.color = 11141306
 		end
-		embed.add_field(name: 'Creation time:', value: "#{event.user.creation_time}")
+		desc << "\n**Creation time:** #{event.user.creation_time}"
+		embed.description = desc
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.user.avatar_url.to_s)
 		if event.channel.private?
 			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Pro Tip! Run this command in a server!', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 			next
 		else
-			owner = event.user.owner?
-			if owner == false
-				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'MnpnBot %s.' % [$version], icon_url: 'http://i.imgur.com/VpeUzUB.png')
+			if !event.user.owner?
+				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: 'http://i.imgur.com/VpeUzUB.png')
 			else
-				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Server Owner", icon_url: 'http://i.imgur.com/VpeUzUB.png')
+				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.user.name} is the server owner.", icon_url: event.server.icon_url)
 			end
 		end
 	end
