@@ -532,23 +532,16 @@ end
 
 # Memes
 
-MEME_LINKS = ["https://mnpn.me/images/triggered.png",
-	"https://s-media-cache-ak0.pinimg.com/736x/4c/76/0f/4c760fba47623735a658e0b77d937062--happy-friday-the-th-horror-movies.jpg",
+MEME_LINKS = ["https://s-media-cache-ak0.pinimg.com/736x/4c/76/0f/4c760fba47623735a658e0b77d937062--happy-friday-the-th-horror-movies.jpg",
 	"https://i.imgur.com/94Qd8i2.jpg",
 	"https://i.imgur.com/LH0tziN.jpg",
 	"https://i.imgur.com/qv30k9P.png",
 	"https://i.imgur.com/P1FYuZX.jpg",
 	"https://cdn.discordapp.com/attachments/331762274966437888/339740554273357824/oncewentoutsude.png",
 	"https://i.imgur.com/xHK8BRY.jpg",
-	"https://cdn.discordapp.com/attachments/228221346608316417/334426154784260096/S_T_O_P.png",
-	"https://cdn.discordapp.com/attachments/228221346608316417/309355048494694410/unknown.png",
-	"https://cdn.discordapp.com/attachments/228221346608316417/338054796399607809/THOTRIGGERED.png",
-	"https://mnpn.me/images/em.png",
-	"https://cdn.discordapp.com/attachments/311566841728335882/341143275299930113/unknown.png",
 	"https://cdn.discordapp.com/attachments/228221346608316417/338253135795716097/image.jpg",
 	"https://s-media-cache-ak0.pinimg.com/736x/13/e0/ce/13e0cef23c4323e8d32be0e6322be99a--funny-happy-birthday-meme-funny-happy-birthdays.jpg",
 	"http://www.fullredneck.com/wp-content/uploads/2016/04/Funny-Russia-Meme-20.jpg",
-	"https://mnpn.me/images/kat_codes.png",
 	"https://i.imgur.com/4v86w8y.png"]
 
 $bot.command(:meme) do |event|
