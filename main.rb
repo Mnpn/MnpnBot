@@ -47,17 +47,17 @@ require_relative 'info.rb'
 require_relative 'development.rb'
 
 $bot.ready do
-	loop do
-		if $custom == false
+	#loop do
+		#if $custom == false
 			$bot.stream($version, 'https://www.twitch.tv/mnpn04')
-			sleep(20)
-		if $custom == false
-			$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
-			sleep(10)
-		end
-	sleep(4)
-		end
-	end
+			#sleep(20)
+		#if $custom == false
+			#$bot.stream('Ruby', 'https://www.twitch.tv/mnpn04')
+			#sleep(10)
+		#end
+	#sleep(4)
+		#end
+	#end
 end
 
 # When ready, set the time it started and print some basic info.
