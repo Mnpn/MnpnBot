@@ -1,61 +1,43 @@
 $bot.command :si do |event|
-	begin
-		if event.channel.private?
-			event.channel.send_embed do |embed|
-				embed.title = ':no_entry:'
-				embed.description = 'This command cannot be used in a PM!'
-				embed.color = 16_722_454
-			end
-		else
-			event.channel.send_embed do |embed|
-			verchann = event.server.verification_level
-			if verchann == nil
-				verchann = "None"
-			end
-			afkchann = event.server.afk_channel
-			if afkchann == nil
-				afkchann = "None"
-			else
-				afkchann = event.server.afk_channel.name
-			end
-			if $settings[event.server.id.to_s]["ptr"] == nil
-				$settings[event.server.id.to_s]["ptr"] = false
-			end
-			if $settings[event.server.id.to_s]["s_mode"] == nil
-				$settings[event.server.id.to_s]["s_mode"] = false
-			end
-			if event.server.large? == true
-				size = "Large"
-			else
-				size = "Small"
-			end
-				embed.title = 'Server Information'
-				embed.description = 'Advanced server information.'
-				embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
-				embed.add_field(name: 'Server Settings:', value: "Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}.")
-				embed.add_field(name: 'Icon:', value: event.server.icon_url.to_s, inline: true)
-				embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-				embed.add_field(name: 'S-Mode, PTR:', value: "#{$settings[event.server.id.to_s]["s_mode"]}, #{$settings[event.server.id.to_s]["ptr"]}", inline: true)
-				embed.add_field(name: 'Creation time:', value: event.server.creation_time, inline: true)
-				embed.add_field(name: 'Has Emoji?', value: event.server.emoji?, inline: true)
-				embed.color = 1_108_583
-				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url.to_s)
-
-				embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: event.server.name.to_s, icon_url: event.server.icon_url.to_s)
-			end
-		end
-	rescue
+	if event.channel.private?
 		event.channel.send_embed do |embed|
-			embed.title = 'Server Information'
-			embed.description = 'Advanced server information.'
-			embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}")
-
+			embed.title = ':no_entry:'
+			embed.description = 'This command cannot be used in a PM!'
+			embed.color = 16_722_454
+		end
+	else
+		event.channel.send_embed do |embed|
+		verchann = event.server.verification_level
+		if verchann == nil
+			verchann = "None"
+		end
+		afkchann = event.server.afk_channel
+		if afkchann == nil
+			afkchann = "None"
+		else
+			afkchann = event.server.afk_channel.name
+		end
+		if $settings[event.server.id.to_s]["ptr"] == nil
+			$settings[event.server.id.to_s]["ptr"] = false
+		end
+		if $settings[event.server.id.to_s]["s_mode"] == nil
+			$settings[event.server.id.to_s]["s_mode"] = false
+		end
+		if event.server.large?
+			size = "Large" else size = "Small"
+		end
+		if event.server.emoji? == true
+			emoji = "Server has emoji." else emoji = "Server does not have any emoji."
+		end
+			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Server Information", url: event.server.icon_url, icon_url: event.server.icon_url)
+			embed.add_field(name: "**#{event.server.name}**", value: "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}
+Server Settings: Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}. #{emoji}")
 			embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-			embed.color = 1_108_583
+			embed.add_field(name: 'S-Mode, PTR:', value: "#{$settings[event.server.id]["s_mode"]}, #{$settings[event.server.id]["ptr"]}", inline: true)
 			embed.add_field(name: 'Creation time:', value: event.server.creation_time, inline: true)
-			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url.to_s)
-
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: event.server.name.to_s)
+			embed.color = 1108583
+			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url)
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: event.server.name, icon_url: event.server.icon_url)
 		end
 	end
 end
