@@ -86,8 +86,6 @@ $bot.command :reload do |event|
 	end
 end
 
-shyrix = "edgelord" # Again, testing variable to mess around with.
-
 # Debug: A simple eval command. Quite useful, actually!
 $bot.command([:debug, :d], min_args: 1) do |event, *args|
 	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
