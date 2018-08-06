@@ -53,8 +53,7 @@ _weather: Usage: '_weather Hell'. Weather Forecast.")
 _uptime: Shows bot uptime.
 _si: Shows server information.
 _bi: Shows bot information.
-_ui: Shows your information.
-_psi: Personal Server Information [I]")
+_ui: Shows your information.")
 
 		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
 _meme: Sends a random meme.')

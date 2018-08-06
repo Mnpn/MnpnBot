@@ -100,18 +100,6 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 	end
 end
 
-$bot.command :psi do |event|
-	if event.user.id != event.server.owner.id
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = "You're not the owner of this server."
-			embed.color = 16_722_454 # red
-		end
-	else
-		event << 'It looks like you, <@%d' % event.server.owner.id + '> is the server owner. This feature is pretty stupid right now.'
-	end
-end
-
 $bot.command :mnpn do |event|
 	if event.user.id != 172030506970382337 && event.user.id != 292020442422706177
 		event.channel.send_embed do |embed|
