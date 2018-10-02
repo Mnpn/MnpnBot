@@ -330,9 +330,9 @@ end
 $bot.command(:website) do |event|
 	event.channel.send_embed do |embed|
 		embed.title = 'Website'
-		embed.description = "So you're interested in a website?
-All my bots are on my website:"
-		embed.add_field(name: 'https://mnpn.me/', value: "Go there!", inline: true)
+		embed.description = "Here's my website:"
+		embed.add_field(name: 'https://mnpn.hisses-at.me/', value: "I like the domain name.", inline: true)
+		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: $bot.profile.avatar_url)
 		embed.color = 1_108_583 # green
 	end
 end
