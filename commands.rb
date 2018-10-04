@@ -56,7 +56,8 @@ _bi: Shows bot information.
 _ui: Shows your information.")
 
 		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
-_meme: Sends a random meme.')
+_meme: Sends a random meme.
+_insult: Sends a random insult using jD91mZM2\'s Oh...Sir!-like insult program.')
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: 'http://i.imgur.com/VpeUzUB.png')
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
 
@@ -624,4 +625,8 @@ $bot.command(:suggest, min_args: 1) do |event, *args|
 	msg.react("🔼")
 	msg.react("🔽")
 	event.respond "Suggested! People can now up- and down-vote it in <#422296321257635841>."
+end
+
+$bot.command(:insult) do |event|
+	event.respond `insult`
 end
