@@ -88,7 +88,7 @@ end
 
 # Debug: A simple eval command. Quite useful, actually!
 $bot.command([:debug, :d], min_args: 1) do |event, *args|
-	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
+	if event.user.id == 172030506970382337
 		time = Time.new
 		h = time.hour.to_s
 		min = time.min.to_s
