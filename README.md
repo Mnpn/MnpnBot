@@ -14,6 +14,8 @@ To use MnpnBot yourself you will need 5 gems:
 
 Each of these are required.
 
+You can run MnpnBot with `ruby main.rb`, after you have entered your bot token in `token.txt`
+
 # Support
 If you need any help, you can find me (Mnpn#5043) and contributors on [this server](https://discord.gg/Ww74Xjh).
 
