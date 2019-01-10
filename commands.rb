@@ -70,24 +70,6 @@ _insult: Sends a random insult using jD91mZM2\'s Oh...Sir!-like insult program.'
 	end
 end
 
-# Count
-$bot.command(:count, min_args: 1, max_args: 1, usage: '_count [to]') do |event, to|
-	i = 0
-	begin
-		i = Integer(to)
-	rescue ArgumentError
-		event.respond 'Not a number!'
-		next
-	end
-	if i > $limit
-		event.respond 'The limit is currently set at %d.' % [$limit]
-		next
-	end
-	for j in 1..i do
-		event << 'Counting! Currently on %d.' % [i + 1]
-	end
-end
-
 # Ping
 $bot.command :ping do |event|
 	# event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."

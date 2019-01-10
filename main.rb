@@ -17,7 +17,6 @@ token = File.read "token.txt"
 $version = 'Release 2.4.0'
 $codename = 'Delta'
 
-$limit = 15
 $custom = false
 $annoy = false
 $started = 0

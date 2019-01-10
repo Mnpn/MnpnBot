@@ -2,7 +2,7 @@ $bot.command :si do |event|
 	if event.channel.private?
 		event.channel.send_embed do |embed|
 			embed.title = ':no_entry:'
-			embed.description = 'This command cannot be used in a PM!'
+			embed.description = 'This command cannot be used in a DM!'
 			embed.color = 16_722_454
 		end
 	else
@@ -101,19 +101,23 @@ $bot.command([:ui, :uinfo, :userinfo]) do |event|
 end
 
 $bot.command :bs do |event|
-	if $settings[event.server.id.to_s]["ptr"] == nil
-		$settings[event.server.id.to_s]["ptr"] = false
-	end
-	if $settings[event.server.id.to_s]["s_mode"] == nil
-		$settings[event.server.id.to_s]["s_mode"] = false
+	if !event.channel.private?
+		if $settings[event.server.id.to_s]["ptr"] == nil
+			$settings[event.server.id.to_s]["ptr"] = false
+		end
+		if $settings[event.server.id.to_s]["s_mode"] == nil
+			$settings[event.server.id.to_s]["s_mode"] = false
+		end
 	end
 	event.channel.send_embed do |embed|
 		embed.title = 'MnpnBot Settings'
 		embed.description = 'Here are the current settings.'
-		embed.add_field(name: 'Count limit', value: $limit, inline: true)
+		embed.add_field(name: 'Wikipedia text limit', value: $wikilimit, inline: true)
 		embed.add_field(name: 'Version', value: $version, inline: true)
 		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-		embed.add_field(name: 'S-Mode, PTR', value: "#{$settings[event.server.id]["s_mode"]}, #{$settings[event.server.id]["ptr"]}", inline: true)
-		embed.color = 1_108_583 # green
+		if !event.channel.private?
+			embed.add_field(name: 'S-Mode, PTR', value: "#{$settings[event.server.id]["s_mode"]}, #{$settings[event.server.id]["ptr"]}", inline: true)
+		end
+		embed.color = 1108583 # green
 	end
 end
