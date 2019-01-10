@@ -114,7 +114,6 @@ $bot.command :bs do |event|
 		embed.description = 'Here are the current settings.'
 		embed.add_field(name: 'Wikipedia text limit', value: $wikilimit, inline: true)
 		embed.add_field(name: 'Version', value: $version, inline: true)
-		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
 		if !event.channel.private?
 			embed.add_field(name: 'S-Mode, PTR', value: "#{$settings[event.server.id]["s_mode"]}, #{$settings[event.server.id]["ptr"]}", inline: true)
 		end

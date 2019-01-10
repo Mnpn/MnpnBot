@@ -1,33 +1,3 @@
-$bot.command(:annoy, min_args: 1, max_args: 1, usage: 'Annoy true/false') do |event, answ|
-	if event.user.id != 172030506970382337
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = "You're not allowed to change this."
-			embed.color = 16_722_454 # red
-		end
-		next
-	end
-	if answ == 'true'
-		$annoy = true
-	elsif answ == 'false'
-		$annoy = false
-	else
-		event.channel.send_embed do |embed|
-			embed.title = 'What the fuck?'
-			embed.description = "What's your problem? It's either true or false you fucking moron."
-			embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-			embed.color = 16_722_454 # green
-		end
-		next
-	end
-	event.channel.send_embed do |embed|
-		embed.title = 'MnpnBot Settings - Annoy'
-		embed.description = 'I changed it.'
-		embed.add_field(name: 'Annoy', value: $annoy, inline: true)
-		embed.color = 1_108_583 # green
-	end
-end
-
 # The help command.
 $bot.command :help do |event|
 	begin

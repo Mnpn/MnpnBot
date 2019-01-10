@@ -18,7 +18,6 @@ $version = 'Release 2.4.0'
 $codename = 'Delta'
 
 $custom = false
-$annoy = false
 $started = 0
 $wikilimit = 750
 
