@@ -406,24 +406,6 @@ $bot.command(:feedback, min_args: 1) do |event, *args|
 	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
-MEME_BLACKLIST = [200223980483772416, # Nick (Demo_Nick)#5841
-	]
-
-REQUESTABLES = [172030506970382337]
-	
-$bot.command(:addmeme, min_args: 1, max_args: 1) do |event, args|
-	if MEME_BLACKLIST.include?(event.author.id)
-		event.respond "You're temporarily blacklisted for requesting trash."
-		next
-	end
-		event.respond "Requested! It will be reviewed soon."
-		REQUESTABLES.each do |item|
-			$user = $bot.user(item);
-			$user.pm("%s has requested a meme: %s" % [(event.author.name + "#" + event.author.discrim), args])
-		end
-	next
-end
-
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|
 # Might want to look into webp and size
 user = user[2..-2]
@@ -439,29 +421,6 @@ user = user[2..-2]
 		rescue
 			event.respond "That's an invalid user."
 		end
-	end
-end
-
-# Memes
-
-MEME_LINKS = ["https://s-media-cache-ak0.pinimg.com/736x/4c/76/0f/4c760fba47623735a658e0b77d937062--happy-friday-the-th-horror-movies.jpg",
-	"https://i.imgur.com/94Qd8i2.jpg",
-	"https://i.imgur.com/LH0tziN.jpg",
-	"https://i.imgur.com/qv30k9P.png",
-	"https://i.imgur.com/P1FYuZX.jpg",
-	"https://cdn.discordapp.com/attachments/331762274966437888/339740554273357824/oncewentoutsude.png",
-	"https://i.imgur.com/xHK8BRY.jpg",
-	"https://cdn.discordapp.com/attachments/228221346608316417/338253135795716097/image.jpg",
-	"https://s-media-cache-ak0.pinimg.com/736x/13/e0/ce/13e0cef23c4323e8d32be0e6322be99a--funny-happy-birthday-meme-funny-happy-birthdays.jpg",
-	"http://www.fullredneck.com/wp-content/uploads/2016/04/Funny-Russia-Meme-20.jpg",
-	"https://i.imgur.com/4v86w8y.png"]
-
-$bot.command(:meme) do |event|
-memeages = ["ill meme u!","here's a meme","oh look, a meme!","I got u fam!","meme","this one is dank, i promise","https://niceme.me/","ur a meme","meeeeee.me","i think im out of ideas for this string here","k","kk","ok","mhm","sure"]
-	event.channel.send_embed do |embed|
-		embed.description = memeages.sample
-		embed.color = rand(1000000..1900000)
-		embed.image = Discordrb::Webhooks::EmbedImage.new(url: MEME_LINKS.sample)
 	end
 end
 
