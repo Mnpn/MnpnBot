@@ -6,6 +6,7 @@ require 'urban_dict'
 require 'json'
 require 'color'
 require 'weather-api'
+require 'wikipedia'
 
 CLIENT_ID = 289471282720800768
 
@@ -21,6 +22,7 @@ $limit = 15
 $custom = false
 $annoy = false
 $started = 0
+$wikilimit = 750
 
 prefixes = ["_"] # Allows multiple prefixes if needed.
 # End of config.

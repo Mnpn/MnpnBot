@@ -630,3 +630,28 @@ end
 $bot.command(:insult) do |event|
 	event.respond `insult`
 end
+
+$bot.command([:wikipedia, :wiki], min_args: 1, usage: 'wikipedia <search term>') do |event, *args|
+	begin
+		page = Wikipedia.find(args.join(" "))
+		event.channel.send_embed do |embed|
+			embed.title = "Wikipedia - #{page.title}"
+			# Not using page.text. Way too spammy.
+			embed.description = page.summary[0..$wikilimit].gsub(/\s\w+\s*$/,'...')
+			embed.color = 16777215
+			if page.main_image_url != nil
+				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: page.main_image_url)
+			end
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{event.user.name}##{event.user.discrim} looked this up!", icon_url: "https://i.imgur.com/PiGLy6H.png")
+			embed.add_field(name: "View the full article here:", value: "*<#{page.fullurl}>*")
+			#embed.author = Discordrb::Webhooks::EmbedAuthor.new(name:("%s#%s looked this up!" % [event.user.name, event.user.discrim]), icon_url: event.user.avatar_url)
+		end
+	rescue => e
+		event.channel.send_embed do |embed|
+			embed.title = "Wikipedia"
+			embed.description = "The page you were looking for was probably not found.\n#{e}"
+			embed.color = 16722454 # red
+		end
+	end
+end
+
