@@ -286,34 +286,6 @@ $bot.command(:version) do |event|
 	event.respond("%s, Codename '%s'." % [$version, $codename])
 end
 
-$bot.command(:play, min_args: 1) do |event, *args|
-	if event.author.id == 172030506970382337
-		$custom = true
-		$bot.game = args.join(" ")
-		next
-	else
-		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command. :no_entry:'
-			embed.description = "You're not permitted to run this command."
-			embed.color = 16_722_454 # red
-		end
-	end
-end
-
-$bot.command(:rplay) do |event, *args|
-	if event.author.id == 172030506970382337
-		$custom = false
-		event.respond "Done."
-		next
-	else
-		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command. :no_entry:'
-			embed.description = "You're not permitted to run this command."
-			embed.color = 16_722_454 # red
-		end
-	end
-end
-
 $bot.command(:smode) do |event|
 if event.channel.private?
 			event.channel.send_embed do |embed|
