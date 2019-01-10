@@ -295,33 +295,17 @@ end
 
 $bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
 	text = text.join(" ")
-	if text == "Dusty" ||
-			text == "Dusty01" ||
-			text == "Dusty01_" ||
-			text == "<@151392836292444160>" ||
-			text == "<@!151392836292444160>"
-		rating = -0.1
-	elsif text == "tbodt" ||
-			text == "tbuddy" ||
+	if text.downcase == "tbodt" ||
+			text.downcase == "tdodl" ||
 			text == "<@155417194530996225>" ||
 			text == "<@!155417194530996225>"
 		rating = Float::INFINITY
-	elsif text == "ELChris414" ||
-			text == "ELChris" ||
+	elsif text.downcase == "elchris414" ||
+			text.downcase == "elchris" ||
+			text.downcase == "chris"
 			text == "<@125228190825316352>" ||
 			text == "<@!125228190825316352>"
-		rating = rand(0.0..3.0).round(1)
-	elsif text == "Shyrix" ||
-			text == "Shy" ||
-			text == "<@211422653246865408>" ||
-			text == "<@!211422653246865408>"
-		rating = "Edgy"
-	elsif text == "Lionnco" ||
-			text == "Lionn" ||
-			text == "Mike" ||
-			text == "<@297803183206563841>" ||
-			text == "<@!297803183206563841>"
-		rating = rand(0.0..2.5).round(1)
+		rating = rand(0.0..2.6).round(1)
 	else
 		rating = rand(0.0..10.0).round(1)
 	end
