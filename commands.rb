@@ -5,9 +5,9 @@ $bot.command :help do |event|
 	rescue
 	end
 	event.user.pm.send_embed do |embed|
-		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
-		embed.description = 'Command list'
-		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' author title to get an invite link for your server!
+		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "http://i.imgur.com/VpeUzUB.png")
+		embed.description = "Command list"
+		embed.add_field(name: "General commands:", value: "_help: Shows you this help menu. Click the 'MnpnBot' author title to get an invite link for your server!
 _random: Usage: '_random 1 10'. Number randomiser.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
@@ -20,17 +20,16 @@ _feedback: Send feedback on MnpnBot.
 _weather: Usage: '_weather Hell'. Weather Forecast.
 _wikipedia/_wiki: Usage: '_wiki Ruby'. Wikipedia lookup.")
 
-		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
+		embed.add_field(name: "Status commands:", value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
 _si: Shows server information.
 _bi: Shows bot information.
 _ui: Shows your information.")
 
-		embed.add_field(name: 'Entertaining commands:', value: 'Joke: Tells you a terrible joke.
-_meme: Sends a random meme.
-_insult: Sends a random insult using jD91mZM2\'s Oh...Sir!-like insult program.')
-		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: 'http://i.imgur.com/VpeUzUB.png')
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.add_field(name: "Entertaining commands:", value: "Joke: Tells you a terrible joke.
+_insult: Sends a random insult using jD91mZM2's Oh...Sir!-like insult program.")
+		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: "http://i.imgur.com/VpeUzUB.png")
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0", icon_url: "http://i.imgur.com/VpeUzUB.png")
 
 		embed.color = 1_108_583
 	end
@@ -47,14 +46,14 @@ $bot.command :ping do |event|
 	timestamp = event.timestamp.nsec
 	diff = (now - timestamp) / 1000000
 	event.channel.send_embed do |embed|
-		embed.title = 'Ping result'
+		embed.title = "Ping result"
 		embed.description = "I'm here. Pinged in #{diff} ms."
 		embed.color = 1108583
 	end
 end
 
 # Random
-$bot.command(:random, min_args: 2, max_args: 2, usage: 'random <min> <max>') do |event, min, max|
+$bot.command(:random, min_args: 2, max_args: 2, usage: "random <min> <max>") do |event, min, max|
 	min_i = 0
 	max_i = 0
 
@@ -63,14 +62,14 @@ $bot.command(:random, min_args: 2, max_args: 2, usage: 'random <min> <max>') do 
 		max_i = Integer(max)
 	rescue ArgumentError
 		event.channel.send_embed do |embed|
-			embed.title = 'Random:'
+			embed.title = "Random:"
 			embed.description = "That's not numbers!"
 		end
 	end
 
 	event.channel.send_embed do |embed|
-		embed.title = 'Random:'
-		embed.description = 'The result was %d.' % [rand(min_i..max_i)]
+		embed.title = "Random:"
+		embed.description = "The result was %d." % [rand(min_i..max_i)]
 	end
 end
 
@@ -78,7 +77,7 @@ end
 $bot.message(with_text: /joke.?/i) do |event|
 	lines = []
 
-	File.open('jokes.txt', 'r') do |f|
+	File.open("jokes.txt", "r") do |f|
 		f.each_line do |line|
 			lines.push(line)
 		end
@@ -86,7 +85,7 @@ $bot.message(with_text: /joke.?/i) do |event|
 
 	joke = lines.sample
 	event.channel.send_embed do |embed|
-		embed.title = 'Here is a bad joke.'
+		embed.title = "Here is a bad joke."
 		embed.description = joke
 	end
 end
@@ -99,26 +98,17 @@ $bot.command :uptime do |event|
 	sec = sec.floor
 	min = min.floor
 	event.channel.send_embed do |embed|
-		embed.title = 'Uptime:'
-		embed.description = 'Bot uptime is %s:%s' % [min, sec] # + " minutes."
-		embed.color = if min < 5
-					16_773_910 # yellow
-					# 16722454 red
-					  else
-						  1_108_583 # green
-					  end
-		if min > 2880
-			embed.color = 16_722_454 # red
-			puts('Bot should restart!')
-		end
+		embed.title = "Uptime:"
+		embed.description = "Bot uptime is %s:%s" % [min, sec] # + " minutes."
+		embed.color = 1108583 # green
 	end
 end
 
 # Invite
 $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
-		embed.title = 'Invite link. Click the invite text above to open a web browser to authorise MnpnBot.'
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot Invite', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.title = "Invite link. Click the invite text above to open a web browser to authorise MnpnBot."
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot Invite", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0", icon_url: "http://i.imgur.com/VpeUzUB.png")
 		embed.color = 1_108_583
 	end
 end
@@ -126,26 +116,26 @@ end
 # When authorized, send message.
 $bot.server_create do |event|
 	event.server.default_channel.send_embed do |embed|
-		embed.title = 'MnpnBot'
+		embed.title = "MnpnBot"
 		embed.description = "You have authorised **MnpnBot**. Hello World! To get started, say '_help'"
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'MnpnBot', url: 'https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0s', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0s", icon_url: "http://i.imgur.com/VpeUzUB.png")
 		embed.color = 1_108_583
 	end
 end
 
 # Define
-$bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
+$bot.command(:define, min_args: 0, usage: "define <word>") do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
 			define = nil
-			msg = args.join(' ')
-			define = if msg != ''
+			msg = args.join(" ")
+			define = if msg != ""
 			   UrbanDict.define(msg)
 					else
 						UrbanDict.random
 					end
-			embed.title = 'Urban Dictionary'
-			embed.description = 'Urban Dictionary; Define a word.'
+			embed.title = "Urban Dictionary"
+			embed.description = "Urban Dictionary; Define a word."
 			embed.add_field(name: "***#{define['word']}***", value: "by #{define['author']}", inline: true)
 			embed.add_field(name: '**Definition**', value: (define['definition']).to_s, inline: true)
 			embed.add_field(name: '**Example**', value: (define['example']).to_s, inline: true)
@@ -155,7 +145,7 @@ $bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 		end
 	rescue
 		event.channel.send_embed do |embed|
-			embed.title = 'Urban Dictionary'
+			embed.title = "Urban Dictionary"
 			embed.description = "That's not in the dictionary!"
 			embed.color = 16_722_454 # red
 		end
@@ -163,7 +153,7 @@ $bot.command(:define, min_args: 0, usage: 'define <word>') do |event, *args|
 end
 
 # Roman
-$bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, num|
+$bot.command(:roman, min_args: 1, max_args: 1, usage: "roman <num>") do |event, num|
 	# Coded by LEGOlord208
 	i = 0
 	begin
@@ -238,8 +228,8 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: 'roman [num]') do |event, 
 	end
 
 	event.channel.send_embed do |embed|
-		embed.title = 'Roman:'
-		embed.description = 'The converted number is ' + out + '.'
+		embed.title = "Roman:"
+		embed.description = "The converted number is #{out}."
 	end
 end
 
@@ -248,7 +238,7 @@ $bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
 	event.respond "Sure, here is the 3D version of the skin: #{rating.join(' ')}. https://visage.surgeplay.com/full/512/#{rating.join(' ')}.png"
 end
 
-$bot.command(:rate, min_args: 1, description: 'Rate things!', usage: 'rate <stuff>') do |event, *text|
+$bot.command(:rate, min_args: 1, description: "Rate things!", usage: "rate <stuff>") do |event, *text|
 	text = text.join(" ")
 	if text.downcase == "tbodt" ||
 			text.downcase == "tdodl" ||
@@ -269,9 +259,9 @@ end
 
 $bot.command(:website) do |event|
 	event.channel.send_embed do |embed|
-		embed.title = 'Website'
+		embed.title = "Website"
 		embed.description = "Here's my website:"
-		embed.add_field(name: 'https://mnpn.hisses-at.me/', value: "I like the domain name.", inline: true)
+		embed.add_field(name: "https://mnpn.hisses-at.me/", value: "I like the domain name.", inline: true)
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: $bot.profile.avatar_url)
 		embed.color = 1_108_583 # green
 	end
@@ -289,14 +279,14 @@ end
 $bot.command(:smode) do |event|
 if event.channel.private?
 			event.channel.send_embed do |embed|
-				embed.title = ':no_entry:'
-				embed.description = 'This command cannot be used in a PM!'
+				embed.title = ":no_entry:"
+				embed.description = "This command cannot be used in a PM!"
 				embed.color = 16_722_454
 			end
 		else
 	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
 		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command :no_entry:'
+			embed.title = "Restricted command :no_entry:"
 			embed.description = "Only the server owner can toggle S-Mode."
 			embed.color = 16_722_454 # red
 		end
@@ -313,9 +303,9 @@ if event.channel.private?
 		next # Skip sending a message that it toggled if it didn't.
 	end
 	event.channel.send_embed do |embed|
-		embed.title = 'MnpnBot S'
+		embed.title = "MnpnBot S"
 		embed.description = "Toggled S-Mode!"
-		embed.add_field(name: 'S-Mode', value: $settings[event.server.id.to_s]["s_mode"], inline: true)
+		embed.add_field(name: "S-Mode", value: $settings[event.server.id.to_s]["s_mode"], inline: true)
 		embed.color = 1_108_583 # green
 	end
 end
@@ -324,14 +314,14 @@ end
 $bot.command(:ptr) do |event|
 if event.channel.private?
 			event.channel.send_embed do |embed|
-				embed.title = ':no_entry:'
-				embed.description = 'This command cannot be used in a PM!'
+				embed.title = ":no_entry:"
+				embed.description = "This command cannot be used in a PM!"
 				embed.color = 16_722_454
 			end
 		else
 	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
 		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command :no_entry:'
+			embed.title = "Restricted command :no_entry:"
 			embed.description = "Only the server owner can opt in and out of the PTR."
 			embed.color = 16_722_454 # red
 		end
@@ -348,9 +338,9 @@ if event.channel.private?
 		next # Skip sending a message that it toggled if it didn't.
 	end
 	event.channel.send_embed do |embed|
-		embed.title = 'MnpnBot Public Test Ring'
+		embed.title = "MnpnBot Public Test Ring"
 		embed.description = "Toggled PTR!"
-		embed.add_field(name: 'PTR', value: $settings[event.server.id.to_s]["ptr"], inline: true)
+		embed.add_field(name: "PTR", value: $settings[event.server.id.to_s]["ptr"], inline: true)
 		embed.color = 1_108_583 # green
 	end
 end
@@ -426,16 +416,16 @@ end
 
 $bot.command(:support) do |event|
     event.channel.send_embed do |embed|
-        embed.title = 'MnpnBot Support'
+        embed.title = "MnpnBot Support"
         embed.description = "If you have any issues, our staff team is ready to help you at **<https://discord.gg/Ww74Xjh>**!"
         embed.color = 1_151_202
     end
 end
 
-$bot.command(:weather, usage: "_weather <Zip/Name>", description: "Weather Forecast.", min_arguments: 1) do |event, *args|
+$bot.command(:weather, usage: "_weather <Zip/Name>", min_arguments: 1) do |event, *args|
 if args[0] == nil
 	event.channel.send_embed do |embed|
-		embed.title = 'Weather'
+		embed.title = "Weather"
 		embed.description = "You need to provide an argument! Usage: _weather <Zip/Name>."
 		embed.color = 16_722_454 # red
 	end
@@ -453,7 +443,7 @@ end
 			$response = Weather.lookup_by_location(args.join(" "), Weather::Units::CELSIUS)
 		rescue
 			event.channel.send_embed do |embed|
-				embed.title = 'Weather'
+				embed.title = "Weather"
 				embed.description = "Location not found!"
 				embed.color = 16_722_454 # red
 			end
@@ -485,7 +475,7 @@ $bot.command(:suggest, min_args: 1) do |event, *args|
 	guild = $bot.server(337921262343159809)
 	channel = $bot.channel(422296321257635841, guild.id)
 	msg = channel.send_embed do |embed|
-		embed.title = 'Suggestion'
+		embed.title = "Suggestion"
 		embed.description = "#{args.join(" ")}"
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Suggested by #{event.user.name}.", icon_url: guild.icon_url.to_s)
 		embed.color = 10233776
@@ -501,7 +491,7 @@ $bot.command(:insult) do |event|
 	event.respond `insult`
 end
 
-$bot.command([:wikipedia, :wiki], min_args: 1, usage: 'wikipedia <search term>') do |event, *args|
+$bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>") do |event, *args|
 	begin
 		event.message.delete
 	rescue
