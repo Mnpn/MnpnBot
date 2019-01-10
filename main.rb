@@ -50,22 +50,16 @@ end
 # When ready, set the time it started and print some basic info.
 $bot.ready do
 	$started = Time.now
-	puts('Running on version ' + $version + ', Codename ' + $codename + '.')
+	puts "Running on version #{$version}, codename #{$codename}"
 end
 
 $bot.command :reload do |event|
-	if event.user.id != 172_030_506_970_382_337
+	if event.user.id == 172030506970382337
 		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command. :no_entry:'
-			embed.description = "You're not allowed to run this command.\nIf something is badly wrong; please contact Mnpn#5043."
-			embed.color = 16_722_454 # red
-		end
-	else
-		event.channel.send_embed do |embed|
-			embed.title = 'Reload'
-			embed.description = 'Reloading MnpnBot!'
-			embed.add_field(name: 'Version and Codename', value: $version + ", '%s'" % $codename, inline: true)
-			embed.color = 1_108_583 # green
+			embed.title = "Reload"
+			embed.description = "Reloading MnpnBot!"
+			embed.add_field(name: "Version and Codename", value: $version + ", '%s'" % $codename, inline: true)
+			embed.color = 1108583 # green
 		end
 		# WrapperUtil is an external program developed by LEGOlord208#1033. It allows me to restart the bot using _reload. Read more at https://github.com/LEGOlord208/WrapperUtil/
 		print 'wrapperutil{"Restart":true}'
@@ -75,7 +69,7 @@ end
 
 # Debug: A simple eval command. Quite useful, actually!
 $bot.command([:debug, :d], min_args: 1) do |event, *args|
-	if event.user.id == 172030506970382337 || event.user.id == 211422653246865408
+	if event.user.id == 172030506970382337
 		time = Time.new
 		h = time.hour.to_s
 		min = time.min.to_s
@@ -94,7 +88,7 @@ $bot.command([:debug, :d], min_args: 1) do |event, *args|
 			end
 	else
 		event.channel.send_embed do |embed|
-			embed.title = 'Restricted command. :no_entry:'
+			embed.title = "Restricted command. :no_entry:"
 			embed.description = "You're not permitted to run this command."
 			embed.color = 16_722_454 # red
 		end
