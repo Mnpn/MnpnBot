@@ -36,8 +36,8 @@ $bot.command :help do |event|
 	end
 	event.user.pm.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: 'http://i.imgur.com/VpeUzUB.png')
-		embed.description = 'Command Information'
-		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' Author title to get an invite link for your server!
+		embed.description = 'Command list'
+		embed.add_field(name: 'General commands:', value: "_help: Shows you this help menu. Click the 'MnpnBot' author title to get an invite link for your server!
 _random: Usage: '_random 1 10'. Number randomiser.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
@@ -47,7 +47,8 @@ _colour/_color: Generate a random colour and show the value in Hex, RGB and Deci
 _lmgtfy: Generate a LMGTFY link.
 _avatar: Shows a user's avatar.
 _feedback: Send feedback on MnpnBot.
-_weather: Usage: '_weather Hell'. Weather Forecast.")
+_weather: Usage: '_weather Hell'. Weather Forecast.
+_wikipedia/_wiki: Usage: '_wiki Ruby'. Wikipedia lookup.")
 
 		embed.add_field(name: 'Status commands:', value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
@@ -63,8 +64,10 @@ _insult: Sends a random insult using jD91mZM2\'s Oh...Sir!-like insult program.'
 
 		embed.color = 1_108_583
 	end
-	responses = ["I sent all of that in DMs!", "Check your DMs!", "Sent in DMs.", "I sent that in your private messages!", "Sent!", "Help sent in DMs!"]
-	event.respond(responses.sample + " :mailbox_with_mail:")
+	unless event.channel.private?
+		responses = ["I sent all of that in DMs!", "Check your DMs!", "Sent in DMs.", "I sent that in your private messages!", "Sent!", "Help sent in DMs!", "See if you got my message!"]
+		event.respond(responses.sample + " :mailbox_with_mail:")
+	end
 end
 
 # Count
@@ -617,6 +620,9 @@ end
 
 $bot.command([:wikipedia, :wiki], min_args: 1, usage: 'wikipedia <search term>') do |event, *args|
 	begin
+		event.message.delete
+	rescue
+	begin
 		page = Wikipedia.find(args.join(" "))
 		event.channel.send_embed do |embed|
 			embed.title = "Wikipedia - #{page.title}"
@@ -636,6 +642,7 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: 'wikipedia <search term>')
 			embed.description = "The page you were looking for was probably not found.\n#{e}"
 			embed.color = 16722454 # red
 		end
+	end
 	end
 end
 

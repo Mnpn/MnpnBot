@@ -23,11 +23,10 @@ $annoy = false
 $started = 0
 $wikilimit = 750
 
-prefixes = ["_"] # Allows multiple prefixes if needed.
+prefixes = ["_"] # Allows multiple prefixes if needed. I want to change this to mentioning in the future.
 # End of config.
 
 # MnpnBot S-mode
-
 if File.exists?("settings.json")
 	settings = File.read "settings.json"
 	$settings = JSON.parse settings
