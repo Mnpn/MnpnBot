@@ -495,6 +495,7 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>")
 	begin
 		event.message.delete
 	rescue
+	end
 	begin
 		page = Wikipedia.find(args.join(" "))
 		event.channel.send_embed do |embed|
@@ -510,12 +511,13 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>")
 			#embed.author = Discordrb::Webhooks::EmbedAuthor.new(name:("%s#%s looked this up!" % [event.user.name, event.user.discrim]), icon_url: event.user.avatar_url)
 		end
 	rescue => e
-		event.channel.send_embed do |embed|
+		msg = event.channel.send_embed do |embed|
 			embed.title = "Wikipedia"
 			embed.description = "The page you were looking for was probably not found.\n#{e}"
 			embed.color = 16722454 # red
 		end
-	end
+		sleep 5
+		msg.delete
 	end
 end
 
