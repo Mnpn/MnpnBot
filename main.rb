@@ -14,7 +14,7 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 2.4.0'
+$version = 'Release 2.4.1'
 $codename = 'Delta'
 
 $started = 0
