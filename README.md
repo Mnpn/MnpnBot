@@ -11,6 +11,7 @@ To use MnpnBot yourself you will need 5 gems:
 - [JSON](https://github.com/flori/json)
 - [Color](https://github.com/halostatue/color)
 - [Weather API](https://github.com/stewart/weather-api)
+- [Wikipedia](https://github.com/kenpratt/wikipedia-client)
 
 Each of these are required.
 
