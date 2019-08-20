@@ -1,6 +1,4 @@
 # MnpnBot
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square)](https://paypal.me/mnpn03/)
-
 Discord bot created in Ruby using DiscordRB.
 Invite the bot with [this link](https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0).
 
@@ -15,10 +13,4 @@ To use MnpnBot yourself you will need 5 gems:
 
 Each of these are required.
 
-You can run MnpnBot with `ruby main.rb`, after you have entered your bot token in `token.txt`
-
-# Support
-If you need any help, you can find me (Mnpn#5043) and contributors on [this server](https://discord.gg/Ww74Xjh).
-
-# Contributing
-Any bugs or issues can be posted in the [Support Guild](https://discord.gg/Ww74Xjh) or on [GitHub](https://github.com/Mnpn03/MnpnBot).
+You can run MnpnBot with `ruby main.rb`, after you have entered your bot token in `token.txt`, placed in the same directory.
