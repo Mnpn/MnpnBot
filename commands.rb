@@ -23,15 +23,14 @@ _wikipedia/_wiki: Usage: '_wiki Ruby'. Wikipedia lookup.")
 		embed.add_field(name: "Status commands:", value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
 _si: Shows server information.
-_bi: Shows bot information.
-_ui: Shows your information.")
+_bs: Shows bot settings & information.
+_ui: Shows details about you.")
 
-		embed.add_field(name: "Entertaining commands:", value: "Joke: Tells you a terrible joke.
-_insult: Sends a random insult using jD91mZM2's Oh...Sir!-like insult program.")
+		embed.add_field(name: "Entertaining commands:", value: "_insult: Sends a random insult using jD91mZM2's Oh...Sir!-like insult program.")
 		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "MnpnBot #{$version}", icon_url: "http://i.imgur.com/VpeUzUB.png")
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0", icon_url: "http://i.imgur.com/VpeUzUB.png")
 
-		embed.color = 1_108_583
+		embed.color = 1108583
 	end
 	unless event.channel.private?
 		responses = ["I sent all of that in DMs!", "Check your DMs!", "Sent in DMs.", "I sent that in your private messages!", "Sent!", "Help sent in DMs!", "See if you got my message!"]
@@ -89,7 +88,7 @@ $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
 		embed.title = "Invite link. Click the invite text above to open a web browser to authorise MnpnBot."
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot Invite", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0", icon_url: "http://i.imgur.com/VpeUzUB.png")
-		embed.color = 1_108_583
+		embed.color = 1108583
 	end
 end
 
@@ -99,7 +98,7 @@ $bot.server_create do |event|
 		embed.title = "MnpnBot"
 		embed.description = "You have authorised **MnpnBot**. Hello World! To get started, say '_help'"
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0s", icon_url: "http://i.imgur.com/VpeUzUB.png")
-		embed.color = 1_108_583
+		embed.color = 1108583
 	end
 end
 
@@ -121,13 +120,13 @@ $bot.command(:define, min_args: 0, usage: "define <word>") do |event, *args|
 			embed.add_field(name: '**Example**', value: (define['example']).to_s, inline: true)
 			embed.add_field(name: "#{define['thumbs_up']} Likes | #{define['thumbs_down']} Dislikes", value: 'Urban Dictionary', inline: true)
 			embed.add_field(name: "***<#{define['permalink']}>***", value: 'Direct link', inline: true)
-			embed.color = 4_359_924
+			embed.color = 4359924
 		end
 	rescue
 		event.channel.send_embed do |embed|
 			embed.title = "Urban Dictionary"
 			embed.description = "That's not in the dictionary!"
-			embed.color = 16_722_454 # red
+			embed.color = 16722454 # red
 		end
 	end
 end
@@ -246,14 +245,14 @@ if event.channel.private?
 			event.channel.send_embed do |embed|
 				embed.title = ":no_entry:"
 				embed.description = "This command cannot be used in a PM!"
-				embed.color = 16_722_454
+				embed.color = 16722454
 			end
 		else
 	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
 		event.channel.send_embed do |embed|
 			embed.title = "Restricted command :no_entry:"
 			embed.description = "Only the server owner can opt in and out of the PTR."
-			embed.color = 16_722_454 # red
+			embed.color = 16722454 # red
 		end
 		next
 	end
@@ -271,7 +270,7 @@ if event.channel.private?
 		embed.title = "MnpnBot Public Test Ring"
 		embed.description = "Toggled PTR!"
 		embed.add_field(name: "PTR", value: $settings[event.server.id.to_s]["ptr"], inline: true)
-		embed.color = 1_108_583 # green
+		embed.color = 1108583 # green
 	end
 end
 end
@@ -279,7 +278,6 @@ end
 # Colour.
 # It's colour! I'm just adding _color for the miserable people (americans*) out there. Shut up, it's colour.
 $bot.command([:colour, :color], min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
-
 colour = rand(1000000..19000000)
 
 class String
@@ -315,7 +313,7 @@ $bot.command(:feedback, min_args: 1) do |event, *args|
 	end
 	event.respond "Done! Check your DMs! :mailbox_with_mail: "
 	event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
-	$bot.send_message(289_641_868_856_262_656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
+	$bot.send_message(289641868856262656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
 end
 
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|

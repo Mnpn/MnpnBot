@@ -38,7 +38,6 @@ $settings.default = {}
 $bot = Discordrb::Commands::CommandBot.new token: token, client_id: CLIENT_ID, prefix: prefixes
 
 # Require the other files.
-require_relative 'conversation.rb'
 require_relative 'commands.rb'
 require_relative 'info.rb'
 require_relative 'development.rb'
@@ -90,7 +89,7 @@ $bot.command([:debug, :d], min_args: 1) do |event, *args|
 		event.channel.send_embed do |embed|
 			embed.title = "Restricted command. :no_entry:"
 			embed.description = "You're not permitted to run this command."
-			embed.color = 16_722_454 # red
+			embed.color = 16722454 # red
 		end
 	end
 end
