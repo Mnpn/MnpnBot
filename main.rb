@@ -13,8 +13,7 @@ CLIENT_ID = 289471282720800768
 token = File.read "token.txt"
 
 # Configuration
-
-$version = "Release 2.4.2"
+$version = "Release 2.5"
 $codename = "Delta"
 
 $started = 0
