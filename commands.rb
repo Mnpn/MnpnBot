@@ -1,4 +1,3 @@
-# The help command.
 $bot.command :help do |event|
 	begin
 		event.message.delete
@@ -38,7 +37,6 @@ _ui: Shows details about you.")
 	end
 end
 
-# Ping
 $bot.command :ping do |event|
 	# event.respond "I'm here. Pinged in #{Time.now - event.timestamp} seconds."
 	now = Time.now.utc.nsec
@@ -51,25 +49,18 @@ $bot.command :ping do |event|
 	end
 end
 
-# Random
 $bot.command(:random, min_args: 2, max_args: 2, usage: "random <min> <max>") do |event, min, max|
 	min_i = 0
 	max_i = 0
-
 	begin
 		min_i = Integer(min)
 		max_i = Integer(max)
 	rescue ArgumentError
-		event.channel.send_embed do |embed|
-			embed.title = "Random:"
-			embed.description = "That's not numbers!"
-		end
+		embed.respond = "That's not numbers!"
 	end
-
-	event.respond = "The result was %d." % [rand(min_i..max_i)]
+	event.respond "The result was %d." % [rand(min_i..max_i)]
 end
 
-# Uptime
 $bot.command :uptime do |event|
 	full_sec = Time.now - $started
 	sec = full_sec % 60
@@ -83,10 +74,8 @@ $bot.command :uptime do |event|
 	end
 end
 
-# Invite
 $bot.command :invite do |event|
 	event.channel.send_embed do |embed|
-		embed.title = "Invite link. Click the invite text above to open a web browser to authorise MnpnBot."
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot Invite", url: "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0", icon_url: "http://i.imgur.com/VpeUzUB.png")
 		embed.color = 1108583
 	end
@@ -102,8 +91,7 @@ $bot.server_create do |event|
 	end
 end
 
-# Define
-$bot.command(:define, min_args: 0, usage: "define <word>") do |event, *args|
+$bot.command(:define, min_args: 0, usage: "define [word]") do |event, *args|
 	begin
 		event.channel.send_embed do |embed|
 			define = nil
@@ -113,13 +101,10 @@ $bot.command(:define, min_args: 0, usage: "define <word>") do |event, *args|
 					else
 						UrbanDict.random
 					end
-			embed.title = "Urban Dictionary"
-			embed.description = "Urban Dictionary; Define a word."
-			embed.add_field(name: "***#{define['word']}***", value: "by #{define['author']}", inline: true)
+			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: define["word"], url: define["permalink"])
 			embed.add_field(name: '**Definition**', value: (define['definition']).to_s, inline: true)
 			embed.add_field(name: '**Example**', value: (define['example']).to_s, inline: true)
-			embed.add_field(name: "#{define['thumbs_up']} Likes | #{define['thumbs_down']} Dislikes", value: 'Urban Dictionary', inline: true)
-			embed.add_field(name: "***<#{define['permalink']}>***", value: 'Direct link', inline: true)
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{define["thumbs_up"]} likes/#{define["thumbs_down"]} dislikes", icon_url: "")
 			embed.color = 4359924
 		end
 	rescue
@@ -131,7 +116,6 @@ $bot.command(:define, min_args: 0, usage: "define <word>") do |event, *args|
 	end
 end
 
-# Roman
 $bot.command(:roman, min_args: 1, max_args: 1, usage: "roman <num>") do |event, num|
 	# Coded by LEGOlord208
 	i = 0
@@ -205,11 +189,7 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: "roman <num>") do |event, 
 		i = i % len
 		len /= 10
 	end
-
-	event.channel.send_embed do |embed|
-		embed.title = "Roman:"
-		embed.description = "The converted number is #{out}."
-	end
+	event.respond "Result: #{out}"
 end
 
 $bot.command(:rate, min_args: 1, description: "Rate things!", usage: "rate <stuff>") do |event, *text|
@@ -275,25 +255,25 @@ if event.channel.private?
 end
 end
 
-# Colour.
-# It's colour! I'm just adding _color for the miserable people (americans*) out there. Shut up, it's colour.
 $bot.command([:colour, :color], min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
-colour = rand(1000000..19000000)
-
-class String
-	def convert_base(from, to)
-		self.to_i(from).to_s(to)
-	end
-end
-
-unless args.length == 0
-# somone has put an argument
-	event.respond "Sorry, I only do random colours so far."
-else
-	hexc = colour.to_s.convert_base(10, 16)
-	c = Color::RGB.from_html(hexc)
+	if args.length != 0
+		colour = args[0].tr('#', '').tr('0x', '') # remove hashtags and 0x from colours
+		begin
+			c = Color::RGB.by_hex(colour)
+		rescue => e
+			event.respond e
+			return
+		end
+		dec = colour.to_i(16)
 		event.channel.send_embed do |embed|
-			#embed.title = 'Hex Colour'
+			embed.description = "Hex: ##{colour} | RGB: #{c.red}, #{c.green}, #{c.blue} | Decimal: #{dec}"
+			embed.color = dec
+		end
+	else
+		colour = rand(1000000..19000000)
+		hexc = colour.to_s.to_i(10).to_s(16)
+		c = Color::RGB.from_html(hexc)
+		event.channel.send_embed do |embed|
 			embed.description = "Hex: ##{hexc} | RGB: #{c.red}, #{c.green}, #{c.blue} | Decimal: #{colour}"
 			embed.color = colour
 		end
@@ -396,7 +376,7 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>")
 		event.channel.send_embed do |embed|
 			embed.title = "Wikipedia - #{page.title}"
 			# Not using page.text. Way too spammy.
-			embed.description = page.summary[0..$wikilimit].gsub(/\s\w+\s*$/,'...')
+			embed.description = page.summary[0..$wikilimit].gsub(/\s\w+\s*$/,"...")
 			embed.color = 16777215
 			if page.main_image_url != nil
 				embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: page.main_image_url)
