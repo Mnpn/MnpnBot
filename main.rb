@@ -1,12 +1,12 @@
 # This is the main file of MnpnBot, programmed in Ruby.
-# Shout out to LEGOlord208#1033 and tbodt#7244 for helping me.
+# Shout out to jD91mZM2#1033 and tbodt#7244 for helping me.
 
-require 'discordrb'
-require 'urban_dict'
-require 'json'
-require 'color'
-require 'weather-api'
-require 'wikipedia'
+require "discordrb"
+require "urban_dict"
+require "json"
+require "color"
+require "open-uri"
+require "wikipedia"
 
 CLIENT_ID = 289471282720800768
 
@@ -14,8 +14,8 @@ token = File.read "token.txt"
 
 # Configuration
 
-$version = 'Release 2.4.1'
-$codename = 'Delta'
+$version = "Release 2.4.2"
+$codename = "Delta"
 
 $started = 0
 $wikilimit = 750
@@ -23,7 +23,7 @@ $wikilimit = 750
 prefixes = ["_"] # Allows multiple prefixes if needed. I want to change this to mentioning in the future.
 # End of config.
 
-# MnpnBot S-mode
+# MnpnBot PTR
 if File.exists?("settings.json")
 	settings = File.read "settings.json"
 	$settings = JSON.parse settings

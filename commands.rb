@@ -67,27 +67,7 @@ $bot.command(:random, min_args: 2, max_args: 2, usage: "random <min> <max>") do 
 		end
 	end
 
-	event.channel.send_embed do |embed|
-		embed.title = "Random:"
-		embed.description = "The result was %d." % [rand(min_i..max_i)]
-	end
-end
-
-# Jokes
-$bot.message(with_text: /joke.?/i) do |event|
-	lines = []
-
-	File.open("jokes.txt", "r") do |f|
-		f.each_line do |line|
-			lines.push(line)
-		end
-	end
-
-	joke = lines.sample
-	event.channel.send_embed do |embed|
-		embed.title = "Here is a bad joke."
-		embed.description = joke
-	end
+	event.respond = "The result was %d." % [rand(min_i..max_i)]
 end
 
 # Uptime
@@ -113,7 +93,7 @@ $bot.command :invite do |event|
 	end
 end
 
-# When authorized, send message.
+# When authorised, send message.
 $bot.server_create do |event|
 	event.server.default_channel.send_embed do |embed|
 		embed.title = "MnpnBot"
@@ -233,11 +213,6 @@ $bot.command(:roman, min_args: 1, max_args: 1, usage: "roman <num>") do |event, 
 	end
 end
 
-$bot.command(:mcskin, min_args: 1, max_args: 1) do |event|
-	_, *rating = event.message.content.split
-	event.respond "Sure, here is the 3D version of the skin: #{rating.join(' ')}. https://visage.surgeplay.com/full/512/#{rating.join(' ')}.png"
-end
-
 $bot.command(:rate, min_args: 1, description: "Rate things!", usage: "rate <stuff>") do |event, *text|
 	text = text.join(" ")
 	if text.downcase == "tbodt" ||
@@ -257,16 +232,6 @@ $bot.command(:rate, min_args: 1, description: "Rate things!", usage: "rate <stuf
 	event.respond "I give #{text} a #{rating}/10.0!"
 end
 
-$bot.command(:website) do |event|
-	event.channel.send_embed do |embed|
-		embed.title = "Website"
-		embed.description = "Here's my website:"
-		embed.add_field(name: "https://mnpn.hisses-at.me/", value: "I like the domain name.", inline: true)
-		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: $bot.profile.avatar_url)
-		embed.color = 1_108_583 # green
-	end
-end
-
 $bot.command(:"8ball") do |event|
 	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
 	event.respond(arr.sample)
@@ -274,41 +239,6 @@ end
 
 $bot.command(:version) do |event|
 	event.respond("%s, Codename '%s'." % [$version, $codename])
-end
-
-$bot.command(:smode) do |event|
-if event.channel.private?
-			event.channel.send_embed do |embed|
-				embed.title = ":no_entry:"
-				embed.description = "This command cannot be used in a PM!"
-				embed.color = 16_722_454
-			end
-		else
-	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
-		event.channel.send_embed do |embed|
-			embed.title = "Restricted command :no_entry:"
-			embed.description = "Only the server owner can toggle S-Mode."
-			embed.color = 16_722_454 # red
-		end
-		next
-	end
-	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
-	$settings[event.server.id.to_s]["s_mode"] = !$settings[event.server.id.to_s]["s_mode"]
-	begin
-		File.write "settings.json", $settings.to_json
-	rescue IOError => e
-		puts "_smode failed to write to file."
-		puts e
-		event.respond "Failed to write to file."
-		next # Skip sending a message that it toggled if it didn't.
-	end
-	event.channel.send_embed do |embed|
-		embed.title = "MnpnBot S"
-		embed.description = "Toggled S-Mode!"
-		embed.add_field(name: "S-Mode", value: $settings[event.server.id.to_s]["s_mode"], inline: true)
-		embed.color = 1_108_583 # green
-	end
-end
 end
 
 $bot.command(:ptr) do |event|
@@ -346,16 +276,8 @@ if event.channel.private?
 end
 end
 
-$bot.command(:sinfo) do |event|
-	event.respond "MnpnBot's S-Mode is a version of MnpnBot that is more targeted to \"serious\" servers. Enabling S-Mode will remove auto-responses (e.g. kek, :>)."
-end
-
-$bot.command(:cookies) do |event|
-	event.respond ":cookie:"
-end
-
 # Colour.
-# Hiss! It's colour! I'm just adding _color for the miserable thots (americans*) out there. Shut up, it's colour.
+# It's colour! I'm just adding _color for the miserable people (americans*) out there. Shut up, it's colour.
 $bot.command([:colour, :color], min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
 
 colour = rand(1000000..19000000)
@@ -414,60 +336,35 @@ user = user[2..-2]
 	end
 end
 
-$bot.command(:support) do |event|
-    event.channel.send_embed do |embed|
-        embed.title = "MnpnBot Support"
-        embed.description = "If you have any issues, our staff team is ready to help you at **<https://discord.gg/Ww74Xjh>**!"
-        embed.color = 1_151_202
-    end
+$lastweatherrun = Time.now.to_i
+$bot.command(:weather, usage: "_weather <name>", min_args: 1) do |event, *args|
+if (Time.now.to_i - $lastweatherrun) < 2
+	event.respond "This command was round too fast! Please wait a few seconds, and try again."
+	return
 end
-
-$bot.command(:weather, usage: "_weather <Zip/Name>", min_arguments: 1) do |event, *args|
-if args[0] == nil
-	event.channel.send_embed do |embed|
-		embed.title = "Weather"
-		embed.description = "You need to provide an argument! Usage: _weather <Zip/Name>."
-		embed.color = 16_722_454 # red
-	end
-	next
-end
+	$lastweatherrun = Time.now.to_i
 	begin
-		zip = Integer(args[0])
-		if zip < 1000 || zip > 99950
-			event.respond "The Zip-code is invalid."
-			next
-		end
-		$response = Weather.lookup(zip, Weather::Units::CELSIUS) # I'll be using Celsius for the time being because it's what I normally use.
-	rescue
-		begin
-			$response = Weather.lookup_by_location(args.join(" "), Weather::Units::CELSIUS)
-		rescue
-			event.channel.send_embed do |embed|
-				embed.title = "Weather"
-				embed.description = "Location not found!"
-				embed.color = 16_722_454 # red
-			end
-			next
-		end
-	end
-	condition = $response.condition.text
+		json = open("http://api.openweathermap.org/data/2.5/weather?q=#{args.join(" ")}&APPID=#{(File.read "weather.txt").delete!("\n")}").read
+		$response = JSON.parse(json)
+	rescue => e
 		event.channel.send_embed do |embed|
-			embed.title = $response.title
-				if $response.condition.text == "Sunny" || $response.condition.text == "Mostly Sunny"
-					embed.color = 15924992 # Yellow
-				elsif $response.condition.text == "Cloudy" || $response.condition.text == "Partly Cloudy" || $response.condition.text == "Mostly Cloudy"
-					embed.color = 12040119 # Grey
-				elsif $response.condition.text == "Rain"
-					embed.color = 11865 # A nice dark blue.
-					condition = "Raining" # Otherwise it will respond with "It's Rain"!
-				elsif $response.condition.text == "Thunderstorms"
-					embed.color = 11865 # A nice dark blue.
-				else
-					embed.color = 4359924 # Kinda light-blue
-				end
-			embed.description = "It's currently #{$response.condition.temp}°C outside.
-It's #{condition}."
+			embed.title = "Weather"
+			if e.message == "404 Not Found"
+				embed.description = "Location not found."
+			else
+				embed.description = "JSON error: " + e.message
+			end
+			embed.color = 16722454 # red
 		end
+		next
+	end
+	event.channel.send_embed do |embed|
+		embed.title = "Weather in #{$response["name"]}"
+		embed.color = 11865 # A nice dark blue.
+		# Oh also turn the K into C
+		t = "It's currently #{($response["main"]["temp"]-273.15).round(1)}°C in #{$response["name"]}, #{$response["sys"]["country"]}."
+		embed.description = t + "\nThe condition is \"#{$response["weather"][0]["description"]}\"."
+	end
 end
 
 $bot.command(:suggest, min_args: 1) do |event, *args|
