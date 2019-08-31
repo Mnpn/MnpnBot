@@ -17,9 +17,6 @@ $bot.command :si do |event|
 		else
 			afkchann = event.server.afk_channel.name
 		end
-		if $settings[event.server.id.to_s]["ptr"] == nil
-			$settings[event.server.id.to_s]["ptr"] = false
-		end
 		if event.server.large?
 			size = "Large" else size = "Small"
 		end
@@ -30,7 +27,6 @@ $bot.command :si do |event|
 			embed.description = "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}
 Server Settings: Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}. #{emoji}"
 			embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-			embed.add_field(name: 'PTR:', value: "#{$settings[event.server.id.to_s]["ptr"]}", inline: true)
 			embed.add_field(name: 'Creation time:', value: event.server.creation_time, inline: true)
 			embed.color = 1108583
 			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url)
@@ -72,22 +68,14 @@ $bot.command :ui do |event|
 	end
 end
 
-$bot.command :bs do |event|
-	if !event.channel.private?
-		if $settings[event.server.id.to_s]["ptr"] == nil
-			$settings[event.server.id.to_s]["ptr"] = false
-		end
-	end
+$bot.command :bi do |event|
 	lsc = 0
 	ls = $bot.servers.values.each { |s| lsc += 1 if s.large }
 	ss = $bot.servers.count - lsc
 	event.channel.send_embed do |embed|
-		embed.title = "MnpnBot #{$version} (#{$codename}) Settings & Info"
+		embed.title = "MnpnBot #{$version} (#{$codename}) Info"
 		embed.description = "I'm in **#{$bot.servers.count}** servers (#{lsc} large, #{ss} small), totalling #{$bot.users.count} unique users."
 		embed.add_field(name: "Wikipedia text limit", value: $wikilimit, inline: true)
-		if !event.channel.private?
-			embed.add_field(name: "PTR", value: $settings[event.server.id.to_s]["ptr"], inline: true)
-		end
 		embed.color = 1108583 # green
 	end
 end

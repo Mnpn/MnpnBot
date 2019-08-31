@@ -3,7 +3,6 @@
 
 require "discordrb"
 require "urban_dict"
-require "json"
 require "color"
 require "open-uri"
 require "wikipedia"
@@ -11,24 +10,14 @@ require "wikipedia"
 token = File.read "token.txt"
 
 $version = "Release 2.5"
-$codename = "Delta"
+$codename = "Light"
 $started = 0
 $wikilimit = 750
-
-if File.exists?("settings.json")
-	settings = File.read "settings.json"
-	$settings = JSON.parse settings
-else
-	$settings = {}
-end
-
-$settings.default = {}
 
 $bot = Discordrb::Commands::CommandBot.new token: token, client_id: 289471282720800768, prefix: "_"
 
 require_relative "commands.rb"
 require_relative "info.rb"
-require_relative "development.rb"
 
 $bot.ready do
 	$started = Time.now

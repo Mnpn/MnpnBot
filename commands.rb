@@ -7,22 +7,21 @@ $bot.command :help do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: "http://i.imgur.com/VpeUzUB.png")
 		embed.description = "Command list"
 		embed.add_field(name: "General commands:", value: "_help: Shows you this help menu. Click the 'MnpnBot' author title to get an invite link for your server!
-_random: Usage: '_random 1 10'. Number randomiser.
+_random: Usage: '_random 1 10'.
 _define: Usage: '_define kek'. Not specifying what to define will result in a random definition.
 _invite: Shows an invite link for the bot.
 _roman: Usage: '_roman 50'. Change numerals to romans.
-_rate: Usage: '_rate the laptop'. Rate something.
+_rate: Usage: '_rate the laptop'.
 _colour/_color: Generate a random colour and show the value in Hex, RGB and Decimal.
 _lmgtfy: Generate a LMGTFY link.
 _avatar: Shows a user's avatar.
-_feedback: Send feedback on MnpnBot.
-_weather: Usage: '_weather Hell'. Weather Forecast.
-_wikipedia/_wiki: Usage: '_wiki Ruby'. Wikipedia lookup.")
+_weather: Usage: '_weather Hell'.
+_wikipedia/_wiki: Usage: '_wiki Ruby'.")
 
 		embed.add_field(name: "Status commands:", value: "_ping: Pings the bot.
 _uptime: Shows bot uptime.
 _si: Shows server information.
-_bs: Shows bot settings & information.
+_bi: Shows bot settings & information.
 _ui: Shows details about you.")
 
 		embed.add_field(name: "Entertaining commands:", value: "_insult: Sends a random insult using jD91mZM2's Oh...Sir!-like insult program.")
@@ -32,7 +31,7 @@ _ui: Shows details about you.")
 		embed.color = 1108583
 	end
 	unless event.channel.private?
-		responses = ["I sent all of that in DMs!", "Check your DMs!", "Sent in DMs.", "I sent that in your private messages!", "Sent!", "Help sent in DMs!", "See if you got my message!"]
+		responses = ["Check your DMs!", "I sent that to you!", "Help sent in DMs!", "See if you got my message!"]
 		event.respond(responses.sample + " :mailbox_with_mail:")
 	end
 end
@@ -102,8 +101,8 @@ $bot.command(:define, min_args: 0, usage: "define [word]") do |event, *args|
 						UrbanDict.random
 					end
 			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: define["word"], url: define["permalink"])
-			embed.add_field(name: '**Definition**', value: (define['definition']).to_s, inline: true)
-			embed.add_field(name: '**Example**', value: (define['example']).to_s, inline: true)
+			embed.add_field(name: "**Definition**", value: (define["definition"]).to_s, inline: true)
+			embed.add_field(name: "**Example**", value: (define["example"]).to_s, inline: true)
 			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{define["thumbs_up"]} likes/#{define["thumbs_down"]} dislikes", icon_url: "")
 			embed.color = 4359924
 		end
@@ -212,47 +211,12 @@ $bot.command(:rate, min_args: 1, description: "Rate things!", usage: "rate <stuf
 end
 
 $bot.command(:"8ball") do |event|
-	arr = ["Yes.","No.","Possibly.","Indeed.","Not at all.","Never.","Sure!","Absolutely!","Absolutely not."]
+	arr = ["Yes.", "No.", "Possibly.", "Probably.", "Indeed.", "Not at all.", "Never.", "Sure!", "Absolutely!", "Absolutely not."]
 	event.respond(arr.sample)
 end
 
 $bot.command(:version) do |event|
 	event.respond("%s, Codename '%s'." % [$version, $codename])
-end
-
-$bot.command(:ptr) do |event|
-if event.channel.private?
-			event.channel.send_embed do |embed|
-				embed.title = ":no_entry:"
-				embed.description = "This command cannot be used in a PM!"
-				embed.color = 16722454
-			end
-		else
-	if event.author.id != event.server.owner.id && event.author.id != 172030506970382337
-		event.channel.send_embed do |embed|
-			embed.title = "Restricted command :no_entry:"
-			embed.description = "Only the server owner can opt in and out of the PTR."
-			embed.color = 16722454 # red
-		end
-		next
-	end
-	$settings[event.server.id.to_s] = {} unless $settings.key?(event.server.id.to_s)
-	$settings[event.server.id.to_s]["ptr"] = !$settings[event.server.id.to_s]["ptr"]
-	begin
-		File.write "settings.json", $settings.to_json
-	rescue IOError => e
-		puts "PTR failed to write to file."
-		puts e
-		event.respond "Failed to write to file."
-		next # Skip sending a message that it toggled if it didn't.
-	end
-	event.channel.send_embed do |embed|
-		embed.title = "MnpnBot Public Test Ring"
-		embed.description = "Toggled PTR!"
-		embed.add_field(name: "PTR", value: $settings[event.server.id.to_s]["ptr"], inline: true)
-		embed.color = 1108583 # green
-	end
-end
 end
 
 $bot.command([:colour, :color], min_args: 0, max_args: 1, usage: "_colour [hex]", description: "Find a hex colour or get a random one.") do |event, *args|
@@ -284,18 +248,6 @@ $bot.command(:lmgtfy) do |event, *args|
 	event.respond "#{event.user.mention}, <http://lmgtfy.com/?q=%s>" % [args.join("+")]
 end
 
-RBLACKLIST = []
-
-$bot.command(:feedback, min_args: 1) do |event, *args|
-	if RBLACKLIST.include?(event.author.id)
-		event.respond "You're temporarily blacklisted for sending trash."
-		next
-	end
-	event.respond "Done! Check your DMs! :mailbox_with_mail: "
-	event.user.pm "You've sent some feedback to Mnpn: `%s`." % args.join(" ")
-	$bot.send_message(289641868856262656, "%s has sent feedback regarding MnpnBot #{$version}: `%s`." % [(event.author.name + "#" + event.author.discrim), args.join(" ")])
-end
-
 $bot.command(:avatar, min_args: 1, max_args: 1) do |event, user|
 # Might want to look into webp and size
 user = user[2..-2]
@@ -317,7 +269,7 @@ end
 $lastweatherrun = Time.now.to_i
 $bot.command(:weather, usage: "_weather <name>", min_args: 1) do |event, *args|
 if (Time.now.to_i - $lastweatherrun) < 2
-	event.respond "This command was round too fast! Please wait a few seconds, and try again."
+	event.respond "This command is being run too often! Please wait a few seconds, and try again."
 	return
 end
 	$lastweatherrun = Time.now.to_i
@@ -343,23 +295,6 @@ end
 		t = "It's currently #{($response["main"]["temp"]-273.15).round(1)}°C in #{$response["name"]}, #{$response["sys"]["country"]}."
 		embed.description = t + "\nThe condition is \"#{$response["weather"][0]["description"]}\"."
 	end
-end
-
-$bot.command(:suggest, min_args: 1) do |event, *args|
-	event.user.pm "You've sent a suggestion to Mnpn's Support server: `%s`." % args.join(" ")
-	guild = $bot.server(337921262343159809)
-	channel = $bot.channel(422296321257635841, guild.id)
-	msg = channel.send_embed do |embed|
-		embed.title = "Suggestion"
-		embed.description = "#{args.join(" ")}"
-		embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Suggested by #{event.user.name}.", icon_url: guild.icon_url.to_s)
-		embed.color = 10233776
-		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.user.avatar_url)
-		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name:("%s#%s" % [event.user.name, event.user.discrim]), icon_url: event.user.avatar_url)
-	end
-	msg.react("🔼")
-	msg.react("🔽")
-	event.respond "Suggested! People can now up- and down-vote it in <#422296321257635841>."
 end
 
 $bot.command(:insult) do |event|
@@ -396,3 +331,55 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>")
 	end
 end
 
+$bot.command(:encode, min_args: 2, usage: "_encode b64/bin/hex <text>") do |event|
+args = event.message.to_s[8..-1]
+	begin
+		if args.start_with? "bin"
+			event.respond(args[4..-1].unpack("B*")[0].gsub(/(.{8})/, '\1 '))
+			next
+		elsif args.start_with? "b64"
+			event.respond([args[4..-1]].pack("m*").chomp)
+			next
+		elsif args.start_with? "hex"
+			event.respond(args[4..-1].each_byte.map { |b| b.to_s(16) }.join)
+			next
+		else
+			event.channel.send_embed do |embed|
+				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
+				embed.color = 16722454 # red
+			end
+		end
+	rescue
+		event.channel.send_embed do |embed|
+			embed.description = "Error! Message too long or you need to select what to encode to! (Example: _encode b64 I like bananas)"
+			embed.color = 16722454 # red
+		end
+	end
+end
+
+$bot.command(:decode, min_args: 1, usage: "_decode b64/bin/hex <text>") do |event|
+args = event.message.to_s[8..-1]
+	begin
+		if args.start_with? "bin"
+			args = args[4..-1].gsub(/\s+/, "")
+			event.respond([args].pack("B*"))
+			next
+		elsif args.start_with? "b64"
+			event.respond(args[4..-1].unpack('m*')[0])
+			next
+		elsif args.start_with? "hex"
+			event.respond([args[4..-1]].pack('H*'))
+			next
+		else
+			event.channel.send_embed do |embed|
+				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
+				embed.color = 16722454 # red
+			end
+		end
+	rescue
+		event.channel.send_embed do |embed|
+			embed.description = "That message is too long to send, or I cannot decode that."
+			embed.color = 16722454 # red
+		end
+	end
+end
