@@ -65,13 +65,13 @@ $bot.command(:define, min_args: 0, usage: "define [word]") do |event, *args|
 			define = nil
 			msg = args.join(" ")
 			define = if msg != ""
-			   UrbanDict.define(msg)
-					else
-						UrbanDict.random
-					end
+				UrbanDict.define(msg)
+			else
+				UrbanDict.random
+			end
 			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: define["word"], url: define["permalink"])
-			embed.add_field(name: "**Definition**", value: (define["definition"]).to_s, inline: true)
-			embed.add_field(name: "**Example**", value: (define["example"]).to_s, inline: true)
+			embed.add_field(name: "**Definition**", value: define["definition"])
+			embed.add_field(name: "**Example**", value: define["example"])
 			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "#{define["thumbs_up"]} likes/#{define["thumbs_down"]} dislikes", icon_url: "")
 			embed.color = 4359924
 		end
