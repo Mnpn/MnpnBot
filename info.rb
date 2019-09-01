@@ -2,28 +2,20 @@ $bot.command :si do |event|
 	if event.channel.private?
 		event.respond "Try running this in a server instead."
 	else
-		event.channel.send_embed do |embed|
-		verchann = event.server.verification_level
-		if verchann == nil
-			verchann = "None"
-		end
 		afkchann = event.server.afk_channel
 		if afkchann == nil
 			afkchann = "None"
 		else
 			afkchann = event.server.afk_channel.name
 		end
-		if event.server.large?
-			size = "Large" else size = "Small"
-		end
-		if event.server.emoji? == true
-			emoji = "Server has emoji." else emoji = "Server does not have any emoji."
-		end
+		event.channel.send_embed do |embed|
 			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: event.server.name, url: event.server.icon_url, icon_url: event.server.icon_url)
-			embed.description = "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}
-Server Settings: Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}. #{emoji}"
-			embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-			embed.add_field(name: "Creation time:", value: event.server.creation_time, inline: true)
+			embed.description = "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members.
+**Owned by**: #{event.server.owner.mention} (#{event.server.id})
+**Verification level**: #{event.server.verification_level}
+**AFK channel and timeout**: #{afkchann}, #{event.server.afk_timeout}
+**Has emoji?** #{event.server.emoji?}
+**Creation time**: #{event.server.creation_time}"
 			embed.color = 1108583
 			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url)
 		end
