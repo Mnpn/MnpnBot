@@ -1,6 +1,3 @@
-# This is the main file of MnpnBot, programmed in Ruby.
-# Shout out to jD91mZM2#1033 and tbodt#7244 for helping me.
-
 require "discordrb"
 require "urban_dict"
 require "color"
@@ -8,11 +5,13 @@ require "open-uri"
 require "wikipedia"
 
 token = File.read "token.txt"
-
-$version = "Release 2.5"
+$version = "2.5"
 $codename = "Light"
 $started = 0
 $wikilimit = 750
+
+INVITE_URL = "https://discordapp.com/oauth2/authorize?client_id=289471282720800768&scope=bot&permissions=0"
+ICON_URL = "http://i.imgur.com/VpeUzUB.png"
 
 $bot = Discordrb::Commands::CommandBot.new token: token, client_id: 289471282720800768, prefix: "_"
 
@@ -21,13 +20,14 @@ require_relative "info.rb"
 
 $bot.ready do
 	$started = Time.now
-	puts "Running on version #{$version}, codename #{$codename}"
-	$bot.stream($version, "https://www.twitch.tv/themnpn")
+	puts "Running version #{$version}, codename #{$codename}"
+	$bot.stream("Release " + $version, "https://www.twitch.tv/themnpn")
 end
 
 $bot.command :reload do |event|
 	if event.user.id == 172030506970382337
-		# WrapperUtil is an external program developed by jD91mZM2#1033. It allows me to restart the bot using _reload. Read more at https://github.com/LEGOlord208/WrapperUtil/
+		# WrapperUtil is an external program developed by jD91mZM2#1033. It allows me to restart the bot.
+		# Read more at https://github.com/jD91mZM2/WrapperUtil
 		print 'wrapperutil{"Restart":true}'
 		exit
 	end

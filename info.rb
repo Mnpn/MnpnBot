@@ -1,10 +1,6 @@
 $bot.command :si do |event|
 	if event.channel.private?
-		event.channel.send_embed do |embed|
-			embed.title = ':no_entry:'
-			embed.description = 'This command cannot be used in a DM!'
-			embed.color = 16722454
-		end
+		event.respond "Try running this in a server instead."
 	else
 		event.channel.send_embed do |embed|
 		verchann = event.server.verification_level
@@ -26,8 +22,8 @@ $bot.command :si do |event|
 			embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: event.server.name, url: event.server.icon_url, icon_url: event.server.icon_url)
 			embed.description = "Hosted in **#{event.server.region}** with **#{event.server.channels.count}** channels and **#{event.server.member_count}** members, owned by #{event.server.owner.mention}
 Server Settings: Verification level: \"#{verchann}\", AFK Channel and timeout: \"#{afkchann}, #{event.server.afk_timeout}\", Server size: #{size}. #{emoji}"
-			embed.add_field(name: 'IDs:', value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
-			embed.add_field(name: 'Creation time:', value: event.server.creation_time, inline: true)
+			embed.add_field(name: "IDs:", value: "Server ID: #{event.server.id}, Owner ID: #{event.server.owner.id}", inline: true)
+			embed.add_field(name: "Creation time:", value: event.server.creation_time, inline: true)
 			embed.color = 1108583
 			embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.server.icon_url)
 		end
@@ -36,9 +32,9 @@ end
 
 $bot.command :ui do |event|
 	playing = event.user.game
-	playing = 'Nothing' if playing.nil?
+	playing = "Nothing" if playing.nil?
 	event.channel.send_embed do |embed|
-		embed.title = 'User Information'
+		embed.title = "User Information"
 		desc = "**Name#Discrim and ID:** #{event.user.name}##{event.user.discrim}, #{event.user.id}
 **Status:** #{event.user.status}
 **Currently playing:** #{playing}"
@@ -62,7 +58,7 @@ $bot.command :ui do |event|
 		embed.description = desc
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: event.user.avatar_url.to_s)
 		if event.channel.private?
-			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Pro Tip! Run this command in a server!', icon_url: 'http://i.imgur.com/VpeUzUB.png')
+			embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Pro Tip! Run this command in a server!", icon_url: ICON_URL)
 			next
 		end
 	end
