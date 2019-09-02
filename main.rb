@@ -36,18 +36,13 @@ end
 $bot.command([:debug, :d], min_args: 1) do |event, *args|
 	if event.user.id == 172030506970382337
 		time = Time.new
-		h = time.hour.to_s
-		min = time.min.to_s
-		s = time.sec.to_s
-		nicelookingtime = "%s:%s:%s" % [h, min, s]
+		nicelookingtime = "#{time.hour}:#{time.min}:#{time.sec}"
 		begin
 			result = eval(args.join(" "))
-			event.respond "```md
-# %s: %s ```" % [nicelookingtime, result]
+			event.respond "```md\n# %s: %s ```" % [nicelookingtime, result]
 		rescue Exception => e
-			event.respond "```md
-> #{e.backtrace.first}: #{e.message} (#{e.class})" + e.backtrace.drop(1).map{|s| "\t#{s}"}.join("\n") + "```"
-			end
+			event.respond "```md\n> #{e.backtrace.first}: #{e.message}```"
+		end
 	end
 end
 

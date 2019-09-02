@@ -5,20 +5,20 @@ $bot.command :help do |event|
 	end
 	event.channel.send_embed do |embed|
 		embed.thumbnail = Discordrb::Webhooks::EmbedImage.new(url: ICON_URL)
-		embed.description = "**_help**: Sends this. Click the title to get an invite link for your server!
-**_random <min> <max>**: Pick a random number.
-**_define [text]**: Urban Dictionary lookup.
+		embed.description = "**_help:** Sends this. Click the title to get an invite link for your server!
+**_random <min> <max>:** Pick a random number.
+**_define [text]:** Urban Dictionary lookup.
 Not specifying what to define will result in a random definition.
-**_roman <int>**: Change numerals to romans.
-**_rate <text>**: Rate something.
-**_colour [hex]**: Generate or show a colour in hex, RGB and decimal.
-**_lmgtfy <text>**: Make a LMGTFY link.
-**_avatar <user mention>**: Get a user's avatar URL.
-**_weather <location>**: Get the current weather for a location.
-**_insult**: Sends an insult using jD91mZM2's Oh...Sir!-like insult program.
-**_wiki <text>**: Wikipedia lookup.
+**_roman <int>:** Change numerals to romans.
+**_rate <text>:** Rate something.
+**_colour [hex]:** Generate or show a colour in hex, RGB and decimal.
+**_lmgtfy <text>:** Make a LMGTFY link.
+**_avatar <user mention>:** Get a user's avatar URL.
+**_weather <location>:** Get the current weather for a location.
+**_insult:** Sends an insult using jD91mZM2's Oh...Sir!-like insult program.
+**_wiki <text>:** Wikipedia lookup.
 
-**_si/bi/ui**: Server/Bot/User info"
+**_si/bi/ui:** Server/Bot/User info"
 		embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "MnpnBot #{$version}", url: INVITE_URL, icon_url: ICON_URL)
 		embed.color = 1108583
 	end
@@ -34,19 +34,6 @@ $bot.command(:random, min_args: 2, max_args: 2, usage: "random <min> <max>") do 
 		event.respond = "That's not numbers!"
 	end
 	event.respond "The result was %d." % [rand(min_i..max_i)]
-end
-
-$bot.command :uptime do |event|
-	full_sec = Time.now - $started
-	sec = full_sec % 60
-	min = full_sec / 60
-	sec = sec.floor
-	min = min.floor
-	event.channel.send_embed do |embed|
-		embed.title = "Uptime:"
-		embed.description = "Bot uptime is %s:%s" % [min, sec] # + " minutes."
-		embed.color = 1108583 # green
-	end
 end
 
 # When authorised, send message.
@@ -85,7 +72,7 @@ $bot.command(:define, min_args: 0, usage: "define [word]") do |event, *args|
 end
 
 $bot.command(:roman, min_args: 1, max_args: 1, usage: "roman <num>") do |event, num|
-	# Coded by LEGOlord208
+	# Made by jD91mZM2
 	i = 0
 	begin
 		i = Integer(num)
@@ -287,58 +274,5 @@ $bot.command([:wikipedia, :wiki], min_args: 1, usage: "wikipedia <search term>")
 		end
 		sleep 5
 		msg.delete
-	end
-end
-
-$bot.command(:encode, min_args: 2, usage: "_encode b64/bin/hex <text>") do |event|
-args = event.message.to_s[8..-1]
-	begin
-		if args.start_with? "bin"
-			event.respond(args[4..-1].unpack("B*")[0].gsub(/(.{8})/, '\1 '))
-			next
-		elsif args.start_with? "b64"
-			event.respond([args[4..-1]].pack("m*").chomp)
-			next
-		elsif args.start_with? "hex"
-			event.respond(args[4..-1].each_byte.map { |b| b.to_s(16) }.join)
-			next
-		else
-			event.channel.send_embed do |embed|
-				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
-				embed.color = 16722454 # red
-			end
-		end
-	rescue
-		event.channel.send_embed do |embed|
-			embed.description = "Error! Message too long or you need to select what to encode to! (Example: _encode b64 I like bananas)"
-			embed.color = 16722454 # red
-		end
-	end
-end
-
-$bot.command(:decode, min_args: 1, usage: "_decode b64/bin/hex <text>") do |event|
-args = event.message.to_s[8..-1]
-	begin
-		if args.start_with? "bin"
-			args = args[4..-1].gsub(/\s+/, "")
-			event.respond([args].pack("B*"))
-			next
-		elsif args.start_with? "b64"
-			event.respond(args[4..-1].unpack('m*')[0])
-			next
-		elsif args.start_with? "hex"
-			event.respond([args[4..-1]].pack('H*'))
-			next
-		else
-			event.channel.send_embed do |embed|
-				embed.description = "You need to select Base64 (b64), Binary (bin) or Hexadecimal (hex)! (Example: _encode bin I like bananas)"
-				embed.color = 16722454 # red
-			end
-		end
-	rescue
-		event.channel.send_embed do |embed|
-			embed.description = "That message is too long to send, or I cannot decode that."
-			embed.color = 16722454 # red
-		end
 	end
 end
