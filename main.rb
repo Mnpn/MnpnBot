@@ -5,7 +5,7 @@ require "open-uri"
 require "wikipedia"
 
 token = File.read "token.txt"
-$version = "2.5"
+$version = "2.5.1"
 $codename = "Light"
 $started = 0
 $wikilimit = 750
